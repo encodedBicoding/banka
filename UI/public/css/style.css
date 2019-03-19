@@ -294,6 +294,34 @@ footer p{
     padding: 0;
 }
 
+/*Media query responsiveness for Login.html*/
+/*Max-width 1025px*/
+@media(max-width: 1025px){
+    #login form{
+        width: 50%;
+        margin: 20px 25% 20px 27%;
+    }
+}
+/*Max-width 769px*/
+@media(max-width: 769px){
+    #login form{
+        width: 50%;
+        margin: 20px 25% 20px 26%;
+    }
+}
+/*Max-width 426*/
+@media(max-width: 426px){
+    #login form{
+        width: 80%;
+        margin: 20px 25% 20px 15%;
+    }
+    header li a{
+        font-size: 12px;
+    }
+}
+
+
+
 
 
 
