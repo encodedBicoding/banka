@@ -20,7 +20,7 @@ don't want to visit any of our Banka offices? Banka App helps you do all of that
 * Admin can create staff and admin user accounts
 
 # Pivotal tracker
-Track the building processes of Banka on Pivotal tracker via -  [link](https://www.pivotaltracker.com/n/projects/2319930)
+Track the building process of Banka on Pivotal tracker via -  [link](https://www.pivotaltracker.com/n/projects/2319930)
 
 # Github Hosted UI
 Banka is hosted free on Github [link](https://encodedbicoding.github.io/banka/)

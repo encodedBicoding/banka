@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width"/>
+        <meta name="description" content="banka app for online banking"/>
+        <meta name="keywords" content="pay bills, create bank account, view bank transactions"/>
+        <meta name="author" content="Dominic Isioma"/>
+        <meta http-equiv="X-UA-compactible" content="IE=edge"/>
+        <link type="text/css" rel="stylesheet" href="./public/css/style.css"/>
+        <title>Banka - Signup</title>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div id="brand">
+                    <h2>Bank<span>a</span>
+                        <span id="slogan">...First mobile banking solution</span>
+                    </h2>   
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="./index.html">Home</a></li>
+                        <li style="background-color: #FF8C00; border-radius: 4px;"><a href="signup.html">Signup</a></li>
+                        <li><a href="#">Login</a></li> 
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <section id="signup">
+            <div class="container">
+                <div id="signup_h">
+                    <h2>Sign <span>up</span></h2>
+                </div>
+                <form method="POST" action="#">
+                    <label for="firstname">Firstname: </label>
+                    <input type="text" name="firstname" id="firstname" placeholder="Firstname: " required />
+                    <label for="surname">Surname: </label>
+                    <input type="text" name="surname" id="surname" placeholder="Surname: " required/>
+                    <label for="username">Username: </label>
+                    <input type="text" name="username" id="username" placeholder="Username: " required/>
+                    <label for="email">Email: </label>
+                    <input type="email" name="email" id="email" placeholder="Email: " required/>
+                    <label for="password">Password: </label>
+                    <input type="password" name="password" id="password" placeholder="Password: " required/>
+                    <label for="re_password">Repeat Password: </label>
+                    <input type="password" name="re_password" id="re_password" required placeholder="Repeat Password: "/>
+                    <p>
+                    <input type="checkbox" name="terms" id="terms" required/>
+                    By creating an account, you agree to our <a href="#">Terms of use</a>
+                    </p>
+                    <button>Create Account</button>
+                </form>
+            </div>
+        </section>
+        <footer>
+            <p>
+                Copyright <span>&copy;</span> Banka || All Rights Reserved 2019.
+            </p>
+        </footer>
+    </body>
+</html>
