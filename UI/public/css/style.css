@@ -237,6 +237,51 @@ header a{
     border-radius: 3px;
     text-transform: uppercase;
 }
+/*User Login*/
+#login{
+    background-color: #00003a;
+    color: #fff;
+    border-bottom: #ff8c00 solid 5px;
+    margin: 0;
+    padding: 35px 0 0 0;
+}
+#login h2{
+    text-align: center;
+    text-transform: uppercase;
+}
+#login_h span{
+    color: #ff8c00;
+    border-bottom: #ff8c00 solid 3px;
+}
+#login form{
+    width: 30%;
+    margin: 20px 25% 20px 35%;
+}
+#login label{
+    display: none;
+    margin: 10px 0 0 0;
+}
+#login input{
+    display: block;
+    padding: 5px;
+    height: 30px;
+    width: 97%;
+    font-size: 14px;
+    margin: 9px 0 0 0 ;
+}
+#login button{
+    padding: 5px;
+    height: 30px;
+    width: 97%;
+    margin: 9px 0 0 0;
+    font-size: 13px;
+    color: #fff;
+    cursor: pointer;
+    background-color: #ff8c00;
+    border:  none;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
 /*Footer*/
 footer{
     padding: 70px;
