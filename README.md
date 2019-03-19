@@ -1,9 +1,9 @@
 # Banka
-Banka is a lightweight core banking application that powers banking operation on the go. With Banka you can create an account, make deposit, see your transaction overview and much more...
+Banka is a light-weight core banking application that powers banking operation on the go. With Banka you can create an account, make deposit, see your transaction overview and much more...
 
 # Why Banka?
-Banka aims to ease banking operations for its users. Ever wanted to do operations like create and account or check acoount transactions, and you 
-don't want to vist any of our Banka offices? Banka App helps you do all of that, Saving you time and money.
+Banka aims to ease banking operations for its users. Ever wanted to do operations like create and account or check account transactions, and you 
+don't want to visit any of our Banka offices? Banka App helps you do all of that, Saving you time and money.
 
 # Features
 * User (client) can sign up.
@@ -20,9 +20,9 @@ don't want to vist any of our Banka offices? Banka App helps you do all of that,
 * Admin can create staff and admin user accounts
 
 # Pivotal tracker
-Track the building processes of Banka on Pivotal tracker via -  (link)[https://www.pivotaltracker.com/n/projects/2319930]
+Track the building processes of Banka on Pivotal tracker via -  [link](https://www.pivotaltracker.com/n/projects/2319930)
 
 # Github Hosted UI
-Banka is hosted free on Github (link)[https://encodedbicoding.github.io/banka/]
+Banka is hosted free on Github [link](https://encodedbicoding.github.io/banka/)
 
 

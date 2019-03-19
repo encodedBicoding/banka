@@ -1,0 +1,224 @@
+*{
+    box-sizing: content-box
+}
+/*Global*/
+.container{
+    width: 90%;
+    margin: 0 3% 0 3%;
+    padding: 0;
+}
+body{
+    background-color: #f4f4f4;
+    font: 17px/1.5 Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+ul{
+    margin: 0;
+    padding: 0;
+}
+
+/*Header*/
+header{
+    background-color: #00003a;
+    color: #fff;
+    padding: 10px;
+    border-bottom: #FF8C00 solid 9px; 
+}
+#brand span{
+    color: #FF8C00;
+}
+#brand h2{
+    font-size: 75px;
+    text-align: center;
+}
+#brand #slogan{
+    color: #fff;
+    font-size: 10px;
+    display: block;
+    position: relative;
+    bottom: 31px;
+    left: 38px;
+}
+header nav{
+    text-align: center;
+}
+header li{
+    display: inline;
+    padding: 20px;
+}
+header a{
+    color: #fff;
+    font-size: 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+/*About us*/
+#about{
+    background: url(../images/banking-lights.jpg) no-repeat -20px -20px;
+    color: #fff;
+    margin: 0;
+    padding: 35px 0 200px 0;
+    border-bottom: #FF8c00 solid 7px;
+}
+#about h2{
+    text-align: center;
+    text-transform: uppercase;
+    margin: 30px 0 0 0;
+}
+#about span{
+    color: #FF8C00;
+    border-bottom: #FF8C00 solid 4px;
+}
+#about p{
+    font-size: 23px;
+    width: 90%;
+    margin: 20px 10% 0 8%;
+    text-align: justify;
+}
+/*Services*/
+#services{
+    background-color: #00003a;
+    color: #fff;
+    padding: 35px;
+    margin: 0;
+    border-bottom: #ff8c00 solid 7px;
+}
+#services #s_header{
+    text-align: center;
+    text-transform: uppercase;
+}
+#s_header span{
+    color: #ff8c00;
+    border-bottom: #ff8c00 solid 4px;
+}
+#services #offer-title{
+    font-size: 15px;
+    margin: 40px 0 0 0;
+}
+#services #offer-header{
+    padding: 11px;
+    font-size: 29px;
+    background-color: #ff8c00;
+    display: inline;
+    border-top-right-radius: 15px;
+    border-left: #fff solid 10px;
+    color: #00003a;
+}
+#services #offer{
+    width: 30%;
+    margin: 0 4px 0 0;
+    padding: 30px;
+    border: 1px solid #f4f4f4;
+    border-radius: 4px;
+    box-shadow: 1px 1px 2px 1px rgba(255,255,255, 3)
+}
+#services #flex_offer{
+    display: flex;
+    width: 100%;
+    margin: 10px 0 0 20px;
+    padding: 0;
+}
+
+/*Contact us*/
+#contact{
+    background: url(../images/banking-transformation.jpg) no-repeat 0 -30px;
+    padding: 35px 0 40px 0;
+    border-bottom: #ff8c00 solid 7px;
+    color: #fff;
+}
+#contact #flex-c_c{
+    display: flex;
+    margin: 0 0 0 7%;
+}
+#contact #c_c{
+    width: 50%;
+    margin: 0 20px 20px 0;
+    background-color: #00003a;
+    padding: 0 0 20px 0;
+    border-top-right-radius: 50px;
+    border-bottom: #ff8c00 solid 10px;
+}
+#c_c h2{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 19px;
+}
+#c_c span{
+    color: #ff8c00;
+    border-bottom: #ff8c00 solid 4px;
+}
+#c_c form{
+    width: 90%;
+    margin: 10px 0 0 15%;
+    padding: 0;
+}
+#c_c label{
+    display: block;
+    color: #ff8c00;
+    font-weight: bolder;
+    margin: 10px 0 0 0;
+}
+#c_c input,
+     textarea
+{
+    padding: 10px;
+    width: 80%;
+    font-size:12px; 
+}
+#c_c button{
+    text-transform: uppercase;
+    padding: 10px;
+    width: 80%;
+    font-size: 14;
+    cursor: pointer;
+    border: none;
+    background-color: #ff8c00;
+    border-radius: 5px;
+}
+/*Footer*/
+
+footer{
+    padding: 70px;
+}
+footer p{
+    color: grey;
+    font-size: 13px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
