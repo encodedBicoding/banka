@@ -7,6 +7,9 @@
         <meta name="keywords" content="pay bills, create bank account, view bank transactions"/>
         <meta name="author" content="Dominic Isioma"/>
         <meta http-equiv="X-UA-compactible" content="IE=edge"/>
+        <!--Font-Awesome styles-->
+        <link type="text/css" rel="stylesheet" href="./public/font-awesome/css/font-awesome.min.css"/>
+        <!--Main stylesheet-->
         <link type="text/css" rel="stylesheet" href="./public/css/style.css"/>
         <title>Banka - All Account Transactions</title>
     </head>
@@ -26,6 +29,9 @@
                      <img src="./public/images/tiny_camera.png" onclick="document.getElementById('user_img').click()" id="t_c" title="upload image"/>
                      <input type='file' id="user_img" style="display:none">
                  </form>
+                 <button id="toggle_nav">
+                    <span class="fa fa-bars" id="xx"></span>
+                 </button>
              </div> 
              <div id="user_nav">
                  <nav>
@@ -72,5 +78,6 @@
                 </div>
             </div>
         </section>
+        <script src="./public/js/script.js"></script>
     </body>
 </html>
