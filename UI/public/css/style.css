@@ -534,7 +534,7 @@ footer p{
         font-size: 20px;
     }
     #services #flex_offer{
-        margin: 0;
+        margin: 0 0 20px 20px;
         padding: 0;
     }
     #services #offer-header{
@@ -561,14 +561,11 @@ footer p{
         font-size: 20px;
     }
     #signup form{
-        width: 60%;
-        margin: 0 0 0 22%;
-        padding: 0 0 20px 0;
+        width: 100%;
     }
 
-     #login form{
-        width: 50%;
-        margin: 20px 25% 20px 26%;
+    #login form{
+        width: 100%;
     }
     #user_profile li{
         padding: 5px;
@@ -653,11 +650,16 @@ footer p{
         font-size: 25px;
         color: #ff8c00;
     }
+    #about p{
+        font-size: 17px;
+        margin: 20px 0 20px 40px;
+    }
     #services h2{
         font-size: 20px;
     }
     #services #flex_offer{
         display: block;
+        margin: 0 0 0 13px;
     }
     #services #offer-header{
         padding: 8px;
@@ -677,14 +679,16 @@ footer p{
     }
     #contact #flex-c_c{
         display: block;
+        margin: 0 0 0 50px;
     }
     #contact #c_c{
         width:100%;
     }
-
-    #login form{
-        width: 80%;
-        margin: 20px 25% 20px 15%;
+    #about,
+    #services,
+    #contact{
+        margin: 0;
+        padding: 30px 30px 0 0 ;
     }
     header li a{
         font-size: 12px;
@@ -748,7 +752,7 @@ footer p{
     }
      #serve #serve_h{
         display: inline;
-  }
+  } 
 }
 /*Max-width 378px*/
 @media(max-width: 378px){
@@ -784,6 +788,84 @@ footer p{
         width:100%;
     }
 
+}
+/*Max-width 359px*/
+@media(max-width: 359px){
+    #services h2{
+        font-size: 20px;
+    }
+    #services #flex_offer{
+        display: block;
+    }
+    #services #offer-header{
+        padding: 8px;
+        font-size: 20px;
+    }
+    #services #offer{
+        margin: 10px 0 10px 0;
+    }
+    #offer p{
+        font-size: 14px;
+    }
+    #contact h2{
+        font-size: 20px;
+    }
+    #contact form{
+        margin: 0 0 0 30px;
+    }
+    #contact #flex-c_c{
+        display: block;
+    }
+    #contact #c_c{
+        width:100%;
+    }
+
+    #login form{
+        width: 80%;
+        margin: 20px 25% 20px 15%;
+    }
+    header li a{
+        font-size: 12px;
+    }
+    #user_nav{
+        margin: 0 0 0 50px;
+    } 
+    #about, 
+    #services,
+    #contact{
+        margin: 0;
+        padding: 10px 10px 0 0;
+    }
+    #user_dashboard_h{
+        width: 100%;
+    }
+    #user_profile,
+    #profile_body{
+        padding-right: 6%;
+    }
+    #profile_img #user_dp{
+        width: 60%;
+        margin: 20px 0 0 15px;
+    }
+    #profile_img #t_c{
+      margin: 0 0 0 23px;
+    }
+    #profile_body #search{
+       margin: 0 9px 0 0;
+    }
+    #profile_body{
+        margin: 0 0 0 40px;
+        padding: 0;
+    }
+   
+    #p_body table{
+        padding: 0;
+        margin: 0;
+        font-size: 9px;
+    }
+    #pages h3{
+        display: none;
+    }
 }
 
 /*Media query responsiveness*/
