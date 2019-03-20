@@ -13,13 +13,9 @@ body{
     margin: 0;
     padding: 0;
 }
-#toggle_nav{
-    display: none;
-}
 ul{
     margin: 0;
     padding: 0;
-    list-style: none;
 }
 
 /*Header*/
@@ -448,7 +444,8 @@ footer p{
     color: #fff;
     background-color: #ff8c00;
     height: 25px;
-    width: 80%;  
+    width: 80%;
+    
 }
 #serve{
     margin: 0 0 0 7%;
@@ -793,35 +790,24 @@ footer p{
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* View_all Table style for all accounts*/
+#all_trans_table th{
+    margin: 0 0 0 10px;
+    border: 1px solid #000;
+    font-size: 13px;
+    color: grey;
+}
+#all_trans_table td{
+    text-align: center;
+    font-size: 13px;
+    color: grey;
+}
+#all_trans_table{
+    width: 90%;
+    margin: 0 0 0 4%;
+   
+}
+#all_trans_table a{
+    text-decoration: none;
+    color: #ff8c00;
+}
