@@ -13,9 +13,13 @@ body{
     margin: 0;
     padding: 0;
 }
+#toggle_nav{
+    display: none;
+}
 ul{
     margin: 0;
     padding: 0;
+    list-style: none;
 }
 
 /*Header*/
@@ -293,6 +297,7 @@ footer p{
     margin: 0;
     padding: 0;
 }
+/*User dashboard*/
 #user_dashboard_h h2{
     text-align: center;
     font-size: 70px;
@@ -411,6 +416,9 @@ footer p{
     font-size: 15px;
     margin: 0 0 7px 7%;
 }
+#serve{
+    margin: 0 0 0 7%;
+}
 #p_body input[type="radio"]{
     display: inline;
     width: 12px;
@@ -444,11 +452,7 @@ footer p{
     color: #fff;
     background-color: #ff8c00;
     height: 25px;
-    width: 80%;
-    
-}
-#serve{
-    margin: 0 0 0 7%;
+    width: 80%;   
 }
 #serve span{
     font-size: 10px;
@@ -541,7 +545,7 @@ footer p{
         width: 90%;
         margin: 0 10px 0 5px;
     }
-    #offer p{
+    #offer p, #user_profile a{
         font-size: 14px;
     }
     #contact h2{
@@ -558,10 +562,93 @@ footer p{
         margin: 0 0 0 22%;
         padding: 0 0 20px 0;
     }
+     #login form{
+        width: 50%;
+        margin: 20px 25% 20px 26%;
+    }
+    #user_profile li{
+        padding: 5px;
+    }
+    #user_profile{
+        height: auto;
+        width: 22%;
+        border-radius: 2px;
+    }
+    #profile_img #t_c{
+        position: relative;
+        bottom: 50px;
+        left: 99px;
+    }
+    #pages h3, 
+    #serve span, 
+    #pages label,
+    #serve label,
+    #serve #serve_h,
+    #settings h2{
+        font-size: 12px;
+        margin: 0;
+    }
+    #profile_body{
+        width: 90%;
+    }
+    #profile_body #search{
+        margin: 0 0 0 40%;
+        padding: 0;
+    }
+    #search input,
+    #search button{
+        padding: 3px;
+        height: 20px;
+        font-size: 12px;
+    }
+    #p_body form, 
+    #settings form{
+        width: 99%;
+        margin: 0;
+    }
+    #p_body h2{
+        font-size: 13px;
+    }
+    #p_body input, 
+    #p_body select,
+    #pages label,
+    #p_body button,
+    #serve,
+    #settings input,
+    #settings button{
+        margin: 4px 0 0 0;
+        width: 100%;
+        padding: 3px;
+        font-size: 12px;
+    }
+    #serve #serve_h{
+        display: block;
+        line-height: 0.2;
+        margin: 20px 0 0 0;
+    }
+    #p_body #terms{
+        margin: 0;
+    }
 }
 
 /*Max-width 426px*/
 @media(max-width: 426px){
+      #toggle_nav{
+        display: block;
+        padding: 4px;
+        border: none;
+        background-color: #00003a;
+        position: absolute;
+        top: 50%;
+        left: 83%;
+    }
+    #user_nav{
+        display: none;
+    }
+    #toggle_nav span{
+        font-size: 25px;
+        color: #ff8c00;
+    }
     #services h2{
         font-size: 20px;
     }
@@ -589,6 +676,72 @@ footer p{
     }
     #contact #c_c{
         width:100%;
+    }
+    #login form{
+        width: 80%;
+        margin: 20px 25% 20px 15%;
+    }
+    header li a{
+        font-size: 12px;
+    }
+    #user_profile{
+        float: left;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+    #profile_img #user_dp{
+        width: 60%;
+        margin: 0;
+        position: relative;
+        left: 20%;
+    }
+    #profile_img #t_c{
+        position: relative;
+        left: 50%;
+    }
+    #user_profile{
+        margin: 0 0 2% 0;
+        height: auto;
+        border-bottom: 9px solid #ff8c00;
+    }
+    #user_nav{
+        margin: 0 0 0 8%;
+    }
+    #profile_body{
+        margin: 0;
+        padding: 50px;
+        float: left;
+        width: 100%;
+    }
+    #p_body form{
+       margin: 0;
+       width: 100%;
+       padding: 10px;
+    }
+    #profile_body #search{
+        position: absolute;
+        top: 29%;
+        right: 1%;
+        width: 80%;
+        color: #fff;
+    }
+    #search form{
+        margin: 0 0 0 8%;
+        width: 90%;
+    }
+    #pages h3{
+        text-align: center;
+    }
+    #pages table{
+        margin: 0;
+    }
+    #pages table th, td{
+        font-size: 10px;
+        width: 20px;
+    }
+     #serve #serve_h{
+        display: inline;
     }
 
 }
@@ -635,25 +788,21 @@ footer p{
         width: 50%;
         margin: 20px 25% 20px 27%;
     }
-}
-/*Max-width 769px*/
-@media(max-width: 769px){
-    #login form{
-        width: 50%;
-        margin: 20px 25% 20px 26%;
+    #profile_body{
+        width: 74%;
+    }
+    #profile_img #t_c{
+        width: 16%;
+    }
+    #profile_body #search{
+        margin: 0 0 0 57%;
+        padding: 0;
+    }
+    #p_body form, #settings form{
+        width: 67%;
+        margin: 0 0 0 13%;
     }
 }
-/*Max-width 426*/
-@media(max-width: 426px){
-    #login form{
-        width: 80%;
-        margin: 20px 25% 20px 15%;
-    }
-    header li a{
-        font-size: 12px;
-    }
-}
-
 
 /* View_all Table style for all accounts*/
 #all_trans_table th{
