@@ -293,6 +293,250 @@ footer p{
     margin: 0;
     padding: 0;
 }
+#user_dashboard_h h2{
+    text-align: center;
+    font-size: 70px;
+}
+#user_dashboard_h #slogan{
+    display: block;
+    font-size: 10px;
+    color: #fff;
+    position: relative;
+    bottom: 29px;
+    left: 30px;
+}
+#user_dashboard_h span{
+    color: #ff8c00;
+}
+/*User Profile*/
+#user_profile{
+    float: left;
+    padding:10px;
+    margin: 0 0 0 3px;
+    width: 20%;
+    height: 550px;
+    background-color: #00003a;
+    border-radius: 5px;
+}
+#profile_img #user_dp{
+    width: 100%;
+    border-radius: 50%;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+#profile_img #t_c{
+    width: 20%;
+    position: relative;
+    bottom: 70px;
+    left: 134px;
+    background-color: #f4f4f4;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+#user_profile a{
+    color: #00003a;
+    text-decoration: none;
+    font-weight: bolder;
+}
+#user_profile li{
+    background-color: #ff8c00;
+    margin: 0 0 11px 0;
+    padding: 11px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center;
+}
+#user_profile li:hover{
+    background-color: #f4f4f4;
+}
+
+/*Profile Body*/
+#profile_body{
+    float: right;
+    width: 78%;
+}
+#search label{
+    display: block;
+    font-size: 10px;
+}
+#profile_body #search{
+    margin: 0 0 0 65%;
+    padding: 10px;
+}
+#search input{
+    padding: 10px;
+    height: 10px;
+}
+#search button{
+    padding: 7px;
+    height: 16px;
+    color: #fff;
+    border: none;
+    background-color: #ff8c00;
+    cursor: pointer;
+    border-radius: 3px;
+}
+/*Dashboard Pages*/
+#profile_body #pages{
+    margin: 0;
+    padding: 0;
+    height: auto;
+}
+#pages h3{
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: grey;
+}
+#p_body h2{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 18px;
+    color: grey;
+}
+#p_body h2 span{
+    color: #ff8c00;
+}
+
+#p_body form{
+    width: 55%;
+    margin: 0 0 0 22%;  
+}
+#p_body label{
+    display: block;
+    color: grey;
+    font-weight: bold;
+    font-size: 15px;
+    margin: 0 0 7px 7%;
+}
+#p_body input[type="radio"]{
+    display: inline;
+    width: 12px;
+    margin: 0;
+    position: relative;
+    top: 9px;
+}
+#p_body #account_id{
+    text-align: center;
+    font-size: 10px;
+    color: grey;
+}
+#p_body input, select{
+    display: block;
+    width: 80%; 
+    padding: 5px;
+    height: 25px;
+    margin: 0 0 0 7%;
+    border: 1px solid grey;
+    background-color: #fff;
+    color: grey;
+    border-radius: 5px;
+    font-size: 17px;
+}
+#p_body button{
+    margin: 3% 0 0 7%;
+    cursor: pointer;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #ff8c00;
+    height: 25px;
+    width: 80%;
+    
+}
+#serve{
+    margin: 0 0 0 7%;
+}
+#serve span{
+    font-size: 10px;
+}
+#serve #serve_h{
+    font-size: 15px;
+    font-weight: bold;
+    color: grey;
+    margin: 10px 0 0 0
+}
+#p_body #terms{
+    margin: 0 0 7px 7%;
+    display: inline;
+    width: 13px;
+}
+#p_body #terms_txt{
+    font-size: 10px;
+    position: relative;
+    bottom: 10px;
+}
+#p_body #terms_txt a{
+    text-decoration: none;
+    color: #ff8c00;
+}
+/*Settings*/
+#settings h2{
+    text-align: center;
+    text-transform: uppercase;
+    color: grey;
+    font-size: 18px;
+}
+#settings h2 span{
+    color: #ff8c00;
+}
+#settings label{
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: grey;
+    margin: 0 0 10px 15%;
+}
+#settings input{
+    width: 70%;
+    padding: 4px;
+    height: 23px;
+    margin: 0 0 0 15%;
+}
+#settings form{
+    width: 50%;
+    margin: 0 0 0 25%;
+}
+#settings button{
+    display: block;
+    cursor:pointer;
+    width: 70%;
+    padding: 4px;
+    height: 23px;
+    border: none;
+    border-radius: 4px;
+    margin: 10px 0 0 15%;
+    background-color: #ff8c00;
+    color: #fff;
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
+/* View_all Table style for all accounts*/
+#all_trans_table th{
+    margin: 0 0 0 10px;
+    border: 1px solid #000;
+    font-size: 13px;
+    color: grey;
+}
+#all_trans_table td{
+    text-align: center;
+    font-size: 13px;
+    color: grey;
+}
+#all_trans_table{
+    width: 90%;
+    margin: 0 0 0 4%;
+   
+}
+#all_trans_table a{
+    text-decoration: none;
+    color: #ff8c00;
+}
+
 
 
 
