@@ -13,9 +13,13 @@ body{
     margin: 0;
     padding: 0;
 }
+#toggle_nav{
+    display: none;
+}
 ul{
     margin: 0;
     padding: 0;
+    list-style: none;
 }
 
 /*Header*/
@@ -444,8 +448,7 @@ footer p{
     color: #fff;
     background-color: #ff8c00;
     height: 25px;
-    width: 80%;
-    
+    width: 80%;  
 }
 #serve{
     margin: 0 0 0 7%;
@@ -514,28 +517,6 @@ footer p{
     font-weight: bolder;
     text-transform: uppercase;
 }
-
-/* View_all Table style for all accounts*/
-#all_trans_table th{
-    margin: 0 0 0 10px;
-    border: 1px solid #000;
-    font-size: 13px;
-    color: grey;
-}
-#all_trans_table td{
-    text-align: center;
-    font-size: 13px;
-    color: grey;
-}
-#all_trans_table{
-    width: 90%;
-    margin: 0 0 0 4%;
-   
-}
-#all_trans_table a{
-    text-decoration: none;
-    color: #ff8c00;
-}
 /*Media query - To aid responsiveness*/
 /*Max width 769px*/
 @media(max-width: 769px){
@@ -580,10 +561,7 @@ footer p{
         margin: 0 0 0 22%;
         padding: 0 0 20px 0;
     }
-}
 
-/*Max-width 426px*/
-@media(max-width: 426px){
     #services h2{
         font-size: 20px;
     }
@@ -658,27 +636,6 @@ footer p{
         margin: 20px 25% 20px 27%;
     }
 }
-/*Max-width 769px*/
-@media(max-width: 769px){
-    #login form{
-        width: 50%;
-        margin: 20px 25% 20px 26%;
-    }
-}
-/*Max-width 426*/
-@media(max-width: 426px){
-    #login form{
-        width: 80%;
-        margin: 20px 25% 20px 15%;
-    }
-    header li a{
-        font-size: 12px;
-    }
-}
-
-
-
-
 
 
 
