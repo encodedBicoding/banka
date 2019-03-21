@@ -23,6 +23,6 @@ don't want to visit any of our Banka offices? Banka App helps you do all of that
 Track the building process of Banka on Pivotal tracker via -  [link](https://www.pivotaltracker.com/n/projects/2319930)
 
 # Github Hosted UI
-Banka is hosted free on Github [link](https://encodedbicoding.github.io/banka/UI/index.html)
+Banka is hosted free on Github [link](https://encodedbicoding.github.io/banka/UI)
 
 

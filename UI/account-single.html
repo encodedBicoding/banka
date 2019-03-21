@@ -11,13 +11,16 @@
         <link type="text/css" rel="stylesheet" href="./public/font-awesome/css/font-awesome.min.css"/>
         <!--Main stylesheet-->
         <link type="text/css" rel="stylesheet" href="./public/css/style.css"/>
-        <title>Banka - Staff</title>
+        <title>Admins - Single Account</title>
     </head>
     <body>
         <header id="admin_dashboard_h">
             <div class="container">
-                <div id="admin_brand">
-                    <h2>Staf<span>f</span></h2>
+               <div id="admin_brand">
+                    <h2>Admi<span>n</span></h2>
+                    <p>
+                        Accounts Registered: 0
+                    </p>
                 </div>
             </div>
         </header>
@@ -36,10 +39,10 @@
              <div id="user_nav">
                  <nav>
                      <ul>
-                         <li onclick="document.getElementById('n_a').click()"><a href="./staff_accounts.html" id="n_a">All User Accounts</a></li>
-                         <li onclick="document.getElementById('v_a').click()"><a href="./credit.html" id="v_a">Credit User</a></li>
-                         <li onclick="document.getElementById('v_a').click()"><a href="./debit.html" id="v_a">Debit User</a></li>
-                         <li onclick="document.getElementById('settings').click()"><a href="./staff-settings.html" id="settings">Settings</a></li>
+                         <li onclick="document.getElementById('n_a').click()"><a href="./accounts.html" id="n_a">All User Accounts</a></li>
+                         <li onclick="document.getElementById('v_a').click()"><a href="./create.html" id="v_a">Create Admin/Staff</a></li>
+                         <li onclick="document.getElementById('a_s').click()"><a href="./myadmins.html" id="a_s">Admin/Staff Accounts</a></li>
+                         <li onclick="document.getElementById('settings').click()"><a href="./admin-settings.html" id="settings">Settings</a></li>
                          <li onclick="document.getElementById('logout').click()"><a href="#" id="logout">Log out</a></li>
                      </ul>
                  </nav>
@@ -57,18 +60,18 @@
                 </div>
                 <div id="pages">
                     <div id="a_body">
-                        <h2><span>All User </span>Accounts</h2>
+                        <h2><span>Account </span> ID: <i id="acc_id">123234</i></h2>
+                        <h2><span>Account</span> Holder: <i id="acc_holder">John Doe</i></h2>
                         <table id="a_u_t">
                             <tr>
-                                <th>Account ID</th>
-                                <th>Holder Name</th>
                                 <th>Account Type</th>
+                                <th>Last Deposit</th>
+                                <th>Last Withdrawal</th>
                             </tr>
                             <tr>
-                                <td>1233243</td>
-                                <td>John Doe</td>
                                 <td>Savings</td>
-                                <td><a href="s_account_single.html">View Account</a></td>
+                                <td>1/10/2019</td>
+                                <td>1/10/2019</td>
                                 <td><a href="#">Deactivate</a></td>
                                 <td><a href="#">Delete</a></td>
                             </tr>

@@ -398,7 +398,7 @@ footer p{
 }
 /*Dashboard Pages*/
 #profile_body #pages{
-    margin: 0;
+    margin: 0 0 50px 0;
     padding: 0;
     height: auto;
 }
