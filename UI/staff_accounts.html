@@ -11,7 +11,7 @@
         <link type="text/css" rel="stylesheet" href="./public/font-awesome/css/font-awesome.min.css"/>
         <!--Main stylesheet-->
         <link type="text/css" rel="stylesheet" href="./public/css/style.css"/>
-        <title>Staff - Credit Account</title>
+        <title>Staff - All Accounts</title>
     </head>
     <body>
         <header id="admin_dashboard_h">
@@ -36,10 +36,10 @@
              <div id="user_nav">
                  <nav>
                      <ul>
-                         <li onclick="document.getElementById('n_a').click()"><a href="./staff_accounts.html" id="n_a">All User Accounts</a></li>
-                         <li onclick="document.getElementById('v_a').click()"><a href="credit.html" id="v_a">Credit User</a></li>
-                         <li onclick="document.getElementById('d_a').click()"><a href="debit.html" id="d_a">Debit User</a></li>
-                         <li onclick="document.getElementById('settings').click()"><a href="./staff-settings.html" id="settings">Settings</a></li>
+                         <li onclick="document.getElementById('n_a').click()"><a href="staff_accounts.html" id="n_a">All User Accounts</a></li>
+                         <li onclick="document.getElementById('v_a').click()"><a href="./credit.html" id="v_a">Credit User</a></li>
+                         <li onclick="document.getElementById('d_a').click()"><a href="./debit.html" id="d_a">Debit User</a></li>
+                         <li onclick="document.getElementById('settings').click()"><a href="./staff-settings" id="settings">Settings</a></li>
                          <li onclick="document.getElementById('logout').click()"><a href="#" id="logout">Log out</a></li>
                      </ul>
                  </nav>
@@ -57,16 +57,22 @@
                 </div>
                 <div id="pages">
                     <div id="a_body">
-                        <h2><span>Credit </span>Account</h2>
-                        <form method="PUT" action="#">
-                            <label for="acc_id">Account ID: </label>
-                            <input type="text" name="acc_id" id="acc_id" required/>
-                            <p></p>
-                            <label for="amt">Amount: </label>
-                            <input type="number" name="amt" id="amt" required>
-                            <p></p>
-                            <button>Credit Account</button>
-                        </form>
+                        <h2><span>All User </span>Accounts</h2>
+                        <table id="a_u_t">
+                            <tr>
+                                <th>Account ID</th>
+                                <th>Holder Name</th>
+                                <th>Account Type</th>
+                            </tr>
+                            <tr>
+                                <td>1233243</td>
+                                <td>John Doe</td>
+                                <td>Savings</td>
+                                <td><a href="#">View Account</a></td>
+                                <td><a href="#">Deactivate</a></td>
+                                <td><a href="#">Delete</a></td>
+                            </tr>
+                        </table>
                     </div>
                     </div>
                 </div>
