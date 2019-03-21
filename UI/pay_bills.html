@@ -8,7 +8,7 @@
         <meta name="author" content="Dominic Isioma"/>
         <meta http-equiv="X-UA-compactible" content="IE=edge"/>
         <link type="text/css" rel="stylesheet" href="./public/css/style.css"/>
-        <title>Banka - All Account Transactions</title>
+        <title>Banka - Pay Bills</title>
     </head>
     <body>
         <header id="user_dashboard_h">
@@ -28,7 +28,7 @@
                  </form>
              </div> 
              <div id="user_nav">
-              <nav>
+                <nav>
                      <ul style="list-style: none">
                          <li onclick="document.getElementById('n_a').click()"><a href="./create_acc.html" id="n_a">New Bank Account</a></li>
                          <li onclick="document.getElementById('v_a').click()"><a href="./view_all.html" id="v_a">View All Accounts</a></li>
@@ -51,22 +51,21 @@
                 </div>
                 <div id="pages">
                         <h3> Welcome ${user}</h3>
-                    <div id="p_body">
-                        <h2><span>Account </span>Transactions</h2>
-                        <table id="all_trans_table">
-                            <tr>
-                                <th>Account ID</th>
-                                <th>Last Deposit</th>
-                                <th>Last Withdrawal</th>
-                                <th>View Transaction</th>
-                            </tr>
-                            <tr>
-                                <td>12325454</td>
-                                <td>1/10/2019</td>
-                                <td>1/10/2019</td>
-                                <td><a href="./single_acc.html">view transaction</a></td>
-                            </tr>
-                        </table>
+                    <div id="settings">
+                        <h2><span>Pay</span> Bills</h2>
+                        <form method="POST" action="#" id="reset_p">
+                            <label for="utility">Select Utility: </label>
+                            <select id="utility" name="utility" required>
+                                <option value="phcn">PHCN</option>
+                                <option value="water">Water Bills</option>
+                                <option value="dstv">Dstv</option>
+                            </select>
+                            <label for="account_number">Account Number: </label>
+                            <input type="number" id="account_number" name="account_number">
+                            <label for="password">Password: </label>
+                            <input type="password" name="password" id="password" required>
+                            <button>Pay</button>
+                        </form>
                     </div>
                 </div>
             </div>
