@@ -11,12 +11,12 @@
         <link type="text/css" rel="stylesheet" href="./public/font-awesome/css/font-awesome.min.css"/>
         <!--Main stylesheet-->
         <link type="text/css" rel="stylesheet" href="./public/css/style.css"/>
-        <title>Admin - Settings</title>
+        <title>Admins - Single Account</title>
     </head>
     <body>
         <header id="admin_dashboard_h">
             <div class="container">
-                 <div id="admin_brand">
+               <div id="admin_brand">
                     <h2>Admi<span>n</span></h2>
                     <p>
                         Accounts Registered: 0
@@ -37,7 +37,7 @@
                  </button>
              </div> 
              <div id="user_nav">
-                  <nav>
+                 <nav>
                      <ul>
                          <li onclick="document.getElementById('n_a').click()"><a href="./accounts.html" id="n_a">All User Accounts</a></li>
                          <li onclick="document.getElementById('v_a').click()"><a href="./create.html" id="v_a">Create Admin/Staff</a></li>
@@ -60,18 +60,22 @@
                 </div>
                 <div id="pages">
                     <div id="a_body">
-                        <h2><span>Admin </span>Change Password</h2>
-                         <div id="settings">
-                        <form method="#" action="#" id="reset_p">
-                            <label for="old_password">Old Password: </label>
-                            <input type="password" name="old_password" id="old_password" required/>
-                            <label for="new_password">New Password: </label>
-                            <input type="password" name="new_password" id="new_password" required>
-                            <label for="retype_password">Retype New Password: </label>
-                            <input type="password" name="retype_password" id="retype_password" required/>
-                            <button>Change Password</button>
-                        </form>
-                    </div>
+                        <h2><span>Account </span> ID: <i id="acc_id">123234</i></h2>
+                        <h2><span>Account</span> Holder: <i id="acc_holder">John Doe</i></h2>
+                        <table id="a_u_t">
+                            <tr>
+                                <th>Account Type</th>
+                                <th>Last Deposit</th>
+                                <th>Ladt Withdrawal</th>
+                            </tr>
+                            <tr>
+                                <td>Savings</td>
+                                <td>1/10/2019</td>
+                                <td>1/10/2019</td>
+                                <td><a href="#">Deactivate</a></td>
+                                <td><a href="#">Delete</a></td>
+                            </tr>
+                        </table>
                     </div>
                     </div>
                 </div>
