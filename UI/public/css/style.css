@@ -12,10 +12,24 @@ body{
     font: 17px/1.5 Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
+    height: auto;
+}
+#toggle_nav{
+    display: none;   
 }
 ul{
     margin: 0;
     padding: 0;
+    list-style: none;
+}
+
+.error{
+    font-size: 10px;
+    color: red;
+}
+a{
+    text-decoration: none;
+    color: #ffbc00;
 }
 
 /*Header*/
@@ -23,12 +37,15 @@ header{
     background-color: #00003a;
     color: #fff;
     padding: 10px;
-    border-bottom: #FF8C00 solid 9px; 
+    border-bottom: #FF8C00 solid 10px; 
 }
-#brand span{
+#brand span,
+#admin_dashboard_h span,
+#user_dasboard_h span{
     color: #FF8C00;
 }
-#brand h2{
+#brand h2,
+#admin_brand h2{
     font-size: 75px;
     text-align: center;
 }
@@ -52,6 +69,9 @@ header a{
     font-size: 15px;
     text-decoration: none;
     text-transform: uppercase;
+}
+#pages h3{
+    display: none;
 }
 /*About us*/
 #about{
@@ -285,6 +305,7 @@ header a{
 /*Footer*/
 footer{
     padding: 70px;
+    height: auto;
 }
 footer p{
     color: grey;
@@ -293,6 +314,8 @@ footer p{
     margin: 0;
     padding: 0;
 }
+
+/*User Profile*/
 #user_dashboard_h h2{
     text-align: center;
     font-size: 70px;
@@ -305,16 +328,12 @@ footer p{
     bottom: 29px;
     left: 30px;
 }
-#user_dashboard_h span{
-    color: #ff8c00;
-}
-/*User Profile*/
 #user_profile{
     float: left;
     padding:10px;
     margin: 0 0 0 3px;
     width: 20%;
-    height: 550px;
+    height: auto;
     background-color: #00003a;
     border-radius: 5px;
 }
@@ -379,7 +398,7 @@ footer p{
 }
 /*Dashboard Pages*/
 #profile_body #pages{
-    margin: 0;
+    margin: 0 0 50px 0;
     padding: 0;
     height: auto;
 }
@@ -390,21 +409,25 @@ footer p{
     font-size: 12px;
     color: grey;
 }
-#p_body h2{
+#p_body h2,
+#a_body h2{
     text-align: center;
     text-transform: uppercase;
     font-size: 18px;
     color: grey;
 }
-#p_body h2 span{
+#p_body h2 span,
+#a_body h2 span{
     color: #ff8c00;
 }
 
-#p_body form{
+#p_body form,
+#a_body form{
     width: 55%;
     margin: 0 0 0 22%;  
 }
-#p_body label{
+#p_body label,
+#a_body label{
     display: block;
     color: grey;
     font-weight: bold;
@@ -423,7 +446,10 @@ footer p{
     font-size: 10px;
     color: grey;
 }
-#p_body input, select{
+#p_body input, 
+#p_body select,
+#a_body input,
+#a_body select{
     display: block;
     width: 80%; 
     padding: 5px;
@@ -435,7 +461,8 @@ footer p{
     border-radius: 5px;
     font-size: 17px;
 }
-#p_body button{
+#p_body button,
+#a_body button{
     margin: 3% 0 0 7%;
     cursor: pointer;
     padding: 5px;
@@ -490,7 +517,8 @@ footer p{
     color: grey;
     margin: 0 0 10px 15%;
 }
-#settings input{
+#settings input,
+#settings select{
     width: 70%;
     padding: 4px;
     height: 23px;
@@ -514,62 +542,417 @@ footer p{
     font-weight: bolder;
     text-transform: uppercase;
 }
+/*Admin*/
+#admin_brand p{
+    text-align: center;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+} 
+/*Media query - To aid responsiveness*/
+/*Max width 769px*/
+@media(max-width: 769px){
+    #about h2{
+        font-size: 20px;
+    }
+    #about p{
+        font-size: 18px;
+        width: 90%;
+        margin: 20px 10% 0 8%;
+        text-align: justify;
+    }
+    #services h2{
+        font-size: 20px;
+    }
+    #services #flex_offer{
+        margin: 0 0 20px 20px;
+        padding: 0;
+    }
+    #services #offer-header{
+        padding: 8px;
+        font-size: 20px;
+}
+    #services #offer{
+        width: 90%;
+        margin: 0 10px 0 5px;
+    }
+ 
+    #offer p, 
+    #user_profile a{
+
+        font-size: 14px;
+    }
+    #contact h2{
+        font-size: 15px;
+    }
+    #contact form{
+        margin: 0 0 0 30px;
+    }
+    #signup h2{
+        font-size: 20px;
+    }
+    #signup form{
+        width: 100%;
+    }
+
+    #login form{
+        width: 100%;
+    }
+    #user_profile li{
+        padding: 5px;
+    }
+    #user_profile{
+        height: auto;
+        width: 22%;
+        border-radius: 2px;
+    }
+    #profile_img #t_c{
+        position: relative;
+        bottom: 50px;
+        left: 99px;
+    }
+    #pages h3, 
+    #serve span, 
+    #pages label,
+    #serve label,
+    #serve #serve_h,
+    #settings h2{
+        font-size: 12px;
+        margin: 0;
+    }
+    #profile_body{
+        width: 80%;
+    }
+    #profile_body #search{
+        margin: 0 0 0 60%;
+        padding: 0;
+    }
+    #search input,
+    #search button{
+        padding: 3px;
+        height: 20px;
+        font-size: 12px;
+    }
+    #p_body form, 
+    #settings form,
+    #a_body form{
+        width: 69%;
+        margin: 0 0 0 15%;
+    }
+    #p_body h2,
+    #a_body h2{
+        font-size: 13px;
+    }
+    #p_body input, 
+    #p_body select,
+    #pages label,
+    #p_body button,
+    #serve,
+    #settings input,
+    #settings button,
+    #settings select,
+    #a_body input,
+    #a_body label,
+    #a_body select,
+    #a_body button{
+        margin: 4px 0 0 0;
+        width: 100%;
+        padding: 3px;
+        font-size: 12px;
+    }
+    #serve #serve_h{
+        display: block;
+        line-height: 0.2;
+        margin: 20px 0 0 0;
+    }
+    #p_body #terms{
+        margin: 0;
+    }
+}
+/*Max-width 426px*/
+@media(max-width: 426px){
+
+      #toggle_nav{
+        display: block;
+        padding: 4px;
+        border: none;
+        background-color: #00003a;
+        position: absolute;
+        top: 52%;
+        left: 83%;
+    }
+    #user_nav{
+        display: none;
+    }
+    #toggle_nav span{
+        font-size: 25px;
+        color: #ff8c00;
+    }
+    #about p{
+        font-size: 17px;
+        margin: 20px 0 20px 40px;
+    }
+    #services h2{
+        font-size: 20px;
+    }
+    #services #flex_offer{
+        display: block;
+        margin: 0 0 0 13px;
+    }
+    #services #offer-header{
+        padding: 8px;
+        font-size: 20px;
+    }
+    #services #offer{
+        margin: 10px 0 10px 0;
+    }
+    #offer p{
+        font-size: 14px;
+    }
+    #contact h2{
+        font-size: 20px;
+    }
+    #contact form{
+        margin: 0 0 0 30px;
+    }
+    #contact #flex-c_c{
+        display: block;
+        margin: 0 0 0 50px;
+    }
+    #contact #c_c{
+        width:100%;
+    }
+    #about,
+    #services,
+    #contact{
+        margin: 0;
+        padding: 30px 30px 0 0 ;
+    }
+    header li a{
+        font-size: 12px;
+    }
+    #user_profile{
+        float: left;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+    #profile_img #user_dp{
+        width: 60%;
+        margin: 20px 0 0 0;
+        position: relative;
+        left: 20%;
+    }
+    #profile_img #t_c{
+        position: relative;
+        left: 50%;
+        width: 10%;
+    }
+    #user_profile{
+        margin: 0 0 2% 0;
+        height: auto;
+        border-bottom: 9px solid #ff8c00;
+    }
+    #user_nav{
+        margin: 0 0 0 8%;
+    }
+    #profile_body{
+        margin: 0 0 0 20px;
+        padding: 0;
+        float: left;
+        padding: 0 19% 0 0;
+    }
+    #pages form{
+       margin: 0 0 0 40px;;
+       width: 100%;
+    }
+    #pages h2{
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
+    #profile_body #search{
+        position: absolute;
+        top: 29%;
+        right: 1%;
+        width: 80%;
+        color: #fff;
+    }
+    #search form{
+        margin: 0 0 0 8%;
+        width: 90%;
+    }
+    #pages table{
+        margin: 0;
+        width: 100%;
+    }
+    #p_body table th,
+    #p_body table td{
+        font-size: 11px;
+        margin: 0 33px 0 0;
+        padding: 12px
+    }
+     #serve #serve_h{
+        display: inline;
+  }
+    #a_body table th,
+    #a_body table td{
+        font-size: 11px;
+        padding: 5px;
+        margin: 0;
+    }
+}
+/*Max-width 378px*/
+@media(max-width: 378px){
+    #about p{
+        font-size: 15px;
+    }
+    #services h2{
+        font-size: 20px;
+    }
+    #services #flex_offer{
+        display: block;
+    }
+    #services #offer-header{
+        padding: 8px;
+        font-size: 20px;
+    }
+    #services #offer{
+        margin: 10px 0 10px 0;
+    }
+    #offer p{
+        font-size: 14px;
+    }
+    #contact h2{
+        font-size: 20px;
+    }
+    #contact form{
+        margin: 0 0 0 30px;
+    }
+    #contact #flex-c_c{
+        display: block;
+    }
+    #contact #c_c{
+        width:100%;
+    }
+
+}
+/*Max-width 359px*/
+@media(max-width: 359px){
+    #services h2{
+        font-size: 20px;
+    }
+    #services #flex_offer{
+        display: block;
+    }
+    #services #offer-header{
+        padding: 8px;
+        font-size: 20px;
+    }
+    #services #offer{
+        margin: 10px 0 10px 0;
+    }
+    #offer p{
+        font-size: 14px;
+    }
+    #contact h2{
+        font-size: 20px;
+    }
+    #contact form{
+        margin: 0 0 0 30px;
+    }
+    #contact #flex-c_c{
+        display: block;
+    }
+    #contact #c_c{
+        width:100%;
+    }
+
+    #login form{
+        width: 80%;
+        margin: 20px 25% 20px 15%;
+    }
+    header li a{
+        font-size: 12px;
+    }
+    #user_nav{
+        margin: 0 0 0 50px;
+    } 
+    #about, 
+    #services,
+    #contact{
+        margin: 0;
+        padding: 10px 10px 0 0;
+    }
+    #user_dashboard_h{
+        width: 100%;
+    }
+    #user_profile,
+    #profile_body{
+        padding-right: 6%;
+    }
+    #profile_img #user_dp{
+        width: 60%;
+        margin: 20px 0 0 15px;
+    }
+    #profile_img #t_c{
+      margin: 0 0 0 23px;
+    }
+    #profile_body #search{
+       margin: 0 9px 0 0;
+    }
+    #profile_body{
+        margin: 0 0 0 40px;
+        padding: 0;
+    }
+   
+    #p_body table{
+        padding: 0;
+        margin: 0;
+        font-size: 9px;
+    }
+    #pages h3{
+        display: none;
+    }
+}
+
+/*Media query responsiveness*/
+/*Max-width 1025px*/
+@media(max-width: 1025px){
+    #login form{
+        width: 50%;
+        margin: 20px 25% 20px 27%;
+    }
+    #signup form{
+        width: 50%;
+        margin: 20px 25% 20px 27%;
+    }
+    #profile_body{
+        width: 75%;
+    }
+}
 
 /* View_all Table style for all accounts*/
-#all_trans_table th{
-    margin: 0 0 0 10px;
-    border: 1px solid #000;
+#all_trans_table th,
+#a_u_t th{
+    margin: 0;
     font-size: 13px;
     color: grey;
+    padding: 0 0 12px 0;
 }
-#all_trans_table td{
+#all_trans_table td,
+#a_u_t td{
     text-align: center;
     font-size: 13px;
     color: grey;
 }
-#all_trans_table{
+#all_trans_table,
+#a_u_t{
     width: 90%;
-    margin: 0 0 0 4%;
+    margin: 0%;
    
 }
 #all_trans_table a{
     text-decoration: none;
     color: #ff8c00;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
