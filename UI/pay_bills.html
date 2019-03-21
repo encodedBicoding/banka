@@ -7,11 +7,8 @@
         <meta name="keywords" content="pay bills, create bank account, view bank transactions"/>
         <meta name="author" content="Dominic Isioma"/>
         <meta http-equiv="X-UA-compactible" content="IE=edge"/>
-        <!--Font-Awesome styles-->
-        <link type="text/css" rel="stylesheet" href="./public/font-awesome/css/font-awesome.min.css"/>
-        <!--Main stylesheet-->
         <link type="text/css" rel="stylesheet" href="./public/css/style.css"/>
-        <title>Banka - Create Bank Account</title>
+        <title>Banka - Pay Bills</title>
     </head>
     <body>
         <header id="user_dashboard_h">
@@ -29,14 +26,11 @@
                      <img src="./public/images/tiny_camera.png" onclick="document.getElementById('user_img').click()" id="t_c" title="upload image"/>
                      <input type='file' id="user_img" style="display:none">
                  </form>
-                 <button id="toggle_nav">
-                    <span class="fa fa-bars" id="xx"></span>
-                 </button>  
              </div> 
              <div id="user_nav">
-                 <nav>
-                     <ul>
-                         <li onclick="document.getElementById('n_a').click()"><a href="create_acc.html" id="n_a">New Bank Account</a></li>
+                <nav>
+                     <ul style="list-style: none">
+                         <li onclick="document.getElementById('n_a').click()"><a href="./create_acc.html" id="n_a">New Bank Account</a></li>
                          <li onclick="document.getElementById('v_a').click()"><a href="./view_all.html" id="v_a">View All Accounts</a></li>
                          <li onclick="document.getElementById('v_a').click()"><a href="./pay_bills.html" id="v_a">Pay Bills</a></li>
                          <li onclick="document.getElementById('settings').click()"><a href="./settings.html" id="settings">Settings</a></li>
@@ -57,40 +51,24 @@
                 </div>
                 <div id="pages">
                         <h3> Welcome ${user}</h3>
-                    <div id="p_body">
-                        <h2><span>Create </span>New Bank Account</h2>
-                        <form method="POST" action="#">
-                          <label for="bank_type">Select Account Type: </label>
-                            <select id="bank_type" required>
-                               <option disabled selected>Select any...</option>
-                                <option value="current">Current</option>
-                                <option value="savings">Savings</option>
+                    <div id="settings">
+                        <h2><span>Pay</span> Bills</h2>
+                        <form method="POST" action="#" id="reset_p">
+                            <label for="utility">Select Utility: </label>
+                            <select id="utility" name="utility" required>
+                                <option value="phcn">PHCN</option>
+                                <option value="water">Water Bills</option>
+                                <option value="dstv">Dstv</option>
                             </select>
-                            <p id="serve">
-                                <span id="serve_h">
-                                  This account would serve?
-                                </span>
-                                <span>Organization: </span> 
-                                <input name="user_type" id="org" value="organisation" type="radio">
-                                <span>SME: </span> 
-                                <input name="user_type" id="sme" value="sme" type="radio">
-                                <span>Personal: </span>
-                                <input name="user_type" id="per" value="personal" type="radio"/>
-                            </p>
-                            <label for="holder_name">Holder Name: </label>
-                            <input type="text" id="holder_name" name="holder_name" placeholder="Holder Name: " required/>
-                            <p id="account_id">${new account id: autogen}</p>
+                            <label for="account_number">Account Number: </label>
+                            <input type="number" id="account_number" name="account_number">
                             <label for="password">Password: </label>
-                            <input type="password" id="password" name="password" placeholder="Type in your password" required/>
-                            <input type="checkbox" id="terms" name="terms" required>
-                            <span id="terms_txt">By creating an account, you agree to our 
-                                <a href="#">Account terms and conditions</a></span>
-                            <button>Create Bank Account</button>
+                            <input type="password" name="password" id="password" required>
+                            <button>Pay</button>
                         </form>
                     </div>
                 </div>
             </div>
         </section>
-        <script src="./public/js/script.js"></script>
     </body>
 </html>
