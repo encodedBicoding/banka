@@ -671,7 +671,7 @@ footer p{
         border: none;
         background-color: #00003a;
         position: absolute;
-        top: 50%;
+        top: 52%;
         left: 83%;
     }
     #user_nav{
@@ -732,7 +732,7 @@ footer p{
     }
     #profile_img #user_dp{
         width: 60%;
-        margin: 0;
+        margin: 20px 0 0 0;
         position: relative;
         left: 20%;
     }
