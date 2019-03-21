@@ -12,6 +12,7 @@ body{
     font: 17px/1.5 Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
+    height: auto;
 }
 #toggle_nav{
     display: none;   
@@ -22,17 +23,29 @@ ul{
     list-style: none;
 }
 
+.error{
+    font-size: 10px;
+    color: red;
+}
+a{
+    text-decoration: none;
+    color: #ffbc00;
+}
+
 /*Header*/
 header{
     background-color: #00003a;
     color: #fff;
     padding: 10px;
-    border-bottom: #FF8C00 solid 9px; 
+    border-bottom: #FF8C00 solid 10px; 
 }
-#brand span{
+#brand span,
+#admin_dashboard_h span,
+#user_dasboard_h span{
     color: #FF8C00;
 }
-#brand h2{
+#brand h2,
+#admin_brand h2{
     font-size: 75px;
     text-align: center;
 }
@@ -56,6 +69,9 @@ header a{
     font-size: 15px;
     text-decoration: none;
     text-transform: uppercase;
+}
+#pages h3{
+    display: none;
 }
 /*About us*/
 #about{
@@ -289,6 +305,7 @@ header a{
 /*Footer*/
 footer{
     padding: 70px;
+    height: auto;
 }
 footer p{
     color: grey;
@@ -297,6 +314,8 @@ footer p{
     margin: 0;
     padding: 0;
 }
+
+/*User Profile*/
 #user_dashboard_h h2{
     text-align: center;
     font-size: 70px;
@@ -309,16 +328,12 @@ footer p{
     bottom: 29px;
     left: 30px;
 }
-#user_dashboard_h span{
-    color: #ff8c00;
-}
-/*User Profile*/
 #user_profile{
     float: left;
     padding:10px;
     margin: 0 0 0 3px;
     width: 20%;
-    height: 550px;
+    height: auto;
     background-color: #00003a;
     border-radius: 5px;
 }
@@ -394,21 +409,25 @@ footer p{
     font-size: 12px;
     color: grey;
 }
-#p_body h2{
+#p_body h2,
+#a_body h2{
     text-align: center;
     text-transform: uppercase;
     font-size: 18px;
     color: grey;
 }
-#p_body h2 span{
+#p_body h2 span,
+#a_body h2 span{
     color: #ff8c00;
 }
 
-#p_body form{
+#p_body form,
+#a_body form{
     width: 55%;
     margin: 0 0 0 22%;  
 }
-#p_body label{
+#p_body label,
+#a_body label{
     display: block;
     color: grey;
     font-weight: bold;
@@ -427,7 +446,10 @@ footer p{
     font-size: 10px;
     color: grey;
 }
-#p_body input, select{
+#p_body input, 
+#p_body select,
+#a_body input,
+#a_body select{
     display: block;
     width: 80%; 
     padding: 5px;
@@ -439,7 +461,8 @@ footer p{
     border-radius: 5px;
     font-size: 17px;
 }
-#p_body button{
+#p_body button,
+#a_body button{
     margin: 3% 0 0 7%;
     cursor: pointer;
     padding: 5px;
@@ -518,6 +541,13 @@ footer p{
     font-weight: bolder;
     text-transform: uppercase;
 }
+/*Admin*/
+#admin_brand p{
+    text-align: center;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+} 
 /*Media query - To aid responsiveness*/
 /*Max width 769px*/
 @media(max-width: 769px){
@@ -603,11 +633,13 @@ footer p{
         font-size: 12px;
     }
     #p_body form, 
-    #settings form{
+    #settings form,
+    #a_body form{
         width: 69%;
         margin: 0 0 0 15%;
     }
-    #p_body h2{
+    #p_body h2,
+    #a_body h2{
         font-size: 13px;
     }
     #p_body input, 
@@ -616,7 +648,11 @@ footer p{
     #p_body button,
     #serve,
     #settings input,
-    #settings button{
+    #settings button,
+    #a_body input,
+    #a_body label,
+    #a_body select,
+    #a_body button{
         margin: 4px 0 0 0;
         width: 100%;
         padding: 3px;
@@ -719,15 +755,19 @@ footer p{
         margin: 0 0 0 8%;
     }
     #profile_body{
-        margin: 0;
-        padding: 50px;
+        margin: 0 0 0 20px;
+        padding: 0;
         float: left;
-        width: 75%;
+        padding: 0 19% 0 0;
     }
-    #p_body form{
-       margin: 0;
+    #pages form{
+       margin: 0 0 0 40px;;
        width: 100%;
-       padding: 10px;
+    }
+    #pages h2{
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 30px;
     }
     #profile_body #search{
         position: absolute;
@@ -740,19 +780,25 @@ footer p{
         margin: 0 0 0 8%;
         width: 90%;
     }
-    #pages h3{
-        text-align: center;
-    }
     #pages table{
         margin: 0;
+        width: 100%;
     }
-    #pages table th, td{
-        font-size: 10px;
-        width: 20px;
+    #p_body table th,
+    #p_body table td{
+        font-size: 11px;
+        margin: 0 33px 0 0;
+        padding: 12px
     }
      #serve #serve_h{
         display: inline;
-  } 
+  }
+    #a_body table th,
+    #a_body table td{
+        font-size: 11px;
+        padding: 5px;
+        margin: 0;
+    }
 }
 /*Max-width 378px*/
 @media(max-width: 378px){
@@ -885,20 +931,23 @@ footer p{
 }
 
 /* View_all Table style for all accounts*/
-#all_trans_table th{
-    margin: 0 0 0 10px;
-    border: 1px solid #000;
+#all_trans_table th,
+#a_u_t th{
+    margin: 0;
     font-size: 13px;
     color: grey;
+    padding: 0 0 12px 0;
 }
-#all_trans_table td{
+#all_trans_table td,
+#a_u_t td{
     text-align: center;
     font-size: 13px;
     color: grey;
 }
-#all_trans_table{
+#all_trans_table,
+#a_u_t{
     width: 90%;
-    margin: 0 0 0 4%;
+    margin: 0%;
    
 }
 #all_trans_table a{
