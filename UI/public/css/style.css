@@ -517,7 +517,8 @@ footer p{
     color: grey;
     margin: 0 0 10px 15%;
 }
-#settings input{
+#settings input,
+#settings select{
     width: 70%;
     padding: 4px;
     height: 23px;
@@ -649,6 +650,7 @@ footer p{
     #serve,
     #settings input,
     #settings button,
+    #settings select,
     #a_body input,
     #a_body label,
     #a_body select,
