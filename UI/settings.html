@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width"/>
+        <meta name="description" content="banka app for online banking"/>
+        <meta name="keywords" content="pay bills, create bank account, view bank transactions"/>
+        <meta name="author" content="Dominic Isioma"/>
+        <meta http-equiv="X-UA-compactible" content="IE=edge"/>
+        <!--Font-Awesome styles-->
+        <link type="text/css" rel="stylesheet" href="./public/font-awesome/css/font-awesome.min.css"/>
+        <!--Main stylesheet-->
+        <link type="text/css" rel="stylesheet" href="./public/css/style.css"/>
+        <title>Banka - Settings</title>
+    </head>
+    <body>
+        <header id="user_dashboard_h">
+            <div class="container">
+                <h2>Bank<span>a</span>
+                     <span id="slogan">...First mobile banking solution</span>
+                </h2>
+            </div>
+        </header>
+        <section id="user_profile">
+            <div class="container">
+             <div id="profile_img">
+                 <img src="./public/images/user.jpg" alt="user_profile" id="user_dp"/>
+                 <form method="POST" enctype="multipart/form-data">
+                     <img src="./public/images/tiny_camera.png" onclick="document.getElementById('user_img').click()" id="t_c" title="upload image"/>
+                     <input type='file' id="user_img" style="display:none">
+                 </form>
+                 <button id="toggle_nav">
+                    <span class="fa fa-bars" id="xx"></span>
+                 </button>
+             </div> 
+             <div id="user_nav">
+               <nav>
+                     <ul>
+                         <li onclick="document.getElementById('n_a').click()"><a href="./create_acc.html" id="n_a">New Bank Account</a></li>
+                         <li onclick="document.getElementById('v_a').click()"><a href="./view_all.html" id="v_a">View All Accounts</a></li>
+                         <li onclick="document.getElementById('p_b').click()"><a href="./pay_bills.html" id="p_b">Pay Bills</a></li>
+                         <li onclick="document.getElementById('settings').click()"><a href="./settings.html" id="settings">Settings</a></li>
+                         <li onclick="document.getElementById('logout').click()"><a href="#" id="logout">Log out</a></li>
+                     </ul>
+                 </nav>
+            </div>
+            </div>
+        </section>
+        <section id="profile_body">
+            <div class="container">
+                <div id="search">
+                    <form method="GET" action="search.html">
+                        <label for="s">Search Account ID</label>
+                        <input type="text" id="s" name="s" placeholder="Account ID" required/>
+                        <button>Search</button>
+                    </form>
+                </div>
+                <div id="pages">
+                        <h3> Welcome ${user}</h3>
+                    <div id="settings">
+                        <h2><span>Reset</span> Password</h2>
+                        <form method="PUT" action="#" id="reset_p">
+                            <label for="old_password">Old Password: </label>
+                            <input type="password" name="old_password" id="old_password" required/>
+                            <label for="new_password">New Password: </label>
+                            <input type="password" name="new_password" id="new_password" required>
+                            <label for="retype_password">Retype New Password: </label>
+                            <input type="password" name="retype_password" id="retype_password" required/>
+                            <button>Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+         <script src="./public/js/script.js"></script>
+    </body>
+</html>
