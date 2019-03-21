@@ -68,7 +68,7 @@ header a{
 }
 #about span{
     color: #FF8C00;
-    border-bottom: #FF8C00 solid 4px;
+    border-bottom: #FF8C00 solid 3px;
 }
 #about p{
     font-size: 23px;
@@ -80,8 +80,8 @@ header a{
 #services{
     background-color: #00003a;
     color: #fff;
-    padding: 35px;
-    margin: 0;
+    padding: 39px 0 0 0;
+    margin: 0 0 0 2px;
     border-bottom: #ff8c00 solid 7px;
 }
 #services #s_header{
@@ -146,7 +146,7 @@ header a{
 }
 #c_c span{
     color: #ff8c00;
-    border-bottom: #ff8c00 solid 4px;
+    border-bottom: #ff8c00 solid 3px;
 }
 #c_c form{
     width: 90%;
@@ -293,8 +293,6 @@ footer p{
     margin: 0;
     padding: 0;
 }
-/*User Dashboard Styles*/
-/*Dashboar header*/
 #user_dashboard_h h2{
     text-align: center;
     font-size: 70px;
@@ -538,6 +536,8 @@ footer p{
     text-decoration: none;
     color: #ff8c00;
 }
+
+
 
 
 
