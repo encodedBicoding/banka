@@ -11,12 +11,12 @@
         <link type="text/css" rel="stylesheet" href="./public/font-awesome/css/font-awesome.min.css"/>
         <!--Main stylesheet-->
         <link type="text/css" rel="stylesheet" href="./public/css/style.css"/>
-        <title>Staff - Credit Account</title>
+        <title>Staff - Settings</title>
     </head>
     <body>
         <header id="admin_dashboard_h">
             <div class="container">
-                <div id="admin_brand">
+                 <div id="admin_brand">
                     <h2>Staf<span>f</span></h2>
                 </div>
             </div>
@@ -34,12 +34,12 @@
                  </button>
              </div> 
              <div id="user_nav">
-                 <nav>
+                <nav>
                      <ul>
                          <li onclick="document.getElementById('n_a').click()"><a href="./staff_accounts.html" id="n_a">All User Accounts</a></li>
-                         <li onclick="document.getElementById('v_a').click()"><a href="credit.html" id="v_a">Credit User</a></li>
-                         <li onclick="document.getElementById('v_a').click()"><a href="debit.html" id="v_a">Debit User</a></li>
-                         <li onclick="document.getElementById('settings').click()"><a href="./staff-settings.html" id="settings">Settings</a></li>
+                         <li onclick="document.getElementById('v_a').click()"><a href="./credit.html" id="v_a">Credit User</a></li>
+                         <li onclick="document.getElementById('v_a').click()"><a href="./debit.html" id="v_a">Debit User</a></li>
+                         <li onclick="document.getElementById('settings').click()"><a href="staff-settings" id="settings">Settings</a></li>
                          <li onclick="document.getElementById('logout').click()"><a href="#" id="logout">Log out</a></li>
                      </ul>
                  </nav>
@@ -57,16 +57,18 @@
                 </div>
                 <div id="pages">
                     <div id="a_body">
-                        <h2><span>Credit </span>Account</h2>
-                        <form method="PUT" action="#">
-                            <label for="acc_id">Account ID: </label>
-                            <input type="text" name="acc_id" id="acc_id" required/>
-                            <p></p>
-                            <label for="amt">Amount: </label>
-                            <input type="number" name="amt" id="amt" required>
-                            <p></p>
-                            <button>Credit Account</button>
+                        <h2><span>Staff </span>Change Password</h2>
+                         <div id="settings">
+                        <form method="#" action="#" id="reset_p">
+                            <label for="old_password">Old Password: </label>
+                            <input type="password" name="old_password" id="old_password" required/>
+                            <label for="new_password">New Password: </label>
+                            <input type="password" name="new_password" id="new_password" required>
+                            <label for="retype_password">Retype New Password: </label>
+                            <input type="password" name="retype_password" id="retype_password" required/>
+                            <button>Change Password</button>
                         </form>
+                    </div>
                     </div>
                     </div>
                 </div>
