@@ -11,7 +11,9 @@ class Client extends User{
         this.accounts.push(account);
     }
     get AllAccounts(){
-        return this.accounts.map(account=>account);
+        return {
+            ...this.accounts
+        }
     }
 }
 export default Client

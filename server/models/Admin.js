@@ -9,7 +9,7 @@ class Admin extends User{
     }
     static get allUserAccounts(){
         return {
-            users: [...Users]
+             ...Users
         }
     }
     static deleteUser(user){
@@ -37,4 +37,4 @@ class Admin extends User{
         Staffs.push(user);
     }
 }
-export default Staff
+export default Admin

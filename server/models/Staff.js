@@ -40,7 +40,7 @@ class Staff extends User{
     }
     static get allUserAccounts(){
         return {
-            users: [...Users]
+            ...Users
         }
     }
     static deleteUser(user){
