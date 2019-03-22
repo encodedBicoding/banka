@@ -1,4 +1,4 @@
-import User from './User';
+const User = require('./User');
 
 class Client extends User{
     constructor(firstname,email,password){
@@ -16,4 +16,4 @@ class Client extends User{
         }
     }
 }
-export default Client
+module.exports = Client

@@ -3,6 +3,7 @@ let Users = [
         id: 1,
         firstname: 'john',
         lastname: 'doe',
+        username: 'jonny',
         email: 'johndoe@gmail.com',
         password: '123456789',
         type: 'client',
@@ -53,4 +54,4 @@ let Staffs = [
 
 
 
-export {Users, Accounts, Staffs}
+module.exports =  { Users, Accounts, Staffs }
