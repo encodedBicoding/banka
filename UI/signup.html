@@ -32,24 +32,30 @@
                 <div id="signup_h">
                     <h2>Sign <span>up</span></h2>
                 </div>
-                <form method="POST" action="#">
+                <form method="POST" action="#" id="signup_form">
                     <label for="firstname">Firstname: </label>
                     <input type="text" name="firstname" id="firstname" placeholder="Firstname: " required />
+                    <p class="error"></p>
                     <label for="surname">Surname: </label>
                     <input type="text" name="surname" id="surname" placeholder="Surname: " required/>
+                    <p class="error"></p>
                     <label for="username">Username: </label>
                     <input type="text" name="username" id="username" placeholder="Username: " required/>
+                    <p class="error"></p>
                     <label for="email">Email: </label>
                     <input type="email" name="email" id="email" placeholder="Email: " required/>
+                    <p class="error"></p>
                     <label for="password">Password: </label>
                     <input type="password" name="password" id="password" placeholder="Password: " required/>
+                    <p class="error"></p>
                     <label for="re_password">Repeat Password: </label>
                     <input type="password" name="re_password" id="re_password" required placeholder="Repeat Password: "/>
+                    <p class="error"></p>
                     <p>
                     <input type="checkbox" name="terms" id="terms" required/>
                     By creating an account, you agree to our <a href="#">Terms of use</a>
                     </p>
-                    <button>Create Account</button>
+                    <button id="signupBtn">Create Account</button>
                 </form>
             </div>
         </section>
@@ -58,5 +64,6 @@
                 Copyright <span>&copy;</span> Banka || All Rights Reserved 2019.
             </p>
         </footer>
+        <script src="./public/js/validateForm.js"></script>
     </body>
 </html>

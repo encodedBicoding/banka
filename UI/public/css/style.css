@@ -671,7 +671,9 @@ footer p{
 }
 /*Max-width 426px*/
 @media(max-width: 426px){
-
+      .error{
+          font-size: 3px;
+      }
       #toggle_nav{
         display: block;
         padding: 4px;
