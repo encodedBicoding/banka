@@ -1,0 +1,35 @@
+{
+  "name": "banka",
+  "version": "1.0.0",
+  "description": "Banka is a light-weight core banking application that powers banking operation on the go. With Banka you can create an account, make deposit, see your transaction overview and much more...",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/encodedBicoding/banka.git"
+  },
+  "author": "Dominic Isioma",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/encodedBicoding/banka/issues"
+  },
+  "homepage": "https://github.com/encodedBicoding/banka#readme",
+  "devDependencies": {
+    "eslint": "^5.15.3",
+    "mocha": "^6.0.2"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.5",
+    "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.10"
+  }
+}
