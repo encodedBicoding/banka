@@ -2,10 +2,11 @@
   "name": "banka",
   "version": "1.0.0",
   "description": "Banka is a light-weight core banking application that powers banking operation on the go. With Banka you can create an account, make deposit, see your transaction overview and much more...",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "lint": "eslint",
-    "test": "mocha"
+    "test": "mocha",
+    "start": "nodemon app"
   },
   "repository": {
     "type": "git",

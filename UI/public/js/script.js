@@ -1,3 +1,5 @@
+// import User from "../../../server/models/User";
+
 const toggle = (e)=>{
     e.style.display === 'block'? e.style.display = 'none' : e.style.display = 'block';
     return e.style.display;
