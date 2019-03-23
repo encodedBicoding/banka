@@ -18,9 +18,14 @@ module.exports = (app)=>{
                 validate.addToDataBase);
 
    //Accounts Endpoints
+
+     //Create an account
     app.post('/api/v1/:userid/accounts',
              account.createAccount);
 
+    //Only Admin / Staff can activate or deactivate account
+    app.patch('/api/v1/:staff_id/account/:account_id',
+               account.changeStatus);
 
     app.use((req, res)=>{
         res.status(404).json({

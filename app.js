@@ -3,6 +3,6 @@ let express = require('express'),
     app = express();
 
 app = config(app);
-const PORT = process.env.PORT || 4500;
+const PORT = process.env.PORT || 4600;
 app.listen(PORT, console.log(`Banka listening on PORT ${PORT}`))
 module.exports = app;

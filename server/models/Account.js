@@ -1,5 +1,6 @@
 class Account{
-    constructor(accountNumber, type, userType, ob){
+    constructor(id, accountNumber, type, userType, ob){
+        this.id = id;
         this.accountNumber = accountNumber;
         this.owner = '';
         this.type = type;
