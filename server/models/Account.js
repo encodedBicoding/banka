@@ -11,15 +11,5 @@ class Account{
         this.lastWithdrawal = 'no transactions yet';
         this.lastDeposit = 'no transactions yet';
     }
-    static makeDeposit(amt){
-        this.balance += amt;
-        this.lastDeposit = new Date(Date.now());
-    }
-    static makeWithdrawal(amt){
-        this.balance > amt ? this.balance -= amt : console.log('Insufficient funds');
-    }
-    set Status(str){
-        this.status = str;
-    }
 }
 module.exports = Account ;

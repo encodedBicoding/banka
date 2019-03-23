@@ -24,7 +24,7 @@ class Staff extends User{
             return ("You can't debit this user")
         }
     }
-    creditClient(user, amount, id){
+    creditClientAccount(user, amount, id){
         if(user.type === 'client'){
             user.accounts.map((account)=>{
                 if(account.id === id && account.balance > amount){
