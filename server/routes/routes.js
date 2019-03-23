@@ -1,7 +1,7 @@
 const validate = require('../config/validateUser'),
       index = require("../controllers/index"),
       login = require('../controllers/login'),
-      account =require('../controllers/accounts');
+      account = require('../controllers/accounts');
 
 module.exports = (app)=>{
     app.get('/',index.home)
@@ -26,6 +26,7 @@ module.exports = (app)=>{
     //Only Admin / Staff can activate or deactivate account
     app.patch('/api/v1/:staff_id/account/:account_id',
                account.changeStatus);
+
 
     app.use((req, res)=>{
         res.status(404).json({

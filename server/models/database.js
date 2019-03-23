@@ -54,5 +54,4 @@ let Staffs = [
 
 
 
-
-module.exports =  { Users, Accounts, Staffs }
+module.exports =  { Users, Accounts, Staffs}

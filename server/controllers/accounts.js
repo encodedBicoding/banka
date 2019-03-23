@@ -31,7 +31,7 @@ module.exports = {
     changeStatus: (req, res)=>{
         const {staff_id, account_id} = req.params;
         Staffs.map((staff)=>{
-            if(staff.id === Number(staff_id) && staff.type === 'staff'){
+            if(staff.id === Number(staff_id) && staff.isAdmin === true){
                 Accounts.map((account)=>{
                     if(account.id === Number(account_id)){
                         (account.status === 'active')?account.status = "dormant" : account.status = "active";
