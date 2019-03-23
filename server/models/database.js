@@ -15,6 +15,7 @@ let Users = [
                 accountNumber: 92039433,
                 createdOn: new Date(Date.now()),
                 type: 'savings',
+                owner: 1,
                 status: 'active',
                 balance: 100000.00,
                 lastWithdrawal: new Date(Date.now()),
