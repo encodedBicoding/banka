@@ -1,8 +1,9 @@
 module.exports = {
-    login: (req, res)=>{
+    home: (req, res)=>{
         res.status(200).json({
             status: 200,
-            message: 'Welcome to the login page'
+            message: 'Welcome to api version 1 of Banka'
         })
     }
+
 }
