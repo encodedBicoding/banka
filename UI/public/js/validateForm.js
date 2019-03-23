@@ -1,14 +1,12 @@
-
-function validateInput(){
-    let name = /^[A-z]{3,20}$/;
-    let email = /([A-z0-9.-_]+)@([A-z]+)\.([A-z]){2,5}$/;
-    let password = /[a-zA-Z0-9\w!@#$%^&*()_+|]{8,20}$/
-    return {name, email, password};
+const  validateInput = {
+    name:/^[A-z]{3,20}$/,
+    email: /([A-z0-9.-_]+)@([A-z]+)\.([A-z]){2,5}$/,
+    password: /[a-zA-Z0-9\w!@#$%^&*()_+|]{8,20}$/
 }
 function validateField(element){
     let signupBtn = document.querySelector('#signupBtn');
-    if(element.type == 'text'){
-        const {name} = validateInput();
+    if(element.type === 'text'){
+        const {name} = validateInput;
         element.addEventListener('keyup',function(){
             let value = this.value;
             let p = this.nextElementSibling;
@@ -18,12 +16,10 @@ function validateField(element){
             } else{
                 p.textContent = '';
                 signupBtn.removeAttribute('disabled');
-            }
-
-        })
+        }})
     }
     if(element.type == 'text' && element.name == 'surname'){
-        const {name} = validateInput();
+        const {name} = validateInput;
         element.addEventListener('keyup',function(){
             let value = this.value;
             let p = this.nextElementSibling;
@@ -38,7 +34,7 @@ function validateField(element){
         })
     }
     if(element.type == 'email'){
-        const {email} = validateInput();
+        const {email} = validateInput;
         element.addEventListener('keyup',function(){
             let value = this.value;
             let p = this.nextElementSibling;
@@ -53,7 +49,7 @@ function validateField(element){
         })
     }
     if(element.type == 'password'){
-        const {password} = validateInput();
+        const {password} = validateInput;
         element.addEventListener('keyup',function(){
             let value = this.value;
             let p = this.nextElementSibling;
@@ -69,6 +65,7 @@ function validateField(element){
     }
 }
 function getFormDetails(){
+    let form = document.querySelector('#signup_form')
     let signupBtn = document.querySelector('#signupBtn');
     let fn = document.querySelector('#firstname');
     let sn = document.querySelector('#surname');
@@ -76,10 +73,10 @@ function getFormDetails(){
     let e = document.querySelector('#email');
     let pw = document.querySelector('#password');
     let rp = document.querySelector('#re_password');
-    const firstname = validateField(fn),
-          surname = validateField(sn),
-          email = validateField(e),
-          password = validateField(pw);
+    validateField(fn);
+    validateField(sn);
+    validateField(e);
+    validateField(pw);
     rp.addEventListener('keyup', function(){
         let pass = this.value,
             p = this.nextElementSibling;
@@ -90,6 +87,16 @@ function getFormDetails(){
             p.textContent = '';
             signupBtn.removeAttribute('disabled');
         }
+    })
+
+    form.addEventListener('submit',(e)=>{
+        e.preventDefault()
+        let user = {
+            firstname: fn.value,
+            surname: sn.value,
+            password: pw.value
+        }
+        console.log(user)
     })
    }
 getFormDetails();

@@ -60,8 +60,8 @@
                     <div id="p_body">
                         <h2><span>Create </span>New Bank Account</h2>
                         <form method="POST" action="#">
-                          <label for="bank_type">Select Account Type: </label>
-                            <select id="bank_type" required>
+                          <label for="acc_type">Select Account Type: </label>
+                            <select id="acc_type" required>
                                <option disabled selected>Select any...</option>
                                 <option value="current">Current</option>
                                 <option value="savings">Savings</option>
@@ -77,8 +77,6 @@
                                 <span>Personal: </span>
                                 <input name="user_type" id="per" value="personal" type="radio"/>
                             </p>
-                            <label for="holder_name">Holder Name: </label>
-                            <input type="text" id="holder_name" name="holder_name" placeholder="Holder Name: " required/>
                             <p id="account_id">${new account id: autogen}</p>
                             <label for="password">Password: </label>
                             <input type="password" id="password" name="password" placeholder="Type in your password" required/>

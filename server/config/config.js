@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser'),
       session  = require('express-session'),
+      path = require('path'),
       cors = require('cors'),
       cookieParser = require('cookie-parser'),
       morgan = require('morgan'),

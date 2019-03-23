@@ -3,24 +3,16 @@ const database = require('../models/database'),
       util = require('../helpers/util'),
       Client = require('../models/Client');
 
-const validateLogin = (req, res) => {
+const validateLogin = (req, res, next) => {
     const { email, password } = req.body;
     database.Users.map((user)=>{
-        if((user.email !== email)){
+        if((user.email !== email) || user.password !== password){
             res.status(404).json({
                 status: 404,
                 message: 'username or password not found'
             });
-        } else if((user.email === email) && (!util.validatePassword(password, user.password))){
-            res.status(404).json({
-                status: 404,
-                message: 'username or password not found'
-            });
-        }else{
-            res.status(200).json({
-                status: 200,
-                message: 'Login successful'
-            });
+        } else{
+            next();
         }
     })
 }

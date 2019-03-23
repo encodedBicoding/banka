@@ -10,9 +10,9 @@ describe('Handle incoming requests', ()=>{
             .get('/')
             .end((err, res)=>{
                 expect(res).to.have.status(200);
-                expect(res.body.message).to.equal('Welcome to Banka');
+                expect(res.body.message).to.equal('Welcome to api version 1 of Banka');
                 done(err);
             })
-    })
+    });
 
 })
