@@ -32,6 +32,16 @@ describe('Testing user account creation on route /api/v1/:userid/accounts', ()=>
                 expect(res.body.message).to.equal('Not Authorized');
                 done(err);
             })
+    });
+    it('should return status 200 and message if staff_id and account_id are available in database', (done)=>{
+        chai
+            .request(app)
+            .patch('/api/v1/1/account/1')
+            .end((err, res)=>{
+                expect(res).to.have.status((200));
+                expect(res.body.data.id).to.equal(1);
+                done(err);
+            })
     })
 
 })

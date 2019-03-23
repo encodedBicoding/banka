@@ -1,5 +1,5 @@
-import User from './User';
-import { Users } from './database';
+const User = require('./User'),
+      Users = require('./database').Users;
 
 class Staff extends User{
     constructor(firstname, email, password){
