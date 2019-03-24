@@ -10,7 +10,7 @@ function verifyToken(token){
         const payload = jwt.verify(token, secretKey);
         return payload;
     } catch (e) {
-        return false;
+        return {error: `${e}`}
     }
 }
 
