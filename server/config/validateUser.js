@@ -9,7 +9,20 @@ const validateLogin = (req, res, next) => {
         if((user.email !== email) || user.password !== password){
             res.status(404).json({
                 status: 404,
-                message: 'username or password not found'
+                message: 'email or password not found'
+            });
+        } else{
+            next();
+        }
+    })
+};
+const validateAdminLogin = (req, res, next) => {
+    const { email, password } = req.body;
+    database.Staffs.map((staff)=>{
+        if((staff.email !== email) || staff.password !== password){
+            res.status(404).json({
+                status: 404,
+                message: 'email or password not found'
             });
         } else{
             next();
@@ -46,5 +59,12 @@ const addToDataBase = (req, res)=>{
          user,
      })
 };
+const addAdmin = (req, res)=>{
 
-module.exports = { addToDataBase, checkUserExists, validateLogin};
+}
+
+module.exports = { addToDataBase,
+                   checkUserExists,
+                   validateLogin,
+                   validateAdminLogin,
+                   addAdmin};
