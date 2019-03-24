@@ -2,7 +2,8 @@ const Users = require('../models/database').Users,
       Accounts = require('../models/database').Accounts,
       Staffs = require('../models/database').Staffs,
       Account = require('../models/Account'),
-      generateAccountNumber = require('../helpers/generateAccountNumber');
+      generateAccountNumber = require('../helpers/generateAccountNumber'),
+      Transaction = require('../models/Transaction');
 
 module.exports = {
     createAccount: (req, res)=>{
@@ -89,5 +90,29 @@ module.exports = {
                 })
             }
         })
+    },
+    debitAccount: (req, res)=>{
+        let id = req.params.account_id;
+        let user = req.user;
+        let { amount, acc_id } = req.body;
+        Accounts.map((account)=>{
+            if(account.id === Number(id) && account.accountNumber === Number(acc_id) && account.balance >= amount){
+                let transaction = new Transaction(user, account.accountNumber, amount);
+                let trans = transaction.debitAccount(account.accountNumber);
+                res.status(200).json({
+                    status: 200,
+                    data:{
+                        trans,
+                    }
+                })
+
+            } else {
+                res.status(401).json({
+                    status: 401,
+                    message: "Insufficient Funds"
+                })
+            }
+        })
     }
+
 }

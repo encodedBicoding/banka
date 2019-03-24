@@ -37,12 +37,12 @@ const addToDataBase = (req, res)=>{
      let token = auth.generateToken({firstname, email, pass})
      let user = new Client(firstname, email, pass, username);
      user.token = token;
+     req.user = user;
      user.id = id++;
      database.Users.push(user);
-     console.log(database.Users)
      res.status(200).json({
          status: 200,
-         message: 'Account created successfuly',
+         message: 'Account created successfully',
          user,
      })
 };
