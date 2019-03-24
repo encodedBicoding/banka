@@ -113,6 +113,24 @@ module.exports = {
                 })
             }
         })
-    }
+    },
+    creditAccount: (req, res)=>{
+        let {staff_id, account_id} = req.params;
+        let user = Staffs.filter(user=>user.id === Number(staff_id))
+        let { amount, acc_id } = req.body;
+        Accounts.map((account)=>{
+            if(account.id === Number(account_id) && account.accountNumber === Number(acc_id)){
+                let transaction = new Transaction(user, account.accountNumber, amount);
+                let trans = transaction.creditAccount(account.accountNumber);
+                res.status(200).json({
+                    status: 200,
+                    data:{
+                        trans,
+                    }
+                })
 
-}
+            }
+        })
+    },
+
+};

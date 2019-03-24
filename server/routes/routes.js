@@ -40,8 +40,11 @@ module.exports = (app)=>{
     app.post('/api/v1/:staff_id/transactions/:account_id/debit',
              isValid.validateStaff,
              account.debitAccount);
-    //Only Admin can create a new admin/staff
-
+    //Only Admin / Staff can credit an account
+    app.post('/api/v1/:staff_id/transactions/:account_id/credit',
+        isValid.validateStaff,
+        account.creditAccount);
+    //Only Admin can create staff account
     app.post('/api/v1/:staff_id/create',
             isValid.validateAdmin,
             validate.addAdmin);
