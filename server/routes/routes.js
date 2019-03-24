@@ -26,7 +26,9 @@ module.exports = (app)=>{
     //Only Admin / Staff can activate or deactivate account
     app.patch('/api/v1/:staff_id/account/:account_id',
                account.changeStatus);
-
+    //Only Admin / Staff can delete user aaccount
+    app.delete('/api/v1/:staff_id/account/:account_id',
+                account.deleteAccount);
 
     app.use((req, res)=>{
         res.status(404).json({
