@@ -54,5 +54,40 @@ module.exports = {
             }
         })
 
+    },
+    deleteAccount: (req, res)=>{
+        const { staff_id, account_id } = req.params;
+        Staffs.map((staff)=>{
+            if(staff.id === Number(staff_id) && staff.isAdmin === true){
+                if(Accounts.length <= 0){
+                    res.status(204).json({
+                        status: 204,
+                        message: 'No account to delete'
+                    })
+                }else {
+                    Accounts.map((account)=>{
+                        if(account.id === Number(account_id)){
+                            Accounts.splice(Accounts.findIndex(account => account.id === Number(account_id)));
+                            res.status(200).json({
+                                status: 200,
+                                message: 'Account Successfully Deleted',
+                                deletedBy: staff
+
+                            })
+                        }else{
+                            res.status(404).json({
+                                status: 404,
+                                message: `No account found for ID: ${account_id}`
+                            })
+                        }
+                    })
+                }
+            }else{
+                res.status(401).json({
+                    status: 401,
+                    message: 'Not Authorized'
+                })
+            }
+        })
     }
 }
