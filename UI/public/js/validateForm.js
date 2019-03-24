@@ -1,3 +1,5 @@
+import profile from './loadProfile';
+
 const  validateInput = {
     name:/^[A-z]{3,20}$/,
     email: /([A-z0-9.-_]+)@([A-z]+)\.([A-z]){2,5}$/,
@@ -88,15 +90,31 @@ function getFormDetails(){
             signupBtn.removeAttribute('disabled');
         }
     })
-
-    form.addEventListener('submit',(e)=>{
-        e.preventDefault()
+    form.addEventListener('submit',()=>{
+        let url = '/api/v1/auth/signup';
         let user = {
             firstname: fn.value,
             surname: sn.value,
-            password: pw.value
-        }
-        console.log(user)
+            password: pw.value,
+            username: un.value,
+        };
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(user)
+        }).then(resp => resp.json)
+            .then((data)=>{
+                window.location.href = 'https://encodedbicoding.github.io/banka/UI/login';
+                window.session({
+                    cookie: data
+                })
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+
     })
    }
 getFormDetails();
