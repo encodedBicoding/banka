@@ -17,7 +17,7 @@ module.exports = {
             if(user.email === email){
                 user.token = token;
                 req.user = user;
-                console.log(req);
+                console.log(res);
                 res.status(200).json({
                     status: 200,
                     token,
