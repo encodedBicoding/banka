@@ -2,7 +2,8 @@ const validate = require('../config/validateUser'),
       index = require("../controllers/index"),
       login = require('../controllers/login'),
       account = require('../controllers/accounts'),
-      isValid = require('../helpers/validate');
+      isValid = require('../helpers/validate'),
+      profile = require('../helpers/profile');
 
 module.exports = (app)=>{
     app.get('/',index.home);
@@ -17,14 +18,14 @@ module.exports = (app)=>{
             validate.validateAdminLogin,
             login.adminLogin);
 
-    //Sign Endpoints
+    //Signup Endpoints
    app.post('/api/v1/auth/signup',
                 validate.checkUserExists,
                 validate.addToDataBase);
 
    //Accounts Endpoints
 
-     //Create an account
+     //Client Create an account
     app.post('/api/v1/accounts',
              account.createAccount);
 
@@ -48,6 +49,15 @@ module.exports = (app)=>{
     app.post('/api/v1/:staff_id/create',
             isValid.validateAdmin,
             validate.addAdmin);
+
+    //Api to allow client upload image
+    app.put('/api/v1/client/:user_id/uploads',
+            isValid.validateUser,
+            profile.clientImageUpload);
+    //Api to allow staff upload image
+    app.put('/api/v1/client/:staff_id/uploads',
+        isValid.validateStaff,
+        profile.staffImageUpload);
 
     app.use((req, res)=>{
         res.status(404).json({
