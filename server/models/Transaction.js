@@ -31,6 +31,27 @@ class Transaction{
                 }
             }
         });
+    };
+    creditAccount(acc_number){
+        Accounts.map((account)=>{
+            this.id += 1;
+            if(account.accountNumber === acc_number){
+                this.oldBalance = account.balance;
+                this.type = 'credit';
+                account.balance += this.amount;
+                this.newBalance = account.balance;
+                return {
+                    id: this.id,
+                    createdOn: this.createdOn,
+                    type: this.type,
+                    accountNumber: this.accountNumber,
+                    cashier: this.cashier,
+                    amount: this.amount,
+                    oldBalance: this.oldBalance,
+                    newBalance: this.newBalance
+                }
+            }
+        })
     }
 }
 
