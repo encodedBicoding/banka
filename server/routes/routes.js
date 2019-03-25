@@ -11,53 +11,53 @@ module.exports = (app)=>{
     router.get('/',index.home);
 
     //Login Endpoints
-    router.get('/login', login.index);
-    router.post('/auth/login',
+    router.get('/api/v1/login', login.index);
+    router.post('/api/v1/auth/login',
         validate.validateLogin,
         login.login);
     //Admin Login Endpoint
-    router.post('/auth/admin/login',
+    router.post('/api/v1/auth/admin/login',
             validate.validateAdminLogin,
             login.adminLogin);
 
     //Signup Endpoints
-   router.post('/auth/signup',
+   router.post('/api/v1/auth/signup',
                 validate.checkUserExists,
                 validate.addToDataBase);
 
    //Accounts Endpoints
 
      //Client Create an account
-    router.post('/:user_id/accounts',
+    router.post('/api/v1/:user_id/accounts',
              account.createAccount);
 
     //Only Admin / Staff can activate or deactivate account
-    app.patch('/:staff_id/account/:account_id',
+    app.patch('/api/v1/:staff_id/account/:account_id',
                isValid.validateStaff,
                account.changeStatus);
     //Only Admin / Staff can delete user account
-    router.delete('/:staff_id/account/:account_id',
+    router.delete('/api/v1/:staff_id/account/:account_id',
                 isValid.validateStaff,
                 account.deleteAccount);
     //Only Admin / Staff can debit an account
-    router.post('/:staff_id/transactions/:account_id/debit',
+    router.post('/api/v1/:staff_id/transactions/:account_id/debit',
              isValid.validateStaff,
              account.debitAccount);
     //Only Admin / Staff can credit an account
-    router.post('/:staff_id/transactions/:account_id/credit',
+    router.post('/api/v1/:staff_id/transactions/:account_id/credit',
         isValid.validateStaff,
         account.creditAccount);
     //Only Admin can create staff account
-    router.post('/:staff_id/create',
+    router.post('/api/v1/:staff_id/create',
             isValid.validateAdmin,
             validate.addAdmin);
 
     //Api to allow client upload image
-    router.put('/client/:user_id/uploads',
+    router.put('/api/v1/client/:user_id/uploads',
             isValid.validateUser,
             profile.clientImageUpload);
     //Api to allow staff upload image
-    app.put('/staff/:staff_id/uploads',
+    app.put('/api/v1/staff/:staff_id/uploads',
         isValid.validateStaff,
         profile.staffImageUpload);
 
