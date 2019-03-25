@@ -7,13 +7,5 @@ class Client extends User{
         this.accounts = [];
         this.type = 'client';
     }
-    createAccount(account){
-        this.accounts.push(account);
-    }
-    get AllAccounts(){
-        return {
-            accounts: this.accounts
-        }
-    }
 }
 module.exports = Client;

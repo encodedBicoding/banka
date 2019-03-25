@@ -1,7 +1,9 @@
 const database = require('../models/database'),
       auth = require('../helpers/auth'),
       util = require('../helpers/util'),
-      Client = require('../models/Client');
+      Client = require('../models/Client'),
+      Admin = require("../models/Admin"),
+      Staff = require("../models/Staff");
 
 const validateLogin = (req, res, next) => {
     const { email, password } = req.body;
@@ -60,7 +62,31 @@ const addToDataBase = (req, res)=>{
      })
 };
 const addAdmin = (req, res)=>{
-
+        const { firstname, email, type, password } = req.body;
+        database.Staffs.map((staff)=>{
+            if(staff.email !== email){
+                if(type === 'admin'){
+                    let admin = new Admin(firstname, email, password);
+                    database.Staffs.push(admin);
+                    res.status(200).json({
+                        status: 200,
+                        data: admin
+                    })
+                } else if( type === 'staff'){
+                    let staff = new Staff(firstname, email, password);
+                    database.Staffs.push(staff);
+                    res.status(200).json({
+                        status: 200,
+                        data: staff
+                    })
+                }
+            } else {
+                res.status(400).json({
+                    status: 400,
+                    message: 'Email already exists! '
+                })
+            }
+        })
 }
 
 module.exports = { addToDataBase,
