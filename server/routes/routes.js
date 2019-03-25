@@ -55,7 +55,7 @@ module.exports = (app)=>{
             isValid.validateUser,
             profile.clientImageUpload);
     //Api to allow staff upload image
-    app.put('":/client/:staff_id/uploads',
+    app.put('/client/:staff_id/uploads',
         isValid.validateStaff,
         profile.staffImageUpload);
 
