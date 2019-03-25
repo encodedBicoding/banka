@@ -8,12 +8,5 @@ class User{
         this.displayImage = '';
         this.isAdmin = false;
     }
-    uploadImage(url){
-        this.displayImage = url;
-    }
-    resetPassword(newPassword){
-        this.password = newPassword;
-    }
-
 }
-module.exports = User
+module.exports = User;

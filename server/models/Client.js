@@ -12,8 +12,8 @@ class Client extends User{
     }
     get AllAccounts(){
         return {
-            ...this.accounts
+            accounts: this.accounts
         }
     }
 }
-module.exports = Client
+module.exports = Client;
