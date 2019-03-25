@@ -10,7 +10,12 @@ before_script:
 cache:
   directories:
     - "node_modules"
-after_success:
-  - npm run coverage
+before_install:
+  - npm update
+install:
+  - npm install
+script:
+  - npm test
+  - npm run coveralls
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

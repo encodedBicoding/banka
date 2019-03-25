@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint",
     "test": "mocha",
-    "start": "nodemon app"
+    "start": "nodemon app",
+    "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
