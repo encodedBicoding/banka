@@ -8,7 +8,7 @@ const Users = require('../models/database').Users,
 module.exports = {
     createAccount: (req, res)=>{
         const { acc_type, user_type} = req.body;
-        let userID = req.params.userid;
+        let userID = req.params.user_id;
         Users.map( (user)=>{
             if(user.id === Number(userID)){
                 let accountNumber = generateAccountNumber();

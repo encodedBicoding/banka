@@ -10,7 +10,7 @@ module.exports = {
             } else {
                 res.status(401).json({
                     status: 401,
-                    message: 'Not authorized to access endpoint',
+                    message: 'Not Authorized',
                 })
             }
         })
@@ -23,7 +23,7 @@ module.exports = {
             } else {
                 res.status(401).json({
                     status: 401,
-                    message: 'Not authorized to access endpoint',
+                    message: 'Not Authorized',
                 })
             }
         })
@@ -36,7 +36,7 @@ module.exports = {
             } else {
                 res.status(401).json({
                     status: 401,
-                    message: 'Not authorized to access endpoint',
+                    message: 'Not Authorized',
                 })
             }
         })

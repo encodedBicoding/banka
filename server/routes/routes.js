@@ -26,7 +26,7 @@ module.exports = (app)=>{
    //Accounts Endpoints
 
      //Client Create an account
-    app.post('/accounts',
+    app.post('/:user_id/accounts',
              account.createAccount);
 
     //Only Admin / Staff can activate or deactivate account

@@ -7,7 +7,7 @@ describe('Testing user account creation on route /api/v1/:userid/accounts', ()=>
     it('should return status 200 and owner id if userid is found', (done)=>{
         chai
             .request(app)
-            .post('/accounts')
+            .post('/1/accounts')
             .send({
                 acc_type: 'current',
                 user_type: 'org'
