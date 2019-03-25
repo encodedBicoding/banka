@@ -1,6 +1,8 @@
 # Banka
 Banka is a light-weight core banking application that powers banking operation on the go. With Banka you can create an account, make deposit, see your transaction overview and much more...
 
+[![Build Status](https://travis-ci.org/encodedBicoding/banka.svg?branch=develop)](https://travis-ci.org/encodedBicoding/banka)
+[![Maintainability](https://api.codeclimate.com/v1/badges/20e5a98548ee500f38b4/maintainability)](https://codeclimate.com/github/encodedBicoding/banka/maintainability)
 # Why Banka?
 Banka aims to ease banking operations for its users. Ever wanted to do operations like create and account or check account transactions, and you 
 don't want to visit any of our Banka offices? Banka App helps you do all of that, Saving you time and money.

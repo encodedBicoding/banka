@@ -4,7 +4,6 @@ const auth = require('../helpers/auth'),
 
 module.exports = {
     index: (req, res)=>{
-        console.log(req)
         res.status(200).json({
             status: 200,
             message: 'Welcome to the login page'
@@ -17,10 +16,8 @@ module.exports = {
             if(user.email === email){
                 user.token = token;
                 req.user = user;
-                console.log(res);
                 res.status(200).json({
                     status: 200,
-                    token,
                     data: user,
                 })
             }

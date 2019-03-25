@@ -10,52 +10,52 @@ module.exports = (app)=>{
 
     //Login Endpoints
     app.get('/login', login.index);
-    app.post('/api/v1/auth/login',
+    app.post('/auth/login',
         validate.validateLogin,
         login.login);
     //Admin Login Endpoint
-    app.post('/api/v1/auth/admin/login',
+    app.post('/auth/admin/login',
             validate.validateAdminLogin,
             login.adminLogin);
 
     //Signup Endpoints
-   app.post('/api/v1/auth/signup',
+   app.post('/auth/signup',
                 validate.checkUserExists,
                 validate.addToDataBase);
 
    //Accounts Endpoints
 
      //Client Create an account
-    app.post('/api/v1/accounts',
+    app.post('/:user_id/accounts',
              account.createAccount);
 
     //Only Admin / Staff can activate or deactivate account
-    app.patch('/api/v1/:staff_id/account/:account_id',
+    app.patch('/:staff_id/account/:account_id',
                isValid.validateStaff,
                account.changeStatus);
     //Only Admin / Staff can delete user account
-    app.delete('/api/v1/:staff_id/account/:account_id',
+    app.delete('/:staff_id/account/:account_id',
                 isValid.validateStaff,
                 account.deleteAccount);
     //Only Admin / Staff can debit an account
-    app.post('/api/v1/:staff_id/transactions/:account_id/debit',
+    app.post('/:staff_id/transactions/:account_id/debit',
              isValid.validateStaff,
              account.debitAccount);
     //Only Admin / Staff can credit an account
-    app.post('/api/v1/:staff_id/transactions/:account_id/credit',
+    app.post('/:staff_id/transactions/:account_id/credit',
         isValid.validateStaff,
         account.creditAccount);
     //Only Admin can create staff account
-    app.post('/api/v1/:staff_id/create',
+    app.post('/:staff_id/create',
             isValid.validateAdmin,
             validate.addAdmin);
 
     //Api to allow client upload image
-    app.put('/api/v1/client/:user_id/uploads',
+    app.put('/client/:user_id/uploads',
             isValid.validateUser,
             profile.clientImageUpload);
     //Api to allow staff upload image
-    app.put('/api/v1/client/:staff_id/uploads',
+    app.put('/staff/:staff_id/uploads',
         isValid.validateStaff,
         profile.staffImageUpload);
 
