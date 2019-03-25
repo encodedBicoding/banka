@@ -14,5 +14,14 @@ describe('Handle incoming requests', ()=>{
                 done(err);
             })
     });
+    it('should return status 200 if rout is /login', (done)=>{
+        chai
+            .request(app)
+            .get("/login")
+            .end((err, res)=>{
+                expect(res).to.have.status(200);
+                done(err);
+            })
+    });
 
 })

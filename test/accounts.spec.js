@@ -69,7 +69,7 @@ describe('Testing user account creation on route /api/v1/:userid/accounts', ()=>
             .delete('/1/account/23')
             .end((err, res)=>{
                 expect(res).to.have.status(404);
-                expect(res.body.message).to.equal('No account found for ID: 23')
+                expect(res.body.message).to.equal('No account found for ID: 23');
                 done(err);
             })
     });
@@ -79,18 +79,84 @@ describe('Testing user account creation on route /api/v1/:userid/accounts', ()=>
             .delete('/23/account/1')
             .end((err, res)=>{
                 expect(res).to.have.status(401);
-                expect(res.body.message).to.equal('Not Authorized')
+                expect(res.body.message).to.equal('Not Authorized');
                 done(err);
             })
     });
-    it('should return status 200 if Accounts array has been successfully', (done)=>{
+    it('should return status 200 if Accounts array has been deleted successfully', (done)=>{
         chai
             .request(app)
             .delete('/1/account/1')
             .end((err, res)=>{
                 expect(res).to.have.status(200);
-                expect(res.body.message).to.equal('Account Successfully Deleted')
+                expect(res.body.message).to.equal('Account Successfully Deleted');
                 done(err);
             })
     });
+    it('should fail and return status 401 if account amount is less than amount-to-debit', (done)=>{
+        chai
+            .request(app)
+            .post('/1/transactions/1/debit')
+            .send({
+                amount: 30000000,
+                acc_id: 92039433
+            })
+            .end((err, res)=>{
+                expect(res).to.have.status(401)
+                done(err);
+            });
+        done();
+    });
+    it('should fail and return status 401 with a Not Authorized message  if staff id is invalid',(done)=>{
+        chai
+            .request(app)
+            .post("/23/transactions/1/debit")
+            .send(
+                {
+                    amount: 3000,
+                    acc_id: 92039433
+                }
+            )
+            .end((err, res)=>{
+                expect(res).to.have.status(401);
+                expect(res.body.message).to.equal("Not Authorized");
+                done(err);
+            });
+    });
+    it('should fail and return status 401 with a Account ID not found message if acc id is invalid',(done)=>{
+        chai
+            .request(app)
+            .post("/1/transactions/23/debit")
+            .send(
+                {
+                    amount: 3000,
+                    acc_id: 92039433
+                }
+            )
+            .end((err, res)=>{
+                expect(res).to.have.status(404);
+                expect(res.body.message).to.equal("Account ID not found");
+                done(err)
+            });
+        done();
+    });
+    it('should return status 200 if user account has been successfully debited', (done)=>{
+        chai
+            .request(app)
+            .post("/1/transactions/1/debit")
+            .send(
+                {
+                    amount: 30000,
+                    acc_id: 92039433,
+                }
+            )
+            .end((err, res)=>{
+                expect(res).to.have.status(200);
+                expect(res.body.message).to.equal("Account debited successfully");
+                done(err)
+            });
+        done();
+
+    });
+
 });

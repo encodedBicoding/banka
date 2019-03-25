@@ -93,7 +93,7 @@ module.exports = {
     },
     debitAccount: (req, res)=>{
         let {staff_id, account_id} = req.params;
-        let user = Staffs.filter(user=>user.id === Number(staff_id))
+        let user = Staffs.filter(user=>user.id === Number(staff_id));
         let { amount, acc_id } = req.body;
         Accounts.map((account)=>{
             if(account.id === Number(account_id) && account.accountNumber === Number(acc_id) && account.balance >= amount){
@@ -101,10 +101,16 @@ module.exports = {
                 transaction.debitAccount(account.accountNumber);
                 res.status(200).json({
                     status: 200,
+                    message: 'Account debited successfully',
                     data: transaction.printTransaction()
                 })
 
-            } else {
+            } else if(account.id !== Number(account_id)){
+                res.status(404).json({
+                    status: 404,
+                    message: "Account ID not found"
+                })
+            } else{
                 res.status(401).json({
                     status: 401,
                     message: "Insufficient Funds"
@@ -127,6 +133,11 @@ module.exports = {
 
                 })
 
+            } else{
+                res.status(404).json({
+                    status: 404,
+                    message: "Account ID not found"
+                })
             }
         })
     },
