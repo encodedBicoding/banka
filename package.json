@@ -2,10 +2,10 @@
   "name": "banka",
   "version": "1.0.0",
   "description": "Banka is a light-weight core banking application that powers banking operation on the go. With Banka you can create an account, make deposit, see your transaction overview and much more...",
-  "main": "app.js",
+  "main": "server/app.js",
   "scripts": {
     "lint": "eslint",
-    "start": "node server/dist/app.js",
+    "start": "node app.js",
     "build": "babel server -d server/dist",
     "start-dev": "nodemon --exec babel-node server/app.js",
     "test": "nyc --require babel-core/register mocha server/test/**.spec.js --exit -w",
