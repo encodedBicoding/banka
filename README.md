@@ -27,4 +27,72 @@ Track the building process of Banka on Pivotal tracker via -  [link](https://www
 # Github Hosted UI
 Banka is hosted free on Github [link](https://encodedbicoding.github.io/banka/UI)
 
+# Heroku Hosted API
+Banka API is currently on version 1 and is hosted on heroku [link](dominic-banka.herokuapp.com)
 
+#### Api Endpoints
+<table>
+    <tr>
+        <th> </th>
+        <th>Homepage</th>
+        <th> Login </th>
+        <th> Signup </th>
+        <th> Accounts </th>
+    </tr>
+    <tr>
+        <td> GET </td>
+        <td> "/" </td>
+        <td> /api/v1/login </td>
+        <td> - </td>
+        <td> - </td>
+    </tr>
+    <tr>
+        <td>POST</td>
+        <td> - </td>
+        <td>/api/v1/auth/login</td>
+        <td>/api/v1/auth/signup</td>
+        <td>/api/v1/:user_id/accounts</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>/api/v1/auth/admin/login</td>
+        <td>/api/v1/auth/:staff_id/create</td>
+        <td>/api/v1/:staff_id/transactions/:account_id/debit</td>
+    </tr>
+     <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>/api/v1/:staff_id/transactions/:account_id/credit</td>
+    </tr>
+    <tr>
+        <td>PATCH</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>/api/v1/:staff_id/account/:account_id/credit</td>
+    </tr>
+    <tr>
+        <td>DELETE</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>/api/v1/:staff_id/account/:account_id/credit</td>
+    </tr>
+     <tr>
+        <td>PUT</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>/api/v1/client/:user_id/uploads</td>
+    </tr>
+     <tr>
+        <td></td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>/api/v1/staff/:staff_id/uploads</td>
+    </tr>
+</table>

@@ -7,7 +7,7 @@ const database = require('../models/database'),
 
 const validateLogin = (req, res, next) => {
     const { email, password } = req.body;
-    database.Users.map((user)=>{
+    database.Users.map(user=>{
         if((user.email !== email) || user.password !== password){
             res.status(404).json({
                 status: 404,
@@ -20,7 +20,7 @@ const validateLogin = (req, res, next) => {
 };
 const validateAdminLogin = (req, res, next) => {
     const { email, password } = req.body;
-    database.Staffs.map((staff)=>{
+    database.Staffs.map(staff=>{
         if((staff.email !== email) || staff.password !== password){
             res.status(404).json({
                 status: 404,
@@ -49,7 +49,7 @@ const addToDataBase = (req, res)=>{
      let {firstname, email, password, username} = req.body;
      let id = database.Users.length + 1;
      let pass = util.hashPassword(password);
-     let token = auth.generateToken({firstname, email, pass})
+     let token = auth.generateToken({firstname, email, pass});
      let user = new Client(firstname, email, pass, username);
      user.token = token;
      req.user = user;
@@ -62,32 +62,37 @@ const addToDataBase = (req, res)=>{
      })
 };
 const addAdmin = (req, res)=>{
-        const { firstname, email, type, password } = req.body;
-        database.Staffs.map((staff)=>{
-            if(staff.email !== email){
-                if(type === 'admin'){
-                    let admin = new Admin(firstname, email, password);
-                    database.Staffs.push(admin);
-                    res.status(200).json({
-                        status: 200,
-                        data: admin
-                    })
-                } else if( type === 'staff'){
-                    let staff = new Staff(firstname, email, password);
-                    database.Staffs.push(staff);
-                    res.status(200).json({
-                        status: 200,
-                        data: staff
-                    })
-                }
-            } else {
-                res.status(400).json({
-                    status: 400,
-                    message: 'Email already exists! '
+        const {firstname, email, type, password } = req.body;
+        let staff = database.Staffs.filter(staff => staff.email === email );
+        if(staff.length <= 0){
+            if(type === 'staff'){
+                let id = 0;
+                let newStaff = new Staff(firstname, email, type, password);
+                newStaff.id = id + 1;
+                database.Staffs.push(newStaff);
+                res.status(200).json({
+                    status: 200,
+                    message: newStaff
+                })
+            } else if(type === 'admin'){
+                let id = 0;
+                let newAdmin = new Admin(firstname, email, type, password);
+                newAdmin.id = id + 1;
+                database.Staffs.push(newAdmin);
+                res.status(200).json({
+                    status: 200,
+                    message: newAdmin
+
                 })
             }
-        })
-}
+
+        }else if(staff[0].email === email){
+            res.status(401).json({
+                status: 401,
+                message: 'Email already exists'
+            })
+        }
+};
 
 module.exports = { addToDataBase,
                    checkUserExists,

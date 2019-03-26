@@ -6,7 +6,7 @@ class Transaction{
         this.createdOn = new Date(Date.now());
         this.type = '';
         this.accountNumber = accountNumber;
-        this.cashier = user[0].id;
+        this.cashier = user;
         this.amount = amount;
         this.oldBalance = 0;
         this.newBalance = 0;
