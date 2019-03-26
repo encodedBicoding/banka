@@ -41,10 +41,17 @@ Banka API is currently on version 1 and is hosted on heroku [link](https://domin
     </tr>
     <tr>
         <td> GET </td>
-        <td> "/" </td>
-        <td> /api/v1/login </td>
+        <td>/</td>
+        <td>/api/v1/login </td>
         <td> - </td>
+        <td>/api/v1/:user_id/accounts</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>/api/v1/login </td>
         <td> - </td>
+        <td></td>
     </tr>
     <tr>
         <td>POST</td>
