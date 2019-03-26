@@ -28,7 +28,7 @@ Track the building process of Banka on Pivotal tracker via -  [link](https://www
 Banka is hosted free on Github [link](https://encodedbicoding.github.io/banka/UI)
 
 # Heroku Hosted API
-Banka API is currently on version 1 and is hosted on heroku [link](dominic-banka.herokuapp.com)
+Banka API is currently on version 1 and is hosted on heroku [link](https://dominic-banka.herokuapp.com)
 
 #### Api Endpoints
 <table>
@@ -41,10 +41,17 @@ Banka API is currently on version 1 and is hosted on heroku [link](dominic-banka
     </tr>
     <tr>
         <td> GET </td>
-        <td> "/" </td>
-        <td> /api/v1/login </td>
+        <td>/</td>
+        <td>/api/v1/login </td>
         <td> - </td>
+        <td>/api/v1/:user_id/accounts</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>/api/v1/login </td>
         <td> - </td>
+        <td></td>
     </tr>
     <tr>
         <td>POST</td>

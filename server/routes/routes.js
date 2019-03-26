@@ -22,6 +22,7 @@ module.exports = (app)=>{
 
     //Signup Endpoints
    router.post('/api/v1/auth/signup',
+                validate.validateSignupInputField,
                 validate.checkUserExists,
                 validate.addToDataBase);
 
