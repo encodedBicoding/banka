@@ -3,42 +3,39 @@ const Staffs = require('../models/database').Staffs,
 
 module.exports = {
     validateStaff: (req, res, next) => {
-        let id = req.params.staff_id;
-        Staffs.map((staff) => {
-            if (staff.id === Number(id) && staff.isAdmin === true) {
-                next();
-            } else {
-                res.status(401).json({
-                    status: 401,
-                    message: 'Not Authorized',
-                })
-            }
-        })
+        let { staff_id } = req.params;
+        let staff = Staffs.filter( staff=>staff.id === Number(staff_id) && staff.isAdmin === true);
+        if(staff.length <= 0){
+            res.status(401).json({
+                status: 401,
+                message: 'Not Authorized'
+            })
+        }else if(staff[0].isAdmin === true) {
+            next();
+        }
     },
     validateAdmin: (req, res, next) => {
-        let id = req.params.staff_id;
-        Staffs.map((staff) => {
-            if (staff.id === Number(id) && staff.type === 'admin') {
-                next();
-            } else {
-                res.status(401).json({
-                    status: 401,
-                    message: 'Not Authorized',
-                })
-            }
-        })
+        let { staff_id } = req.params;
+        let staff = Staffs.filter( staff=>staff.id === Number(staff_id) && staff.type === 'admin');
+        if(staff.length <= 0){
+            res.status(401).json({
+                status: 401,
+                message: 'Not Authorized'
+            })
+        }else if(staff[0].type === 'admin') {
+            next();
+        }
     },
     validateUser: (req, res, next) => {
-        let id = req.params.user_id;
-        Users.map((user) => {
-            if (user.id === Number(id) && user.type === 'client') {
-                next();
-            } else {
-                res.status(401).json({
-                    status: 401,
-                    message: 'Not Authorized',
-                })
-            }
-        })
+        let { user_id } = req.params;
+        let user = Users.filter( client=>client.id === Number(user_id) && client.type === 'client');
+        if(user.length){
+            res.status(401).json({
+                status: 401,
+                message: 'Not Authorized'
+            })
+        }else if(user[0].type === 'client') {
+            next();
+        }
     },
 };

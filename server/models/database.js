@@ -51,9 +51,20 @@ let Staffs = [
           type: 'staff',
           isAdmin: true,
     },
+    {
+        id: 1,
+        firstname:'john',
+        lastname:'doe',
+        email: 'johndoe@gmail.com',
+        password: '123456789',
+        imageUrl: '',
+        type: 'admin',
+        isAdmin: true,
+    },
 
-]
+];
 
 
 
-module.exports =  { Users, Accounts, Staffs}
+
+module.exports =  { Users, Accounts, Staffs};

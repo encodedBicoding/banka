@@ -6,14 +6,14 @@ const Users = require('../models/database').Users,
       Transaction = require('../models/Transaction');
 
 module.exports = {
-    createAccount: (req, res)=>{
-        const { acc_type, user_type} = req.body;
-        let userID = req.params.user_id;
-        Users.map( (user)=>{
-            if(user.id === Number(userID)){
+    createAccount: (req, res) => {
+        const {acc_type, user_type} = req.body;
+        let {user_id} = req.params;
+        Users.map((user) => {
+            if (user.id === Number(user_id)) {
                 let accountNumber = generateAccountNumber();
                 let id = Accounts.length + 1;
-                let account = new Account(id,accountNumber, acc_type ,user_type)
+                let account = new Account(id, accountNumber, acc_type, user_type);
                 account.owner = user.id;
                 user.accounts.push(account);
                 user.noOfAccounts++;
@@ -21,125 +21,110 @@ module.exports = {
                     status: 201,
                     data: account
                 })
-            }else{
-                res.status(401).json({
-                    status: 401,
-                    message: 'Not Authorized'
-                })
             }
         });
     },
-    changeStatus: (req, res)=>{
+    changeStatus: (req, res) => {
         const {staff_id, account_id} = req.params;
-        Staffs.map((staff)=>{
-            if(staff.id === Number(staff_id) && staff.isAdmin === true){
-                Accounts.map((account)=>{
-                    if(account.id === Number(account_id)){
-                        (account.status === 'active')?account.status = "dormant" : account.status = "active";
+        let staff = Staffs.filter(staff => staff.id === Number(staff_id) && staff.isAdmin === true);
+        if (staff[0].isAdmin === true) {
+            Accounts.map((account) => {
+                if (account.id === Number(account_id)) {
+                    (account.status === 'active') ? account.status = "dormant" : account.status = "active";
+                    res.status(200).json({
+                        status: 200,
+                        data: account
+                    })
+                } else {
+                    res.status(404).json({
+                        status: 404,
+                        message: `No account found for ID: ${account_id}`
+                    })
+                }
+            })
+        }
+    },
+    deleteAccount: (req, res) => {
+        const {staff_id, account_id} = req.params;
+        let staff = Staffs.filter(staff => staff.id === Number(staff_id) && staff.isAdmin === true);
+        if (staff[0].isAdmin === true) {
+            if (Accounts.length <= 0) {
+                res.status(204).json({
+                    status: 204,
+                    message: 'No account to delete'
+                })
+            } else {
+                Accounts.map((account) => {
+                    if (account.id === Number(account_id)) {
+                        Accounts.splice(Accounts.findIndex(account => account.id === Number(account_id)));
                         res.status(200).json({
                             status: 200,
-                            data: account
+                            message: 'Account Successfully Deleted',
+                            deletedBy: staff[0].firstname + " " + staff[0].lastname
                         })
-                    }else{
+                    } else {
                         res.status(404).json({
                             status: 404,
                             message: `No account found for ID: ${account_id}`
                         })
                     }
                 })
-            } else{
-                res.status(401).json({
-                    status: 401,
-                    message: 'Not Authorized'
-                })
             }
-        })
-
+        }
     },
-    deleteAccount: (req, res)=>{
-        const { staff_id, account_id } = req.params;
-        Staffs.map((staff)=>{
-            if(staff.id === Number(staff_id) && staff.isAdmin === true){
-                if(Accounts.length <= 0){
-                    res.status(204).json({
-                        status: 204,
-                        message: 'No account to delete'
+    debitAccount: (req, res) => {
+        let {staff_id, account_id} = req.params;
+        let staff = Staffs.filter(staff => staff.id === Number(staff_id) && staff.type === 'staff');
+        let {amount, acc_id} = req.body;
+        if (staff[0].type === 'staff') {
+            let s = staff[0].firstname + " " + staff[0].lastname;
+            let account = Accounts.filter(account => account.id === Number(account_id));
+            if (account.length <= 0) {
+                res.status(404).json({
+                    status: 404,
+                    message: 'Account ID not found'
+                })
+            }else{
+                if (account[0].id === Number(account_id) && account[0].accountNumber === Number(acc_id) && account[0].balance >= amount) {
+                    let transaction = new Transaction(s, account[0].accountNumber, amount);
+                    transaction.debitAccount(account[0].accountNumber);
+                    res.status(200).json({
+                        status: 200,
+                        message: transaction.printTransaction()
                     })
-                }else {
-                    Accounts.map((account)=>{
-                        if(account.id === Number(account_id)){
-                            Accounts.splice(Accounts.findIndex(account => account.id === Number(account_id)));
-                            res.status(200).json({
-                                status: 200,
-                                message: 'Account Successfully Deleted',
-                                deletedBy: staff
-
-                            })
-                        }else{
-                            res.status(404).json({
-                                status: 404,
-                                message: `No account found for ID: ${account_id}`
-                            })
-                        }
+                } else{
+                    res.status(401).json({
+                        status: 401,
+                        message: "Insufficient Funds"
                     })
                 }
-            }else{
-                res.status(401).json({
-                    status: 401,
-                    message: 'Not Authorized'
-                })
             }
-        })
-    },
-    debitAccount: (req, res)=>{
-        let {staff_id, account_id} = req.params;
-        let user = Staffs.filter(user=>user.id === Number(staff_id));
-        let { amount, acc_id } = req.body;
-        Accounts.map((account)=>{
-            if(account.id === Number(account_id) && account.accountNumber === Number(acc_id) && account.balance >= amount){
-                let transaction = new Transaction(user, account.accountNumber, amount);
-                transaction.debitAccount(account.accountNumber);
-                res.status(200).json({
-                    status: 200,
-                    message: 'Account debited successfully',
-                    data: transaction.printTransaction()
-                })
 
-            } else if(account.id !== Number(account_id)){
+        }
+    },
+    creditAccount: (req, res) => {
+        let {staff_id, account_id} = req.params;
+        let staff = Staffs.filter(staff => staff.id === Number(staff_id) && staff.type === 'staff');
+        let {amount, acc_id} = req.body;
+        if (staff[0].type === 'staff') {
+            let s = staff[0].firstname + " " + staff[0].lastname;
+            let account = Accounts.filter(account => account.id === Number(account_id));
+            if (account.length <= 0) {
                 res.status(404).json({
                     status: 404,
-                    message: "Account ID not found"
+                    message: 'Account ID not found'
                 })
-            } else{
-                res.status(401).json({
-                    status: 401,
-                    message: "Insufficient Funds"
-                })
+            } else {
+                if (account[0].id === Number(account_id) && account[0].accountNumber === Number(acc_id)) {
+                    let transaction = new Transaction(s, account[0].accountNumber, amount);
+                    transaction.creditAccount(account[0].accountNumber);
+                    res.status(200).json({
+                        status: 200,
+                        message: transaction.printTransaction()
+                    })
+                }
             }
-        })
+
+        }
     },
-    creditAccount: (req, res)=>{
-        let {staff_id, account_id} = req.params;
-        let user = Staffs.filter(user=>user.id === Number(staff_id));
-        console.log(user);
-        let { amount, acc_id } = req.body;
-        Accounts.map((account)=>{
-            if(account.id === Number(account_id) && account.accountNumber === Number(acc_id)){
-                let transaction = new Transaction(user, account.accountNumber, amount);
-                transaction.creditAccount(account.accountNumber);
-                res.status(200).json({
-                    status: 200,
-                    data: transaction.printTransaction(),
-
-                })
-
-            } else{
-                res.status(404).json({
-                    status: 404,
-                    message: "Account ID not found"
-                })
-            }
-        })
-    },
-
 };

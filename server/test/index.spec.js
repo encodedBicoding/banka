@@ -17,7 +17,7 @@ describe('Handle incoming requests', ()=>{
     it('should return status 200 if rout is /login', (done)=>{
         chai
             .request(app)
-            .get("/login")
+            .get("/api/v1/login")
             .end((err, res)=>{
                 expect(res).to.have.status(200);
                 done(err);

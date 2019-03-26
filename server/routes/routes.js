@@ -39,11 +39,11 @@ module.exports = (app)=>{
     router.delete('/api/v1/:staff_id/account/:account_id',
                 isValid.validateStaff,
                 account.deleteAccount);
-    //Only Admin / Staff can debit an account
+    //Only Staff can debit an account
     router.post('/api/v1/:staff_id/transactions/:account_id/debit',
              isValid.validateStaff,
              account.debitAccount);
-    //Only Admin / Staff can credit an account
+    //Only Staff can credit an account
     router.post('/api/v1/:staff_id/transactions/:account_id/credit',
         isValid.validateStaff,
         account.creditAccount);
