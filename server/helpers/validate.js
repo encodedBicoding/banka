@@ -29,7 +29,7 @@ module.exports = {
     validateUser: (req, res, next) => {
         let { user_id } = req.params;
         let user = Users.filter( client=>client.id === Number(user_id) && client.type === 'client');
-        if(user.length){
+        if(user.length <= 0){
             res.status(401).json({
                 status: 401,
                 message: 'Not Authorized'

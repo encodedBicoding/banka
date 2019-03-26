@@ -155,5 +155,14 @@ describe('Testing user account creation on route /api/v1/:user_id/accounts', ()=
                 done()
             });
     });
+    it('should return status 200 if user id is valid when trying to get all user accounts', (done)=>{
+        chai
+            .request(app)
+            .get("/api/v1/1/accounts")
+            .end((err, res)=>{
+                expect(res).to.have.status(200);
+                done();
+            })
+    })
 
 });
