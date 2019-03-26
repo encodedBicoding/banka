@@ -10,6 +10,6 @@ module.exports = (app)=>{
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(session({secret: 'password', cookie: {maxAge: 60000}, resave: false, saveUninitialized: false}));
-    router(app)
+    router(app);
     return app;
-}
+};

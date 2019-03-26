@@ -65,8 +65,7 @@ module.exports = {
                     } else {
                         res.status(404).json({
                             status: 404,
-                            message: `No account found for ID: ${account_id}`
-                        })
+                            message: `No account found for ID: ${account_id}` });
                     }
                 })
             }
@@ -82,10 +81,11 @@ module.exports = {
             if (account.length <= 0) {
                 res.status(404).json({
                     status: 404,
-                    message: 'Account ID not found'
-                })
+                    message: 'Account ID not found' })
             }else{
-                if (account[0].id === Number(account_id) && account[0].accountNumber === Number(acc_id) && account[0].balance >= amount) {
+                if (account[0].id === Number(account_id)
+                    && account[0].accountNumber === Number(acc_id)
+                    && account[0].balance >= amount) {
                     let transaction = new Transaction(s, account[0].accountNumber, amount);
                     transaction.debitAccount(account[0].accountNumber);
                     res.status(200).json({
@@ -95,16 +95,15 @@ module.exports = {
                 } else{
                     res.status(401).json({
                         status: 401,
-                        message: "Insufficient Funds"
-                    })
+                        message: "Insufficient Funds"  })
                 }
             }
-
         }
     },
     creditAccount: (req, res) => {
         let {staff_id, account_id} = req.params;
-        let staff = Staffs.filter(staff => staff.id === Number(staff_id) && staff.type === 'staff');
+        let staff = Staffs.filter(staff => staff.id === Number(staff_id)
+            && staff.type === 'staff');
         let {amount, acc_id} = req.body;
         if (staff[0].type === 'staff') {
             let s = staff[0].firstname + " " + staff[0].lastname;
@@ -112,19 +111,25 @@ module.exports = {
             if (account.length <= 0) {
                 res.status(404).json({
                     status: 404,
-                    message: 'Account ID not found'
-                })
+                    message: 'Account ID not found'})
             } else {
                 if (account[0].id === Number(account_id) && account[0].accountNumber === Number(acc_id)) {
                     let transaction = new Transaction(s, account[0].accountNumber, amount);
                     transaction.creditAccount(account[0].accountNumber);
                     res.status(200).json({
                         status: 200,
-                        message: transaction.printTransaction()
-                    })
+                        message: transaction.printTransaction()  });
                 }
             }
-
         }
     },
+    getSingleAccount: (req, res)=>{
+        let { user_id} = req.params;
+        let user = Users.filter( client=>client.id === Number(user_id) && client.type === 'client');
+        let accounts = user[0].accounts;
+        res.status(200).json({
+            status: 200,
+            data: accounts
+        })
+    }
 };
