@@ -127,4 +127,13 @@ module.exports = {
 
         }
     },
+    getSingleAccount: (req, res)=>{
+        let { user_id} = req.params;
+        let user = Users.filter( client=>client.id === Number(user_id) && client.type === 'client');
+        let accounts = user[0].accounts;
+        res.status(200).json({
+            status: 200,
+            data: accounts
+        })
+    }
 };

@@ -29,7 +29,12 @@ module.exports = (app)=>{
 
      //Client Create an account
     router.post('/api/v1/:user_id/accounts',
+             isValid.validateUser,
              account.createAccount);
+    //Client get single account
+    router.get('/api/v1/:user_id/accounts',
+        isValid.validateUser,
+        account.getSingleAccount);
 
     //Only Admin / Staff can activate or deactivate account
     app.patch('/api/v1/:staff_id/account/:account_id',

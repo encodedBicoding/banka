@@ -86,7 +86,7 @@ const addAdmin = (req, res)=>{
                 })
             }
 
-        }else if(staff[0].email === email){
+        }else{
             res.status(401).json({
                 status: 401,
                 message: 'Email already exists'
