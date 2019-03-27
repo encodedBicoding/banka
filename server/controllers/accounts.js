@@ -9,39 +9,36 @@ module.exports = {
     createAccount: (req, res) => {
         const { acc_type, user_type } = req.body;
         let { user_id } = req.params;
-        Users.map(user => {
-            if (user.id === Number(user_id)) {
-                let accountNumber = generateAccountNumber();
-                let id = Accounts.length + 1;
-                let account = new Account(id, accountNumber, acc_type, user_type);
-                account.owner = user.id;
-                user.accounts.push(account);
-                user.noOfAccounts++;
-                res.status(201).json({
-                    status: 201,
-                    data: account
-                });
-            }
+        let user = Users.filter( user => user.id = Number(user_id)),
+            accountNumber =  generateAccountNumber(),
+            id = 1,
+            account = new Account(id, accountNumber, acc_type, user_type);
+        account.owner = user[0].id;
+        user[0].accounts.push(account);
+        user[0].noOfAccounts++;
+        Accounts.push(account);
+        res.status(201).json({
+            status: 201,
+            data: account
         });
     },
     changeStatus: (req, res) => {
         const { staff_id, account_id } = req.params;
         let staff = Staffs.filter(staff => staff.id === Number(staff_id) && staff.isAdmin === true);
         if (staff[0].isAdmin === true) {
-            Accounts.map(account => {
-                if (account.id === Number(account_id)) {
-                    account.status === 'active' ? account.status = "dormant" : account.status = "active";
+            let account = Accounts.filter(account => account.id === Number(account_id));
+            if(account.length <= 0){
+                res.status(404).json({
+                        status: 404,
+                        message: `No account found`
+                    });
+             } else {
+                account[0].status === 'active' ? account[0].status = "dormant" : account[0].status = "active";
                     res.status(200).json({
                         status: 200,
-                        data: account
+                        data: account[0]
                     });
-                } else {
-                    res.status(404).json({
-                        status: 404,
-                        message: `No account found for ID: ${account_id}`
-                    });
-                }
-            });
+            }
         }
     },
     deleteAccount: (req, res) => {
@@ -83,7 +80,9 @@ module.exports = {
                     status: 404,
                     message: 'Account ID not found' });
             } else {
-                if (account[0].id === Number(account_id) && account[0].accountNumber === Number(acc_id) && account[0].balance >= amount) {
+                if (account[0].id === Number(account_id)
+                    && account[0].accountNumber === Number(acc_id)
+                    && account[0].balance >= amount){
                     let transaction = new Transaction(s, account[0].accountNumber, amount);
                     transaction.debitAccount(account[0].accountNumber);
                     res.status(200).json({
@@ -110,8 +109,9 @@ module.exports = {
                     status: 404,
                     message: 'Account ID not found' });
             } else {
-                if (account[0].id === Number(account_id) && account[0].accountNumber === Number(acc_id)) {
-                    let transaction = new Transaction(s, account[0].accountNumber, amount);
+                if (account[0].id === Number(account_id)
+                    && account[0].accountNumber === Number(acc_id)){
+                    let transaction = new Transaction(s, account[0].accountNumber, Number(amount));
                     transaction.creditAccount(account[0].accountNumber);
                     res.status(200).json({
                         status: 200,

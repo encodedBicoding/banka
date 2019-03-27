@@ -11,15 +11,12 @@ module.exports = {
     login: (req, res) => {
         const { email, password } = req.body;
         let token = auth.generateToken({ email, password });
-        database.Users.map(user => {
-            if (user.email === email) {
-                user.token = token;
-                req.user = user;
-                res.status(200).json({
-                    status: 200,
-                    data: user
-                });
-            }
+        let user = database.Users.filter( user => user.email = email);
+        user[0].token = token;
+        req.user = user[0];
+        res.status(200).json({
+            status: 200,
+            data: req.user,
         });
     },
     adminLogin: (req, res) => {

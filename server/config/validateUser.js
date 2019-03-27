@@ -4,52 +4,31 @@ const database = require('../models/database'),
       Client = require('../models/Client'),
       Admin = require("../models/Admin"),
       Staff = require("../models/Staff");
-
 module.exports = {
     validateLogin: (req, res, next) => {
         const { email, password } = req.body;
-        database.Users.map(user => {
-            if (user.email !== email || user.password !== password) {
-                res.status(404).json({
-                    status: 404,
-                    message: 'email or password not found'
-                });
-            } else {
-                next();
-            }
-        });
+        let user = database.Users.filter( user => user.email === email
+                                        && (util.validatePassword(password, user.password)));
+        (user.length <= 0)?res.status(404).json({status: 404, message: 'email or password not found'}):next();
     },
     validateAdminLogin: (req, res, next) => {
         const { email, password } = req.body;
-        database.Staffs.map(staff => {
-            if (staff.email !== email || staff.password !== password) {
-                res.status(404).json({
-                    status: 404,
-                    message: 'email or password not found'
-                });
-            } else {
-                next();
-            }
-        });
+        let staff = database.Staffs.filter( staff => staff.email === email
+            && (util.validatePassword(password, staff.password)));
+        (staff.length <= 0)?res.status(404).json({status: 404, message: 'email or password not found'}):next();
     },
     checkUserExists: (req, res, next) => {
         const { email } = req.body;
         let found = database.Users.find(user => user.email === email);
-        if (typeof found !== "object") {
-            next();
-        } else {
-            res.status(401).json({
-                status: 401,
-                message: 'A user with the given email already exists'
-            });
-        }
+        (typeof found !== "object")?next():
+            res.status(401).json({status:401, message:  'A user with the given email already exists'})
     },
     addToDataBase: (req, res) => {
-        let { firstname, email, password, username } = req.body;
+        let { firstname, email, password, lastname } = req.body;
         let id = database.Users.length + 1;
         let pass = util.hashPassword(password);
-        let token = auth.generateToken({ firstname, email, pass });
-        let user = new Client(firstname, email, pass, username);
+        let token = auth.generateToken({ pass, email, firstname } );
+        let user = new Client(firstname, email, pass, lastname);
         user.token = token;
         req.user = user;
         user.id = id++;
@@ -88,12 +67,12 @@ module.exports = {
             });
         }
     },
-    validateSignupInputField: (req, res, next) => {
-        const { firstname, username, email, surname, password } = req.body;
+    signupInputField: (req, res, next) => {
+        const { firstname, email, lastname, password } = req.body;
         let nameTest = /^[A-z]{3,20}$/,
             emailTest = /([A-z0-9.-_]+)@([A-z]+)\.([A-z]){2,5}$/,
             passText = /[a-zA-Z0-9\w!@#$%^&*()_+|]{8,20}$/;
-        if (!nameTest.test(firstname) || !nameTest.test(username) || !emailTest.test(email) || !passText.test(password)) {
+        if (!nameTest.test(firstname) || !nameTest.test(lastname) || !emailTest.test(email) || !passText.test(password)) {
             res.status(403).json({
                 status: 403,
                 message: 'Please check that all field are filled'

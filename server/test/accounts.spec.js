@@ -52,7 +52,7 @@ describe('Testing user account creation on route /api/v1/:user_id/accounts', () 
     it('should fail and return status 404 if no account is found for account_id in req.params.account_id', done => {
         chai.request(app).patch("/api/v1/1/account/23").end((err, res) => {
             expect(res).to.have.status(404);
-            expect(res.body.message).to.equal('No account found for ID: 23');
+            expect(res.body.message).to.equal('No account found');
             done();
         });
     });
