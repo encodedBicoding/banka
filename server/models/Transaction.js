@@ -39,7 +39,7 @@ class Transaction {
             createdOn: this.createdOn,
             transactionType: this.type,
             accountNumber: this.accountNumber,
-            cashier: this.cashier,
+            cashier: this.cashier.toLocaleUpperCase(),
             amount: this.amount,
             oldBalance: this.oldBalance,
             newBalance: this.newBalance

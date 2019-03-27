@@ -1,6 +1,5 @@
 const Staffs = require('../models/database').Staffs,
       Users = require('../models/database').Users;
-
 module.exports = {
     validateStaff: (req, res, next) => {
         let { staff_id } = req.params;
@@ -10,7 +9,7 @@ module.exports = {
                 status: 401,
                 message: 'Not Authorized'
             });
-        } else if (staff[0].isAdmin === true) {
+        }else  {
             next();
         }
     },
@@ -22,7 +21,7 @@ module.exports = {
                 status: 401,
                 message: 'Not Authorized'
             });
-        } else if (staff[0].type === 'admin') {
+        } else {
             next();
         }
     },
@@ -34,7 +33,7 @@ module.exports = {
                 status: 401,
                 message: 'Not Authorized'
             });
-        } else if (user[0].type === 'client') {
+        } else{
             next();
         }
     }

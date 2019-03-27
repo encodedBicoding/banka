@@ -11,7 +11,6 @@ function showDashNav(){
         event.preventDefault();
         toggle(nav) === 'block' ?
         span.className = 'fa fa-times':span.className = 'fa fa-bars';
-        console.log("workind");
     })
 
 }

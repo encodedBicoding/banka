@@ -17,7 +17,7 @@ module.exports = app => {
     router.post('/api/v1/auth/admin/login', validate.validateAdminLogin, login.adminLogin);
 
     //Signup Endpoints
-    router.post('/api/v1/auth/signup', validate.validateSignupInputField, validate.checkUserExists, validate.addToDataBase);
+    router.post('/api/v1/auth/signup', validate.signupInputField, validate.checkUserExists, validate.addToDataBase);
 
     //Accounts Endpoints
 
