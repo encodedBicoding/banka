@@ -27,7 +27,7 @@ module.exports = app => {
     router.get('/api/v1/:user_id/accounts', isValid.validateUser, account.getSingleAccount);
 
     //Only Admin / Staff can activate or deactivate account
-    app.patch('/api/v1/:staff_id/account/:account_id', isValid.validateStaff, account.changeStatus);
+    router.patch('/api/v1/:staff_id/account/:account_id', isValid.validateStaff, account.changeStatus);
     //Only Admin / Staff can delete user account
     router.delete('/api/v1/:staff_id/account/:account_id', isValid.validateStaff, account.deleteAccount);
     //Only Staff can debit an account
@@ -40,7 +40,7 @@ module.exports = app => {
     //Api to allow client upload image
     router.put('/api/v1/client/:user_id/uploads', isValid.validateUser, profile.clientImageUpload);
     //Api to allow staff upload image
-    app.put('/api/v1/staff/:staff_id/uploads', isValid.validateStaff, profile.staffImageUpload);
+    router.put('/api/v1/staff/:staff_id/uploads', isValid.validateStaff, profile.staffImageUpload);
 
     router.use((req, res) => {
         res.status(404).json({

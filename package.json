@@ -8,7 +8,7 @@
     "start": "node server/app.js",
     "build": "babel server -d server/",
     "start-dev": "nodemon --exec babel-node server/app.js",
-    "test": "nyc --require babel-core/register mocha server/test/**.spec.js --exit",
+    "test": "nyc --require babel-core/register mocha server/test/**.spec.js --timeout 10000 --exit",
     "test-single": "nyc --require babel-core/register mocha server/test/**.spec.js --exit",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
