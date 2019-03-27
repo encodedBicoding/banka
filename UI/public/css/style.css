@@ -100,7 +100,7 @@ header a{
 #services{
     background-color: #00003a;
     color: #fff;
-    padding: 39px 0 0 0;
+    padding: 9% 0 10% 0;
     margin: 0 0 0 2px;
     border-bottom: #ff8c00 solid 7px;
 }
@@ -143,7 +143,7 @@ header a{
 /*Contact us*/
 #contact{
     background: url(../images/banking-transformation.jpg) no-repeat 0 -30px;
-    padding: 35px 0 40px 0;
+    padding: 9% 0 9% 0;
     border-bottom: #ff8c00 solid 7px;
     color: #fff;
 }
@@ -330,7 +330,7 @@ footer p{
 }
 #user_profile{
     float: left;
-    padding:10px;
+    padding:1%;
     margin: 0 0 0 3px;
     width: 20%;
     height: auto;
@@ -373,7 +373,8 @@ footer p{
 /*Profile Body*/
 #profile_body{
     float: right;
-    width: 78%;
+    width: 75%;
+    padding: 1%
 }
 #search label{
     display: block;
