@@ -1,5 +1,5 @@
-class Account{
-    constructor(id, accountNumber, type, userType, ob){
+class Account {
+    constructor(id, accountNumber, type, userType, ob) {
         this.id = id;
         this.accountNumber = accountNumber;
         this.owner = '';
@@ -13,4 +13,4 @@ class Account{
         this.lastDeposit = 'no transactions yet';
     }
 }
-module.exports = Account ;
+module.exports = Account;
