@@ -1,9 +1,10 @@
 const chai = require('chai'),
       app = require('../app'),
-      chaiHttp = require('chai-http');
+      chaiHttp = require('chai-http'),
+      Accounts = require('../models/database').Accounts;
 chai.use(chaiHttp);
 const { expect } = chai;
-describe('Testing user account creation on route /api/v1/:user_id/accounts', () => {
+describe('Handle account status  account delete', ()=>{
     it('should return status 200 and owner id if userid is found', done => {
         chai.request(app).post('/api/v1/1/accounts').send({
             acc_type: 'current',
@@ -14,6 +15,17 @@ describe('Testing user account creation on route /api/v1/:user_id/accounts', () 
             done();
         });
     });
+    it('should return status 404 if account not found', (done)=>{
+        chai
+            .request(app)
+            .delete('/api/v1/1/account/2344')
+            .end((err, res)=>{
+                expect(res).to.have.status(404);
+                done();
+            })
+    });
+});
+describe('Testing user account creation on route /api/v1/:user_id/accounts', () => {
     it('should return status 200 if user account has been successfully debited', done => {
         chai.request(app).post("/api/v1/1/transactions/1/debit").send({
             amount: 30000,
@@ -84,6 +96,16 @@ describe('Testing user account creation on route /api/v1/:user_id/accounts', () 
             done();
         });
     });
+    it('should return status 404 if account is empty', (done)=>{
+        chai
+            .request(app)
+            .patch('/api/v1/1/account/1')
+            .end((err, res)=>{
+                expect(Accounts.length).to.equal(0);
+                expect(res).to.have.status(404);
+                done();
+            })
+    });
     it('should fail and return status 401 with a Not Authorized message  if staff id is invalid', done => {
         chai.request(app).post("/api/v1/23/transactions/1/debit").send({
             amount: 3000,
@@ -104,10 +126,12 @@ describe('Testing user account creation on route /api/v1/:user_id/accounts', () 
             done();
         });
     });
-    it('should return status 200 if user id is valid when trying to get all user accounts', done => {
+    it('should return status 200 if user id is valid when trying to get all their accounts', done => {
         chai.request(app).get("/api/v1/1/accounts").end((err, res) => {
             expect(res).to.have.status(200);
             done();
         });
     });
 });
+
+
