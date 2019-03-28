@@ -30,7 +30,7 @@ module.exports = {
             if(account.length <= 0){
                 res.status(404).json({
                         status: 404,
-                        message: `No account found`
+                        message: 'No account found'
                     });
              } else {
                 account[0].status === 'active' ? account[0].status = "dormant" : account[0].status = "active";
@@ -46,8 +46,8 @@ module.exports = {
         let staff = Staffs.filter(staff => staff.id === Number(staff_id) && staff.isAdmin === true);
         if (staff[0].isAdmin === true) {
             if (Accounts.length <= 0) {
-                res.status(204).json({
-                    status: 204,
+                res.status(404).json({
+                    status: 404,
                     message: 'No account to delete'
                 });
             } else {
