@@ -41,31 +41,29 @@ module.exports = {
             }
         }
     },
-    deleteAccount: (req, res) => {
+    deleteAccount: (req, res)=>{
         const { staff_id, account_id } = req.params;
-        let staff = Staffs.filter(staff => staff.id === Number(staff_id) && staff.isAdmin === true);
-        if (staff[0].isAdmin === true) {
-            if (Accounts.length <= 0) {
+        let staff = Staffs.filter( staff => staff.id === Number(staff_id)
+            && staff.isAdmin === true);
+        if(staff[0].isAdmin === true){
+            if(Accounts.length <= 0){
                 res.status(404).json({
                     status: 404,
                     message: 'No account to delete'
-                });
+                })
             } else {
-                Accounts.map(account => {
-                    if (account.id === Number(account_id)) {
-                        Accounts.splice(Accounts.findIndex(account => account.id === Number(account_id)));
-                        res.status(200).json({
-                            status: 200,
-                            message: 'Account Successfully Deleted',
-                            deletedBy: staff[0].firstname + " " + staff[0].lastname
-                        });
-                    } else {
-                        res.status(404).json({
-                            status: 404,
-                            message: `No account found for ID: ${account_id}` });
-                    }
-                });
+                Accounts.splice( Accounts.findIndex( account => account.id === Number(account_id)));
+                res.status(200).json({
+                    status: 200,
+                    message: 'Account Successfully Deleted',
+                    deletedBy: staff[0].firstname + " " + staff[0].lastname
+                })
             }
+        } else {
+            res.status(404).json({
+                status: 404,
+                message: `No account found for ID: ${account_id}`
+            })
         }
     },
     debitAccount: (req, res) => {
