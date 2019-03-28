@@ -11,7 +11,7 @@ module.exports = {
     login: (req, res) => {
         const { email, password } = req.body;
         let token = auth.generateToken({ email, password });
-        let user = database.Users.filter( user => user.email = email);
+        let user = database.Users.filter( user => user.email === email);
         user[0].token = token;
         req.user = user[0];
         res.status(200).json({
