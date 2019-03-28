@@ -33,8 +33,8 @@ module.exports = {
         req.user = user;
         user.id = id++;
         database.Users.push(user);
-        res.status(200).json({
-            status: 200,
+        res.status(201).json({
+            status: 201,
             message: 'Account created successfully',
             user });
     },
@@ -47,8 +47,8 @@ module.exports = {
                 let newStaff = new Staff(firstname, email, type, password);
                 newStaff.id = id + 1;
                 database.Staffs.push(newStaff);
-                res.status(200).json({
-                    status: 200,
+                res.status(201).json({
+                    status: 201,
                     message: newStaff
                 });
             } else if (type === 'admin') {
@@ -56,8 +56,8 @@ module.exports = {
                 let newAdmin = new Admin(firstname, email, type, password);
                 newAdmin.id = id + 1;
                 database.Staffs.push(newAdmin);
-                res.status(200).json({
-                    status: 200,
+                res.status(201).json({
+                    status: 201,
                     message: newAdmin });
             }
         } else {
