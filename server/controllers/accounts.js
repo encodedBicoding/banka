@@ -10,7 +10,7 @@ module.exports = {
         const { acc_type, user_type } = req.body;
         let { user_id } = req.params;
         let id =0;
-        let user = Users.filter( user => user.id = Number(user_id)),
+        let user = Users.filter( user => user.id === Number(user_id)),
             accountNumber =  generateAccountNumber(),
             account = new Account(id + 1, accountNumber, acc_type, user_type);
         account.owner = user[0].id;
