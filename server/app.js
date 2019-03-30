@@ -4,7 +4,7 @@ let express = require('express'),
 
 app = config(app);
 
-const PORT = process.env.PORT || 8142;
+const PORT = process.env.PORT || 2742;
 app.listen(PORT, console.log(`app running on PORT ${PORT}`));
 
 module.exports = app;
