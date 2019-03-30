@@ -1,17 +1,17 @@
 const jwt = require('jsonwebtoken'),
       secretKey = 'catsanddogs';
 
-function generateToken(payload) {
-    const token = jwt.sign(payload, secretKey, { expiresIn: '1 week' });
+const generateToken = payload => {
+    let token = jwt.sign(payload, secretKey, {expiresIn: '1week'});
     return token;
-}
-function verifyToken(token) {
-    try {
-        const payload = jwt.verify(token, secretKey);
+};
+const verifyToken = token =>{
+    try{
+        let payload =jwt.verify(token, secretKey);
         return payload;
-    } catch (e) {
-        return { error: `${e}` };
+    } catch(e){
+        return { error: `${e}`}
     }
-}
+};
 
 module.exports = { generateToken, verifyToken };

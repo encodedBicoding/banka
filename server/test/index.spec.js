@@ -18,6 +18,16 @@ describe('Handle incoming requests', () => {
             done(err);
         });
     });
+    it('should return status 404 if route is not available on server', (done)=>{
+        chai
+            .request(app)
+            .get('/i-dont-exist/')
+            .end((err, res)=>{
+                expect(res).to.have.status(404);
+                expect(res.body.message).to.equal('no such endpoints on this server');
+                done();
+            })
+    })
 });
 describe('Handle user login details', ()=>{
    it('it should fail and return error 404 if user details are not found in database', (done)=>{
@@ -95,6 +105,21 @@ describe('Handle admin login', ()=>{
                 expect(res).to.have.status(401);
                 done();
             })
+    });
+    it('should fail and return status 404 if admin doesnt exist in database', (done)=>{
+        chai
+            .request(app)
+            .post('/api/v1/4/create')
+            .send({
+                firstname: 'john',
+                email: 'johndoe@gmail.com',
+                password: '123456789',
+                type: 'admin'
+            })
+            .end((err, res)=>{
+                expect(res).to.have.status(401);
+                done();
+            })
     })
 });
 describe("Check if a user login details already exists before adding to database", ()=>{
@@ -123,6 +148,36 @@ describe("Check if a user login details already exists before adding to database
             })
             .end((err, res)=>{
                 expect(res).to.have.status(201);
+                done();
+            })
+    });
+    it('should fail and return status 403 if all fields are not field', (done)=>{
+        chai
+            .request(app)
+            .post('/api/v1/auth/signup')
+            .send({
+                firstname: 'seun',
+                email: ' ',
+                password: '122343554',
+                lastname: 'alakija'
+            })
+            .end((err, res)=>{
+                expect(res).to.have.status(403);
+                done();
+            })
+    });
+    it('should fail and return status 403 if email is field wrongly', (done)=>{
+        chai
+            .request(app)
+            .post('/api/v1/auth/signup')
+            .send({
+                firstname: 'seun',
+                email: ' dfdsaf',
+                password: '122343554',
+                lastname: 'alakija'
+            })
+            .end((err, res)=>{
+                expect(res).to.have.status(403);
                 done();
             })
     });
