@@ -7,12 +7,13 @@ const Users = require('../models/database').Users,
 
 module.exports = {
     createAccount: (req, res) => {
+        let id =0;
         const { acc_type, user_type } = req.body;
         let { user_id } = req.params;
-        let id =0;
+        id++;
         let user = Users.filter( user => user.id === Number(user_id)),
             accountNumber =  generateAccountNumber(),
-            account = new Account(id + 1, accountNumber, acc_type, user_type);
+            account = new Account(id, accountNumber, acc_type, user_type);
         account.owner = user[0].id;
         user[0].accounts.push(account);
         user[0].noOfAccounts++;
@@ -27,18 +28,16 @@ module.exports = {
         let staff = Staffs.filter(staff => staff.id === Number(staff_id) && staff.isAdmin === true);
         if (staff[0].isAdmin === true) {
             let account = Accounts.filter(account => account.id === Number(account_id));
-            if(account.length <= 0){
+            (account.length <= 0) ?
                 res.status(404).json({
-                        status: 404,
-                        message: 'No account found'
-                    });
-             } else {
+                    status: 404,
+                    message: 'No account found'
+                }) :
                 account[0].status === 'active' ? account[0].status = "dormant" : account[0].status = "active";
-                    res.status(200).json({
-                        status: 200,
-                        data: account[0]
-                    });
-            }
+                res.status(200).json({
+                    status: 200,
+                    data: account[0]
+                });
         }
     },
     deleteAccount: (req, res)=>{
