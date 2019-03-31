@@ -14,6 +14,24 @@ describe('Testing user account creation on route /api/v1/:user_id/accounts', () 
             done();
         });
     });
+    it('should return status 200 if user account has been successfully credited', done => {
+        chai.request(app).post("/api/v1/1/transactions/1/credit").send({
+            amount: 30000,
+            acc_id: 92039433
+        }).end((err, res) => {
+            expect(res).to.have.status(200);
+            done();
+        });
+    });
+    it('should fail and return status 404 if account is not found to be credited', done => {
+        chai.request(app).post("/api/v1/1/transactions/23/credit").send({
+            amount: 30000,
+            acc_id: 92039433
+        }).end((err, res) => {
+            expect(res).to.have.status(404);
+            done();
+        });
+    });
     it('should fail and return status 401 if account amount is less than amount-to-debit', done => {
         chai.request(app).post('/api/v1/1/transactions/1/debit').send({
             amount: 300000000,

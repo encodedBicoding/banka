@@ -5,7 +5,7 @@ class Account {
         this.owner = '';
         this.type = type;
         this.ownerCategory = userType;
-        this.openingBalance = ob ? ob : 0.0;
+        this.openingBalance = ob !== 0 ? ob : 0.0;
         this.createdOn = new Date(Date.now());
         this.status = 'active';
         this.balance = 0.0;
