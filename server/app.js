@@ -1,10 +1,12 @@
-let express = require('express'),
-    config = require('./config/config.js'),
-    app = express();
+import express from 'express';
 
-app = config(app);
+import config from './config/config';
 
-const PORT = process.env.PORT || 2142;
+const app = express();
+
+config(app);
+
+const PORT = process.env.PORT || 2042;
 app.listen(PORT, console.log(`app running on PORT ${PORT}`));
 
-module.exports = app;
+export default app;

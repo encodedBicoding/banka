@@ -1,17 +1,22 @@
-const jwt = require('jsonwebtoken'),
-      secretKey = 'catsanddogs';
+import jwt from 'jsonwebtoken';
 
-const generateToken = payload => {
-    let token = jwt.sign(payload, secretKey, {expiresIn: '1week'});
+
+const secretKey = 'catsanddogs';
+
+class Auth {
+  static generateToken(payload) {
+    const token = jwt.sign(payload, secretKey, { expiresIn: '1week' });
     return token;
-};
-const verifyToken = token =>{
-    try{
-        let payload =jwt.verify(token, secretKey);
-        return payload;
-    } catch(e){
-        return { error: `${e}`}
-    }
-};
+  }
 
-module.exports = { generateToken, verifyToken };
+  static verifyToken(token) {
+    try {
+      const payload = jwt.verify(token, secretKey);
+      return payload;
+    } catch (e) {
+      return { error: `${e}` };
+    }
+  }
+}
+
+export default Auth;
