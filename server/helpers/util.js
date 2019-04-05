@@ -1,10 +1,13 @@
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
-const hashPassword = password => {
+class Util {
+  static hashPassword(password) {
     return bcrypt.hashSync(password, 10);
-};
-const validatePassword = (password, hash)=> {
-    return bcrypt.compareSync(password, hash);
-};
-module.exports = { hashPassword, validatePassword };
+  }
 
+  static validatePassword(password, hash) {
+    return bcrypt.compareSync(password, hash);
+  }
+}
+
+export default Util;

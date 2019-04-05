@@ -1,10 +1,10 @@
-const User = require('./User');
+import User from './User';
 
 class Admin extends User {
-    constructor(firstname, email, password, lastname) {
-        super(firstname, email, password, lastname);
-        this.type = 'admin';
-        this.isAdmin = true;
-    }
+  constructor(firstname, email, password, lastname) {
+    super(firstname, email, password, lastname);
+    this.type = 'admin';
+    this.isAdmin = true;
+  }
 }
-module.exports = Admin;
+export default Admin;
