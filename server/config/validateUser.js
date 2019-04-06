@@ -56,7 +56,7 @@ class ValidateUser {
     const pass = Util.hashPassword(password);
     const token = Auth.generateToken({ email, firstname });
     const user = new Client(firstname, email, pass, lastname);
-    user.id = id + 1;
+    user.id = id;
     Database.users.push(user);
     res.status(201).json({
       status: 201,
