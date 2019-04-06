@@ -17,10 +17,12 @@ class Login {
     const user = users.filter(u => u.email === email);
     res.status(200).json({
       status: 200,
-      data: {
-        user: user[0],
+      data: [
+        {
+          user: user[0],
+        },
         token,
-      },
+      ],
     });
   }
 
@@ -30,10 +32,13 @@ class Login {
     const staff = staffs.filter(s => s.email === email);
     res.status(200).json({
       status: 200,
-      data: {
-        user: staff[0],
+      data: [
+        {
+          staff: staff[0],
+        },
         token,
-      },
+      ],
+
     });
   }
 }

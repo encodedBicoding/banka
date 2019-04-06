@@ -5,14 +5,12 @@ const secretKey = 'catsanddogs';
 
 class Auth {
   static generateToken(payload) {
-    const token = jwt.sign(payload, secretKey, { expiresIn: '1week' });
-    return token;
+    return jwt.sign(payload, secretKey, { expiresIn: '1week' });
   }
 
   static verifyToken(token) {
     try {
-      const payload = jwt.verify(token, secretKey);
-      return payload;
+      return jwt.verify(token, secretKey);
     } catch (e) {
       return { error: `${e}` };
     }

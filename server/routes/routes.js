@@ -30,38 +30,47 @@ const routes = (app) => {
   // Client create account
   router.post('/api/v1/:userId/accounts',
     Validate.validateUser,
+    Validate.authenticateUser,
     Accounts.createAccount);
   // Client get single account transaction
   router.get('/api/v1/:userId/accounts',
     Validate.validateUser,
+    Validate.authenticateUser,
     Accounts.getSingleAccount);
   // Only Admin / Staff can activate or deactivate account
   router.patch('/api/v1/:staffId/account/:accountId',
     Validate.validateStaff,
+    Validate.authenticateStaff,
     Accounts.changeStatus);
   // Only Admin / staff can delete user account
   router.delete('/api/v1/:staffId/account/:accountId',
     Validate.validateStaff,
+    Validate.authenticateStaff,
     Accounts.deleteAccount);
   // Only Staff can debit an account
   router.post('/api/v1/:staffId/transactions/:accountId/debit',
     Validate.validateStaff,
+    Validate.authenticateStaff,
     Accounts.debitAccount);
   // Only Staff can credit an account
   router.post('/api/v1/:staffId/transactions/:accountId/credit',
     Validate.validateStaff,
+    Validate.authenticateStaff,
     Accounts.creditAccount);
   // Only Admin can create staff account
   router.post('/api/v1/:staffId/create',
     Validate.validateAdmin,
+    Validate.authenticateAdmin,
     ValidateUser.addAdmin);
   // Api to allow client upload image
   router.put('/api/v1/client/:userId/uploads',
     Validate.validateUser,
+    Validate.authenticateUser,
     Profile.clientImageUpload);
   // Api to allow staff upload image
   router.put('/api/v1/staff/:staffId/uploads',
     Validate.validateStaff,
+    Validate.authenticateStaff,
     Profile.staffImageUpload);
 
   router.use((req, res) => {
