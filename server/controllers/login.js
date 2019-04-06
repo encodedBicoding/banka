@@ -18,9 +18,7 @@ class Login {
     res.status(200).json({
       status: 200,
       data: [
-        {
-          user: user[0],
-        },
+        user[0],
         token,
       ],
     });
