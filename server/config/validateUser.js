@@ -9,8 +9,7 @@ class ValidateUser {
   static validateLogin(req, res, next) {
     const { email, password } = req.body;
     const user = Database.users.filter(u => u.email === email);
-    const hashedPassword = Util.validatePassword(password, user[0].password);
-    if (user.length <= 0 || (!hashedPassword)) {
+    if (user.length <= 0 || (!Util.validatePassword(password, user[0].password))) {
       res.status(404).json({
         status: 404,
         message: 'email or password not found',
@@ -23,8 +22,7 @@ class ValidateUser {
   static validateAdminLogin(req, res, next) {
     const { email, password } = req.body;
     const staff = Database.staffs.filter(s => s.email === email);
-    const hashedPassword = Util.validatePassword(password, staff[0].password);
-    if (staff.length <= 0 || hashedPassword === undefined) {
+    if (staff.length <= 0 || (!Util.validatePassword(password, staff[0].password))) {
       res.status(404).json({
         status: 404,
         message: 'email or password not found',
@@ -60,7 +58,6 @@ class ValidateUser {
     const user = new Client(firstname, email, pass, lastname);
     user.id = id + 1;
     Database.users.push(user);
-    console.log(req.headers);
     res.status(201).json({
       status: 201,
       message: 'Account created successfully',

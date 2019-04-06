@@ -29,7 +29,7 @@ class Accounts {
     const staff = staffs.filter(s => s.id === Number(staffId) && s.isAdmin === true);
     if (staff[0].isAdmin === true) {
       const account = accounts.filter(acc => acc.id === Number(accountId));
-      if (account.length < 0) {
+      if (account.length <= 0) {
         res.status(404).json({
           status: 404,
           message: 'No account found',
@@ -51,7 +51,7 @@ class Accounts {
   static deleteAccount(req, res) {
     const { staffId, accountId } = req.params;
     const staff = staffs.filter(s => s.id === Number(staffId)
-        && staff.isAdmin === true);
+        && s.isAdmin === true);
     if (staff[0].isAdmin === true) {
       if (accounts.length <= 0) {
         res.status(404).json({

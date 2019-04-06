@@ -4,7 +4,7 @@ import Database from '../models/Database';
 const { users, staffs } = Database;
 
 class Validate {
-  static validateStaff(req, res, next)  {
+  static validateStaff(req, res, next) {
     const { staffId } = req.params;
     const staff = staffs.filter(s => s.id === Number(staffId) && s.isAdmin === true);
     if (staff.length <= 0) {
