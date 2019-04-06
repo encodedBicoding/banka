@@ -61,10 +61,10 @@ class ValidateUser {
     res.status(201).json({
       status: 201,
       message: 'Account created successfully',
-      data: {
-        token,
+      data: [
         user,
-      },
+        token,
+      ],
     });
   }
 
@@ -80,21 +80,36 @@ class ValidateUser {
     if (staff.length <= 0) {
       if (type === 'staff') {
         const id = Database.staffs.length + 1;
-        const newStaff = new Staff(firstname, email, type, password);
+        const pass = Util.hashPassword(password);
+        const token = Auth.generateToken({ email, firstname, isAdmin: true });
+        const newStaff = new Staff(firstname, email, type, pass);
         newStaff.id = id + 1;
         Database.staffs.push(newStaff);
         res.status(201).json({
           status: 201,
-          message: newStaff,
+          data: [
+            newStaff,
+            token,
+          ],
         });
       } else if (type === 'admin') {
         const id = Database.staffs.length + 1;
-        const newAdmin = new Admin(firstname, email, type, password);
+        const pass = Util.hashPassword(password);
+        const token = Auth.generateToken({
+          email,
+          firstname,
+          isAdmin: true,
+          type: 'admin',
+        });
+        const newAdmin = new Admin(firstname, email, type, pass);
         newAdmin.id = id + 1;
         Database.staffs.push(newAdmin);
         res.status(201).json({
           status: 201,
-          message: newAdmin,
+          data: [
+            newAdmin,
+            token,
+          ],
         });
       }
     } else {
@@ -119,7 +134,7 @@ class ValidateUser {
         || !passText.test(password)) {
       res.status(403).json({
         status: 403,
-        message: 'Please check that all field are filled',
+        message: 'Please check that all fields are filled',
       });
     } else {
       next();
