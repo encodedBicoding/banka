@@ -1,9 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
-import Database from '../models/Database';
-
-const { accounts } = Database;
 
 chai.use(chaiHttp);
 
@@ -143,24 +140,10 @@ describe('Test user login', () => {
       .request(app)
       .post('/api/v1/client/2/uploads')
       .set('authorization', `Bearer ${userToken}`)
-      .send({
-        imageUrl: 'silvai.jpeg',
-      })
+      .field({user_img: 'UI\\public\\uploads\\temp\\9134c30e9586bd2c2d9b2872060dba0b'})
+      .attach('user_img', './UI/public/uploads/BANKA-IMG-2829.jpg')
       .end((err, res) => {
         expect(res).to.have.status(200);
-        done();
-      });
-  });
-  it('should return status 406 if user image is a valid one', (done) => {
-    chai
-      .request(app)
-      .post('/api/v1/client/2/uploads')
-      .set('authorization', `Bearer ${userToken}`)
-      .send({
-        imageUrl: 'silvai.wahere',
-      })
-      .end((err, res) => {
-        expect(res).to.have.status(406);
         done();
       });
   });
@@ -280,24 +263,10 @@ describe('Testing admin account creation, account activation and deletion', () =
       .request(app)
       .post('/api/v1/staff/2/uploads')
       .set('authorization', `Bearer ${staffToken}`)
-      .send({
-        imageUrl: 'silvai.jpeg',
-      })
+      .field({ user_img: 'UI\\public\\uploads\\temp\\9134c30e9586bd2c2d9b2872060dba0b' })
+      .attach('user_img', './UI/public/uploads/BANKA-IMG-2829.jpg')
       .end((err, res) => {
         expect(res).to.have.status(200);
-        done();
-      });
-  });
-  it('should return status 406 if admin image is a valid one', (done) => {
-    chai
-      .request(app)
-      .post('/api/v1/staff/2/uploads')
-      .set('authorization', `Bearer ${staffToken}`)
-      .send({
-        imageUrl: 'silvai.wef',
-      })
-      .end((err, res) => {
-        expect(res).to.have.status(406);
         done();
       });
   });
