@@ -1,52 +1,85 @@
-const validate = require('../config/validateUser'),
-      index = require("../controllers/index"),
-      login = require('../controllers/login'),
-      account = require('../controllers/accounts'),
-      isValid = require('../helpers/validate'),
-      profile = require('../helpers/profile'),
-      express = require('express'),
-      router = express.Router();
+import express from 'express';
+import ValidateUser from '../config/validateUser';
+import Login from '../controllers/login';
+import Index from '../controllers/index';
+import Accounts from '../controllers/Accounts';
+import Validate from '../helpers/validate';
+import Profile from '../helpers/profile';
 
-module.exports = app => {
-    router.get('/', index.home);
+const router = express.Router();
 
-    //Login Endpoints
-    router.get('/api/v1/login', login.index);
-    router.post('/api/v1/auth/login', validate.validateLogin, login.login);
-    //Admin Login Endpoint
-    router.post('/api/v1/auth/admin/login', validate.validateAdminLogin, login.adminLogin);
 
-    //Signup Endpoints
-    router.post('/api/v1/auth/signup', validate.signupInputField, validate.checkUserExists, validate.addToDataBase);
+const routes = (app) => {
+  router.get('/', Index.home);
+  // User Login Routes
+  router.get('/api/v1/login', Login.index);
+  router.post('/api/v1/auth/login',
+    ValidateUser.validateLogin,
+    Login.login);
+  // Admin Login routes
+  router.post('/api/v1/auth/admin/login',
+    ValidateUser.validateAdminLogin,
+    Login.adminLogin);
+  // Signup routes
+  router.post('/api/v1/auth/signup',
+    ValidateUser.signupInputField,
+    ValidateUser.checkUserExists,
+    ValidateUser.addToDatabase);
 
-    //Accounts Endpoints
+  // Accounts routes
+  // Client create account
+  router.post('/api/v1/:userId/accounts',
+    Validate.validateUser,
+    Validate.authenticateUser,
+    Accounts.createAccount);
+  // Client get single account transaction
+  router.get('/api/v1/:userId/accounts',
+    Validate.validateUser,
+    Validate.authenticateUser,
+    Accounts.getSingleAccount);
+  // Only Admin / Staff can activate or deactivate account
+  router.patch('/api/v1/:staffId/account/:accountId',
+    Validate.validateStaff,
+    Validate.authenticateStaff,
+    Accounts.changeStatus);
+  // Only Admin / staff can delete user account
+  router.delete('/api/v1/:staffId/account/:accountId',
+    Validate.validateStaff,
+    Validate.authenticateStaff,
+    Accounts.deleteAccount);
+  // Only Staff can debit an account
+  router.post('/api/v1/:staffId/transactions/:accountId/debit',
+    Validate.validateStaff,
+    Validate.authenticateStaff,
+    Accounts.debitAccount);
+  // Only Staff can credit an account
+  router.post('/api/v1/:staffId/transactions/:accountId/credit',
+    Validate.validateStaff,
+    Validate.authenticateStaff,
+    Accounts.creditAccount);
+  // Only Admin can create staff account
+  router.post('/api/v1/:staffId/create',
+    Validate.validateAdmin,
+    Validate.authenticateAdmin,
+    ValidateUser.addAdmin);
+  // Api to allow client upload image
+  router.put('/api/v1/client/:userId/uploads',
+    Validate.validateUser,
+    Validate.authenticateUser,
+    Profile.clientImageUpload);
+  // Api to allow staff upload image
+  router.put('/api/v1/staff/:staffId/uploads',
+    Validate.validateStaff,
+    Validate.authenticateStaff,
+    Profile.staffImageUpload);
 
-    //Client Create an account
-    router.post('/api/v1/:user_id/accounts', isValid.validateUser, account.createAccount);
-    //Client get single account
-    router.get('/api/v1/:user_id/accounts', isValid.validateUser, account.getSingleAccount);
-
-    //Only Admin / Staff can activate or deactivate account
-    router.patch('/api/v1/:staff_id/account/:account_id', isValid.validateStaff, account.changeStatus);
-    //Only Admin / Staff can delete user account
-    router.delete('/api/v1/:staff_id/account/:account_id', isValid.validateStaff, account.deleteAccount);
-    //Only Staff can debit an account
-    router.post('/api/v1/:staff_id/transactions/:account_id/debit', isValid.validateStaff, account.debitAccount);
-    //Only Staff can credit an account
-    router.post('/api/v1/:staff_id/transactions/:account_id/credit', isValid.validateStaff, account.creditAccount);
-    //Only Admin can create staff account
-    router.post('/api/v1/:staff_id/create', isValid.validateAdmin, validate.addAdmin);
-
-    //Api to allow client upload image
-    router.put('/api/v1/client/:user_id/uploads', isValid.validateUser, profile.clientImageUpload);
-    //Api to allow staff upload image
-    router.put('/api/v1/staff/:staff_id/uploads', isValid.validateStaff, profile.staffImageUpload);
-
-    router.use((req, res) => {
-        res.status(404).json({
-            status: 404,
-            message: 'no such endpoints on this server'
-        });
+  router.use((req, res) => {
+    res.status(404).json({
+      status: 404,
+      message: 'no such endpoints on this server',
     });
-    app.use(router);
+  });
+
+  app.use(router);
 };
+export default routes;

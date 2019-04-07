@@ -1,37 +1,44 @@
-const auth = require('../helpers/auth'),
-      database = require('../models/database');
+import Auth from '../helpers/auth';
+import Database from '../models/Database';
 
-module.exports = {
-    index: (req, res) => {
-        res.status(200).json({
-            status: 200,
-            message: 'Welcome to the login page'
-        });
-    },
-    login: (req, res) => {
-        const { email, password } = req.body;
-        let token = auth.generateToken({ email, password });
-        let user = database.Users.filter( user => user.email === email);
-        user[0].token = token;
-        req.user = user[0];
-        res.status(200).json({
-            status: 200,
-            data: req.user,
-        });
-    },
-    adminLogin: (req, res) => {
-        const { email, password } = req.body;
-        let token = auth.generateToken({ email, password });
-        database.Staffs.map(staff => {
-            if (staff.email === email) {
-                staff.token = token;
-                req.user = staff;
-                res.status(200).json({
-                    status: 200,
-                    token,
-                    data: staff
-                });
-            }
-        });
-    }
-};
+const { users, staffs } = Database;
+
+class Login {
+  static index(req, res) {
+    res.status(200).json({
+      status: 200,
+      message: 'Welcome to the login page',
+    });
+  }
+
+  static login(req, res) {
+    const { email, password } = req.body;
+    const token = Auth.generateToken({ email, password });
+    const user = users.filter(u => u.email === email);
+    res.status(200).json({
+      status: 200,
+      data: [
+        user[0],
+        token,
+      ],
+    });
+  }
+
+  static adminLogin(req, res) {
+    const { email, password } = req.body;
+    const token = Auth.generateToken({ email, password, isAdmin: true });
+    const staff = staffs.filter(s => s.email === email);
+    res.status(200).json({
+      status: 200,
+      data: [
+        {
+          staff: staff[0],
+        },
+        token,
+      ],
+
+    });
+  }
+}
+
+export default Login;

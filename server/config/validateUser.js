@@ -1,87 +1,145 @@
-const database = require('../models/database'),
-      auth = require('../helpers/auth'),
-      util = require('../helpers/util'),
-      Client = require('../models/Client'),
-      Admin = require("../models/Admin"),
-      Staff = require("../models/Staff");
-module.exports = {
-    validateLogin: (req, res, next) => {
-        const { email, password } = req.body;
-        let user = database.Users.filter( user => user.email === email
-                                        && (util.validatePassword(password, user.password)));
-        (user.length <= 0)?res.status(404).json({status: 404, message: 'email or password not found'}):next();
-    },
-    validateAdminLogin: (req, res, next) => {
-        const { email, password } = req.body;
-        let staff = database.Staffs.filter( staff => staff.email === email
-            && (util.validatePassword(password, staff.password)));
-        (staff.length <= 0)?res.status(404).json({status: 404, message: 'email or password not found'}):next();
-    },
-    checkUserExists: (req, res, next) => {
-        let { email } = req.body,
-            found = database.Users.find(user => user.email === email);
-        (typeof found !== "object")? next():
-            res.status(401).json({status:401, message:  'A user with the given email already exists'})
-    },
-    addToDataBase: (req, res) => {
-        let { firstname, email, password, lastname }=req.body;
-        let id = database.Users.length + 1,
-            pass = util.hashPassword(password),
-            token = auth.generateToken({ pass, email, firstname } ),
-            user = new Client(firstname, email, pass, lastname);
-        user.token =token;
-        req.user =user;
-        user.id =id++;
-        database.Users.push(user);
-        res.status(201).json({
-            status: 201,
-            message: 'Account created successfully',
-            user });
-    },
-    addAdmin: (req, res) => {
-        let { firstname, email, type, password } = req.body,
-            staff = database.Staffs.filter(staff => staff.email === email);
-        if (staff.length <=0) {
-            if (type ==='staff') {
-                let id=0,
-                    newStaff = new Staff(firstname, email, type, password);
-                newStaff.id = id++;
-                database.Staffs.push(newStaff);
-                res.status(201).json({
-                    status: 201,
-                    message: newStaff
-                });
-            }else if (type === 'admin') {
-                let id = 0,
-                newAdmin = new Admin(firstname, email, type, password);
-                newAdmin.id = id++;
-                database.Staffs.push(newAdmin);
-                res.status(201).json({
-                    status: 201,
-                    message: newAdmin });
-            }
-        } else {
-            res.status(401).json({
-                status: 401,
-                message: 'Email already exists'
-            });
-        }
-    },
-    signupInputField: (req, res, next) => {
-        let { firstname, email, lastname, password } = req.body;
-        let nameTest = /^[A-z]{3,20}$/;
-        let emailTest = /([A-z0-9.-_]+)@([A-z]+)\.([A-z]){2,5}$/;
-        let passText = /[a-zA-Z0-9\w!@#$%^&*()_+|]{8,20}$/;
-        if (!nameTest.test(firstname)
-            || !nameTest.test(lastname)
-            || !emailTest.test(email)
-            || !passText.test(password)){
-            res.status(403).json({
-                status: 403,
-                message: 'Please check that all field are filled'
-            });
-        } else {
-            next()
-        }
+import Database from '../models/Database';
+import Auth from '../helpers/auth';
+import Util from '../helpers/util';
+import Client from '../models/Client';
+import Admin from '../models/Admin';
+import Staff from '../models/Staff';
+
+class ValidateUser {
+  static validateLogin(req, res, next) {
+    const { email, password } = req.body;
+    const user = Database.users.filter(u => u.email === email);
+    if (user.length <= 0 || (!Util.validatePassword(password, user[0].password))) {
+      res.status(404).json({
+        status: 404,
+        message: 'email or password not found',
+      });
+    } else {
+      next();
     }
-};
+  }
+
+  static validateAdminLogin(req, res, next) {
+    const { email, password } = req.body;
+    const staff = Database.staffs.filter(s => s.email === email);
+    if (staff.length <= 0 || (!Util.validatePassword(password, staff[0].password))) {
+      res.status(404).json({
+        status: 404,
+        message: 'email or password not found',
+      });
+    } else {
+      next();
+    }
+  }
+
+  static checkUserExists(req, res, next) {
+    const { email } = req.body;
+    const found = Database.users.find(user => user.email === email);
+    if (typeof found !== 'object') {
+      next();
+    } else {
+      res.status(401).json({
+        status: 401,
+        message: 'A user with the given email already exists',
+      });
+    }
+  }
+
+  static addToDatabase(req, res) {
+    const {
+      firstname,
+      email,
+      password,
+      lastname,
+    } = req.body;
+    const id = Database.users.length + 1;
+    const pass = Util.hashPassword(password);
+    const token = Auth.generateToken({ email, firstname });
+    const user = new Client(firstname, email, pass, lastname);
+    user.id = id;
+    Database.users.push(user);
+    res.status(201).json({
+      status: 201,
+      message: 'Account created successfully',
+      data: [
+        user,
+        token,
+      ],
+    });
+  }
+
+
+  static addAdmin(req, res) {
+    const {
+      firstname,
+      email,
+      type,
+      password,
+    } = req.body;
+    const staff = Database.staffs.filter(s => s.email === email);
+    if (staff.length <= 0) {
+      if (type === 'staff') {
+        const id = Database.staffs.length + 1;
+        const pass = Util.hashPassword(password);
+        const token = Auth.generateToken({ email, firstname, isAdmin: true });
+        const newStaff = new Staff(firstname, email, type, pass);
+        newStaff.id = id + 1;
+        Database.staffs.push(newStaff);
+        res.status(201).json({
+          status: 201,
+          data: [
+            newStaff,
+            token,
+          ],
+        });
+      } else if (type === 'admin') {
+        const id = Database.staffs.length + 1;
+        const pass = Util.hashPassword(password);
+        const token = Auth.generateToken({
+          email,
+          firstname,
+          isAdmin: true,
+          type: 'admin',
+        });
+        const newAdmin = new Admin(firstname, email, type, pass);
+        newAdmin.id = id + 1;
+        Database.staffs.push(newAdmin);
+        res.status(201).json({
+          status: 201,
+          data: [
+            newAdmin,
+            token,
+          ],
+        });
+      }
+    } else {
+      res.status(401).json({
+        status: 401,
+        message: 'Email already exists',
+      });
+    }
+  }
+
+
+  static signupInputField(req, res, next) {
+    const {
+      firstname, email, lastname, password,
+    } = req.body;
+    const nameTest = /^[A-z]{3,20}$/;
+    const emailTest = /([A-z0-9.-_]+)@([A-z]+)\.([A-z]){2,5}$/;
+    const passText = /[a-zA-Z0-9\w!@#$%^&*()_+|]{8,20}$/;
+    if (!nameTest.test(firstname)
+        || !nameTest.test(lastname)
+        || !emailTest.test(email)
+        || !passText.test(password)) {
+      res.status(403).json({
+        status: 403,
+        message: 'Please check that all fields are filled',
+      });
+    } else {
+      next();
+    }
+  }
+}
+
+export default ValidateUser;
