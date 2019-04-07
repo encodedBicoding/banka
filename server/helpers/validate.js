@@ -52,7 +52,15 @@ class Validate {
         message: 'Not authorized',
       });
     } else {
-      next();
+      const payload = Auth.verifyToken(token);
+      if (!payload.email) {
+        res.status(401).json({
+          status: 401,
+          message: 'Not authorized',
+        });
+      } else {
+        next();
+      }
     }
   }
 
