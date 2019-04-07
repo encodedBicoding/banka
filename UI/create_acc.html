@@ -27,7 +27,7 @@
                  <img src="./public/images/user.jpg" alt="user_profile" id="user_dp"/>
                  <form method="POST" enctype="multipart/form-data">
                      <img src="./public/images/tiny_camera.png" onclick="document.getElementById('user_img').click()" id="t_c" title="upload image"/>
-                     <input type='file' id="user_img" style="display:none">
+                     <input type='file' id="user_img" style="display:none" name="user_img">
                  </form>
                  <button id="toggle_nav">
                     <span class="fa fa-bars" id="xx"></span>
@@ -37,9 +37,9 @@
                  <nav>
                      <ul>
                          <li onclick="document.getElementById('n_a').click()"><a href="./create_acc.html" id="n_a">New Bank Account</a></li>
-                         <li onclick="document.getElementById('v_a').click()"><a href="./view_all.html" id="v_a">View All Transactions</a></li>
+                         <li onclick="document.getElementById('v_a').click()"><a href="./view_all.html" id="v_a">View Account History</a></li>
                          <li onclick="document.getElementById('p_b').click()"><a href="./pay_bills.html" id="p_b">Pay Bills</a></li>
-                         <li onclick="document.getElementById('settings').click()"><a href="./settings.html" id="settings">Settings</a></li>
+                         <li onclick="document.getElementById('set').click()"><a href="./settings.html" id="set">Settings</a></li>
                          <li onclick="document.getElementById('logout').click()"><a href="#" id="logout">Log out</a></li>
                      </ul>
                  </nav>

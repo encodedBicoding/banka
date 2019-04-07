@@ -1,5 +1,5 @@
 *{
-    box-sizing: content-box
+    box-sizing: content-box;
 }
 /*Global*/
 .container{
@@ -338,17 +338,18 @@ footer p{
     border-radius: 5px;
 }
 #profile_img #user_dp{
-    width: 100%;
+    max-width: 100%;
     border-radius: 50%;
-    margin-bottom: 0;
-    padding-bottom: 0;
+    margin: 0;
+    padding: 0;
 }
 #profile_img #t_c{
     width: 20%;
     position: relative;
     bottom: 70px;
     left: 134px;
-    background-color: #f4f4f4;
+    background-color: rgba(255,255,255,0.4);
+    color: #fff;
     padding: 0;
     border-radius: 50%;
     cursor: pointer;
@@ -361,7 +362,7 @@ footer p{
 #user_profile li{
     background-color: #ff8c00;
     margin: 0 0 11px 0;
-    padding: 11px;
+    padding: 3%;
     border-radius: 3px;
     cursor: pointer;
     text-align: center;
@@ -581,7 +582,7 @@ footer p{
     #offer p, 
     #user_profile a{
 
-        font-size: 14px;
+        font-size: 12px;
     }
     #contact h2{
         font-size: 15px;
@@ -604,7 +605,7 @@ footer p{
     }
     #user_profile{
         height: auto;
-        width: 22%;
+        width: 20%;
         border-radius: 2px;
     }
     #profile_img #t_c{
@@ -622,7 +623,7 @@ footer p{
         margin: 0;
     }
     #profile_body{
-        width: 78%;
+        width: 74%;
     }
     #profile_body #search{
         margin: 0 0 0 60%;
@@ -659,7 +660,7 @@ footer p{
         margin: 4px 0 0 0;
         width: 100%;
         padding: 3px;
-        font-size: 12px;
+        font-size: 11px;
     }
     #serve #serve_h{
         display: block;
@@ -687,6 +688,7 @@ footer p{
     #user_nav{
         display: none;
     }
+
     #toggle_nav span{
         font-size: 25px;
         color: #ff8c00;
@@ -760,8 +762,7 @@ footer p{
         margin: 0 0 0 8%;
     }
     #profile_body{
-        margin: 0 0 0 20px;
-        padding: 0;
+        margin: 0 2% 0 2%;
         float: left;
         padding: 0 19% 0 0;
     }
@@ -771,7 +772,7 @@ footer p{
     }
     #pages h2{
         text-align: center;
-        font-size: 14px;
+        font-size: 13px;
         margin-bottom: 30px;
     }
     #profile_body #search{
@@ -840,85 +841,6 @@ footer p{
     }
 
 }
-/*Max-width 359px*/
-@media(max-width: 359px){
-    #services h2{
-        font-size: 20px;
-    }
-    #services #flex_offer{
-        display: block;
-    }
-    #services #offer-header{
-        padding: 8px;
-        font-size: 20px;
-    }
-    #services #offer{
-        margin: 10px 0 10px 0;
-    }
-    #offer p{
-        font-size: 14px;
-    }
-    #contact h2{
-        font-size: 20px;
-    }
-    #contact form{
-        margin: 0 0 0 30px;
-    }
-    #contact #flex-c_c{
-        display: block;
-    }
-    #contact #c_c{
-        width:100%;
-    }
-
-    #login form{
-        width: 80%;
-        margin: 20px 25% 20px 15%;
-    }
-    header li a{
-        font-size: 12px;
-    }
-    #user_nav{
-        margin: 0 0 0 50px;
-    } 
-    #about, 
-    #services,
-    #contact{
-        margin: 0;
-        padding: 10px 10px 0 0;
-    }
-    #user_dashboard_h{
-        width: 100%;
-    }
-    #user_profile,
-    #profile_body{
-        padding-right: 6%;
-    }
-    #profile_img #user_dp{
-        width: 60%;
-        margin: 20px 0 0 15px;
-    }
-    #profile_img #t_c{
-      margin: 0 0 0 23px;
-    }
-    #profile_body #search{
-       margin: 0 9px 0 0;
-    }
-    #profile_body{
-        margin: 0 0 0 40px;
-        padding: 0;
-    }
-   
-    #p_body table{
-        padding: 0;
-        margin: 0;
-        font-size: 9px;
-    }
-    #pages h3{
-        display: none;
-    }
-}
-
 /*Media query responsiveness*/
 /*Max-width 1025px*/
 @media(max-width: 1025px){
