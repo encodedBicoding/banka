@@ -104,16 +104,15 @@ describe('Testing user account creation on route /api/v1/:userId/accounts', () =
       });
   });
   it('should fail and return status 401 if user is not in database', (done) => {
-     chai
-       .request(app)
-       .post('/api/v1/32/accounts')
-       .end((err, res) => {
-          expect(res).to.have.status(401);
-          expect(res.body.message).to.equal('Not Authorized');
-          done();
-       })
-
-  })
+    chai
+      .request(app)
+      .post('/api/v1/32/accounts')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.message).to.equal('Not Authorized');
+        done();
+      });
+  });
 });
 describe('Test user login', () => {
   before((done) => {
@@ -142,7 +141,7 @@ describe('Test user login', () => {
   it('should return status 200 if user image is a valid one', (done) => {
     chai
       .request(app)
-      .put('/api/v1/client/2/uploads')
+      .post('/api/v1/client/2/uploads')
       .set('authorization', `Bearer ${userToken}`)
       .send({
         imageUrl: 'silvai.jpeg',
@@ -155,7 +154,7 @@ describe('Test user login', () => {
   it('should return status 406 if user image is a valid one', (done) => {
     chai
       .request(app)
-      .put('/api/v1/client/2/uploads')
+      .post('/api/v1/client/2/uploads')
       .set('authorization', `Bearer ${userToken}`)
       .send({
         imageUrl: 'silvai.wahere',
@@ -279,7 +278,7 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status 200 if admin image is a valid one', (done) => {
     chai
       .request(app)
-      .put('/api/v1/staff/2/uploads')
+      .post('/api/v1/staff/2/uploads')
       .set('authorization', `Bearer ${staffToken}`)
       .send({
         imageUrl: 'silvai.jpeg',
@@ -292,7 +291,7 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status 406 if admin image is a valid one', (done) => {
     chai
       .request(app)
-      .put('/api/v1/staff/2/uploads')
+      .post('/api/v1/staff/2/uploads')
       .set('authorization', `Bearer ${staffToken}`)
       .send({
         imageUrl: 'silvai.wef',
@@ -374,13 +373,13 @@ describe('Testing staff ability to debit and credit an account', () => {
         done();
       });
   });
-   it('should return status 401 if user id is invalid', (done) => {
-      chai
-        .request(app)
-        .post('/api/v1/23/create')
-        .end((err, res) => {
-           expect(res).to.have.status(401);
-           done();
-        });
-   });
+  it('should return status 401 if user id is invalid', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/23/create')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
 });

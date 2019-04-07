@@ -6,7 +6,9 @@ import Accounts from '../controllers/Accounts';
 import Validate from '../helpers/validate';
 import Profile from '../helpers/profile';
 
+
 const router = express.Router();
+
 
 
 const routes = (app) => {
@@ -63,15 +65,15 @@ const routes = (app) => {
     Validate.authenticateAdmin,
     ValidateUser.addAdmin);
   // Api to allow client upload image
-  router.put('/api/v1/client/:userId/uploads',
+  router.post('/api/v1/client/:userId/uploads',
     Validate.validateUser,
     Validate.authenticateUser,
-    Profile.clientImageUpload);
+    Profile.imageUpload);
   // Api to allow staff upload image
-  router.put('/api/v1/staff/:staffId/uploads',
+  router.post('/api/v1/staff/:staffId/uploads',
     Validate.validateStaff,
     Validate.authenticateStaff,
-    Profile.staffImageUpload);
+    Profile.imageUpload);
 
   router.use((req, res) => {
     res.status(404).json({
