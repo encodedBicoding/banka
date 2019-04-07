@@ -124,6 +124,11 @@ class Accounts {
           status: 200,
           message: transaction.printTransaction(),
         });
+      } else {
+        res.status(404).json({
+          status: 404,
+          message: 'Invalid account number',
+        });
       }
     }
   }
