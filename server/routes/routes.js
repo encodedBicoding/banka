@@ -77,6 +77,12 @@ const routes = (app) => {
   router.put('/api/v1/client/password_reset',
     Validate.authenticateUser,
     Accounts.resetPassword);
+  // Api to handle staff password reset
+
+  router.put('/api/v1/staff/password_reset',
+    Validate.authenticateStaff,
+    Accounts.resetPassword);
+
 
   router.use((req, res) => {
     res.status(404).json({

@@ -2,6 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
 
+
 chai.use(chaiHttp);
 
 const { expect } = chai;
@@ -394,6 +395,52 @@ describe('Handle user password reset', () => {
         newPassword: '987654321',
       })
       .set('authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.message).to.equal('passwords do not match');
+        done();
+      });
+  });
+});
+describe('Handle staff password reset', () => {
+  before('should should be signed in', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/admin/login')
+      .send({
+        email: 'dominic@gmail.com',
+        password: '123456789',
+      })
+      .end((err, res) => {
+        staffToken = res.body.data[1];
+        userID = res.body.data[0].id;
+        done();
+      });
+  });
+  it('should return status 200 if user old password matches the user current password', (done) => {
+    chai
+      .request(app)
+      .put('/api/v1/staff/password_reset')
+      .send({
+        oldPassword: '123456789',
+        newPassword: '987654321',
+      })
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.equal('password changed successfully');
+        done();
+      });
+  });
+  it('should return status 404 if user old password don\'t match the staff current password', (done) => {
+    chai
+      .request(app)
+      .put('/api/v1/staff/password_reset')
+      .send({
+        oldPassword: '12345eddv789',
+        newPassword: '987654321',
+      })
+      .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body.message).to.equal('passwords do not match');
