@@ -2,18 +2,32 @@ import Database from '../models/Database';
 import generateAccountNumber from '../helpers/generateAccountNumber';
 import Transaction from '../models/Transaction';
 import Account from '../models/Account';
+import Auth from '../helpers/auth';
+import Util from '../helpers/util';
 
 
 const { users, accounts, staffs } = Database;
 
+/**
+ * @class Accounts
+ */
 class Accounts {
+  /**
+   * @description creates a user banka account
+   * @param req express request object
+   * @param res express response object
+   * @returns {object} JSON
+   */
   static createAccount(req, res) {
     const id = accounts.length + 1;
     const { accType, userType } = req.body;
-    const { userId } = req.params;
-    const user = users.filter(u => u.id === Number(userId));
+    const token = req.headers.authorization.split(' ')[1];
+    const payload = Auth.verifyToken(token);
+    const user = users.filter(u => u.email === payload.email);
     const accountNumber = generateAccountNumber();
-    const account = new Account(id, accountNumber, accType, userType);
+    const account = new Account(id,
+      accountNumber, accType, userType,
+      user[0].firstname, user[0].lastname, user[0].email);
     account.owner = user[0].id;
     user[0].accounts.push(account);
     user[0].noOfAccounts += 1;
@@ -24,6 +38,12 @@ class Accounts {
     });
   }
 
+  /**
+   * @description changes user account status
+   * @param req express request object
+   * @param res express response object
+   * @returns {object} JSON
+   */
   static changeStatus(req, res) {
     const { staffId, accountId } = req.params;
     const staff = staffs.filter(s => s.id === Number(staffId) && s.isAdmin === true);
@@ -48,6 +68,12 @@ class Accounts {
     }
   }
 
+  /**
+   * @description deletes a user account
+   * @param req express request object
+   * @param res express response object
+   * @returns {object} JSON
+   */
   static deleteAccount(req, res) {
     const { staffId, accountId } = req.params;
     const staff = staffs.filter(s => s.id === Number(staffId)
@@ -74,6 +100,12 @@ class Accounts {
     }
   }
 
+  /**
+   * @description debits a user account
+   * @param req express request object
+   * @param res express response object
+   * @returns {object} JSON
+   */
   static debitAccount(req, res) {
     const { staffId, accountId } = req.params;
     const staff = staffs.filter(s => s.id === Number(staffId) && s.type === 'staff');
@@ -104,6 +136,12 @@ class Accounts {
     }
   }
 
+  /**
+   * @description credits a user account
+   * @param req express request object
+   * @param res express response object
+   * @returns {object} JSON
+   */
   static creditAccount(req, res) {
     const { staffId, accountId } = req.params;
     const staff = staffs.filter(s => s.id === Number(staffId) && s.type === 'staff');
@@ -133,6 +171,12 @@ class Accounts {
     }
   }
 
+  /**
+   * @description returns a user account
+   * @param req express request object
+   * @param res express response object
+   * @returns {object} JSON
+   */
   static getSingleAccount(req, res) {
     const { userId } = req.params;
     const user = users.filter(client => client.id === Number(userId) && client.type === 'client');
@@ -141,6 +185,46 @@ class Accounts {
       status: 200,
       data: acc,
     });
+  }
+
+  static resetPassword(req, res) {
+    const  {newPassword, oldPassword } = req.body;
+    const token = req.headers.authorization.split(' ')[1];
+    const payload = Auth.verifyToken(token);
+    const user = users.filter(u => u.email === payload.email);
+    if (user.length <= 0) {
+      const staff = staffs.filter(s => s.email === payload.email);
+      if (Util.validatePassword(oldPassword, staff[0].password)) {
+        staff[0].password = Util.hashPassword(newPassword);
+        res.status(200).json({
+          status: 200,
+          message: 'password changed successfully',
+        });
+      } else {
+        res.status(404).json({
+          status: 404,
+          message: 'passwords do not match',
+        });
+      }
+    } else if (user.length > 0) {
+      if (Util.validatePassword(oldPassword, user[0].password)) {
+        user[0].password = Util.hashPassword(newPassword);
+        res.status(200).json({
+          status: 200,
+          message: 'password changed successfully',
+        });
+      } else {
+        res.status(404).json({
+          status: 404,
+          message: 'passwords do not match',
+        });
+      }
+    } else {
+      res.status(404).json({
+        status: 404,
+        message: 'user not found',
+      });
+    }
   }
 }
 export default Accounts;

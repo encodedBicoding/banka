@@ -10,7 +10,6 @@ import Profile from '../helpers/profile';
 const router = express.Router();
 
 
-
 const routes = (app) => {
   router.get('/', Index.home);
   // User Login Routes
@@ -30,8 +29,7 @@ const routes = (app) => {
 
   // Accounts routes
   // Client create account
-  router.post('/api/v1/:userId/accounts',
-    Validate.validateUser,
+  router.post('/api/v1/accounts',
     Validate.authenticateUser,
     Accounts.createAccount);
   // Client get single account transaction
@@ -74,6 +72,11 @@ const routes = (app) => {
     Validate.validateStaff,
     Validate.authenticateStaff,
     Profile.imageUpload);
+
+  // Api to handle user password reset
+  router.put('/api/v1/client/password_reset',
+    Validate.authenticateUser,
+    Accounts.resetPassword);
 
   router.use((req, res) => {
     res.status(404).json({

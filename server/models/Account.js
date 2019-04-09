@@ -1,11 +1,14 @@
 class Account {
-  constructor(id, accountNumber, type, userType, ob) {
+  constructor(id, accountNumber, type, userType,fn, ln, email, ob) {
     this.id = id;
     this.accountNumber = accountNumber;
+    this.firstname = fn;
+    this.lastname = ln;
+    this.email = email;
     this.owner = '';
     this.type = type;
+    this.openingBalance = ob === undefined ? 0.0 : ob;
     this.ownerCategory = userType;
-    this.openingBalance = ob !== 0 ? ob : 0.0;
     this.createdOn = new Date(Date.now());
     this.status = 'active';
     this.balance = 0.0;

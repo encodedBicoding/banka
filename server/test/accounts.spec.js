@@ -10,7 +10,7 @@ let staffToken;
 let cashierToken;
 let userID;
 
-describe('Testing user account creation on route /api/v1/:userId/accounts', () => {
+describe('Testing user account creation on route /api/v1/accounts', () => {
   before((done) => {
     chai
       .request(app)
@@ -30,7 +30,7 @@ describe('Testing user account creation on route /api/v1/:userId/accounts', () =
   it('should return status 200 if user account has been successfully created', (done) => {
     chai
       .request(app)
-      .post(`/api/v1/${userID}/accounts`)
+      .post('/api/v1/accounts')
       .send({
         accType: 'current',
         userType: 'org',
@@ -96,14 +96,15 @@ describe('Testing user account creation on route /api/v1/:userId/accounts', () =
       .set('authorization', 'Bearer 53gfhry54ybfghrf')
       .end((err, res) => {
         expect(res).to.have.status(401);
-        expect(res.body.message).to.equal('Not authorized');
+        expect(res.body.message).to.equal('Not Authorized');
         done();
       });
   });
   it('should fail and return status 401 if user is not in database', (done) => {
     chai
       .request(app)
-      .post('/api/v1/32/accounts')
+      .post('/api/v1/accounts')
+      .set('authorization', 'Bearer 934jdjfdjsij49')
       .end((err, res) => {
         expect(res).to.have.status(401);
         expect(res.body.message).to.equal('Not Authorized');
@@ -348,6 +349,54 @@ describe('Testing staff ability to debit and credit an account', () => {
       .post('/api/v1/23/create')
       .end((err, res) => {
         expect(res).to.have.status(401);
+        done();
+      });
+  });
+});
+describe('Handle user password reset', () => {
+  before('should should have an account', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'reset@gmail.com',
+        password: '123456789',
+        firstname: 'rester',
+        lastname: 'reset',
+      })
+      .end((err, res) => {
+        userToken = res.body.data[1];
+        userID = res.body.data[0].id;
+        done();
+      });
+  });
+  it('should return status 200 if user old password matches the user current password', (done) => {
+    chai
+      .request(app)
+      .put('/api/v1/client/password_reset')
+      .send({
+        oldPassword: '123456789',
+        newPassword: '987654321',
+      })
+      .set('authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.equal('password changed successfully');
+        done();
+      });
+  });
+  it('should return status 404 if user old password don\'t match the user current password', (done) => {
+    chai
+      .request(app)
+      .put('/api/v1/client/password_reset')
+      .send({
+        oldPassword: '12345eddv789',
+        newPassword: '987654321',
+      })
+      .set('authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.message).to.equal('passwords do not match');
         done();
       });
   });
