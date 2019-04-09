@@ -6,7 +6,6 @@ class User {
     this.lastname = lastname;
     this.email = email;
     this.password = password;
-    this.displayImage = '';
     this.isAdmin = false;
   }
 }
