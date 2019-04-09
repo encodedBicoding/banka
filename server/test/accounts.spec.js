@@ -140,7 +140,7 @@ describe('Test user login', () => {
       .request(app)
       .post('/api/v1/client/2/uploads')
       .set('authorization', `Bearer ${userToken}`)
-      .field({user_img: 'UI\\public\\uploads\\temp\\9134c30e9586bd2c2d9b2872060dba0b'})
+      .field({ user_img: 'UI\\public\\uploads\\temp\\9134c30e9586bd2c2d9b2872060dba0b' })
       .attach('user_img', './UI/public/uploads/BANKA-IMG-2829.jpg')
       .end((err, res) => {
         expect(res).to.have.status(200);
