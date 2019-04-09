@@ -81,7 +81,7 @@ class Validate {
     if ((!Auth.verifyToken(token))) {
       res.status(401).json({
         status: 401,
-        message: 'Not authorized',
+        message: 'Incorrect token supplied',
       });
     } else {
       const payload = Auth.verifyToken(token);
