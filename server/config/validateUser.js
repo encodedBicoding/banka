@@ -5,7 +5,18 @@ import Client from '../models/Client';
 import Admin from '../models/Admin';
 import Staff from '../models/Staff';
 
+/**
+ * @class ValidateUser
+ */
+
 class ValidateUser {
+  /**
+   * @description validates user login details before calling next middleware
+   * @param req express request object
+   * @param res express response object
+   * @param next express next to execute next middleware
+   * @returns {object} JSON
+   */
   static validateLogin(req, res, next) {
     const { email, password } = req.body;
     const user = Database.users.filter(u => u.email === email);
@@ -19,6 +30,13 @@ class ValidateUser {
     }
   }
 
+  /**
+   * @description validates admin login details before calling next middleware
+   * @param req express request object
+   * @param res express response object
+   * @param next express next to execute next middleware
+   * @returns {object} JSON
+   */
   static validateAdminLogin(req, res, next) {
     const { email, password } = req.body;
     const staff = Database.staffs.filter(s => s.email === email);
@@ -32,6 +50,13 @@ class ValidateUser {
     }
   }
 
+  /**
+   * @description checks if user exists returns error if true or next if false
+   * @param req express request object
+   * @param res express response object
+   * @param next express next to execute next middleware
+   * @returns {object} JSON
+   */
   static checkUserExists(req, res, next) {
     const { email } = req.body;
     const found = Database.users.find(user => user.email === email);
@@ -44,6 +69,12 @@ class ValidateUser {
       });
     }
   }
+  /**
+   * @description adds a new user to the database
+   * @param req express request object
+   * @param res express response object
+   * @returns {object} JSON
+   */
 
   static addToDatabase(req, res) {
     const {
@@ -68,6 +99,12 @@ class ValidateUser {
     });
   }
 
+  /**
+   * @description adds new admin to the database
+   * @param req express request object
+   * @param res express response object
+   * @returns {object} JSON
+   */
 
   static addAdmin(req, res) {
     const {
@@ -120,6 +157,13 @@ class ValidateUser {
     }
   }
 
+  /**
+   * @description checks the user input field for error
+   * @param req express request object
+   * @param res express response object
+   * @param next express next to execute next middleware
+   * @returns {object} JSON
+   */
 
   static signupInputField(req, res, next) {
     const {
