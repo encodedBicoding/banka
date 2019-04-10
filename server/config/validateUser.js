@@ -118,7 +118,7 @@ class ValidateUser {
       if (type === 'staff') {
         const id = Database.staffs.length + 1;
         const pass = Util.hashPassword(password);
-        const token = Auth.generateToken({ email, firstname, isAdmin: true });
+        const token = Auth.generateToken({ email, firstname, isAdmin: true, type: 'staff' });
         const newStaff = new Staff(firstname, email, type, pass);
         newStaff.id = id + 1;
         Database.staffs.push(newStaff);

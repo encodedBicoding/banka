@@ -45,8 +45,10 @@ class Accounts {
    * @returns {object} JSON
    */
   static changeStatus(req, res) {
-    const { staffId, accountId } = req.params;
-    const staff = staffs.filter(s => s.id === Number(staffId) && s.isAdmin === true);
+    const { accountId } = req.params;
+    const token = req.headers.authorization.split(' ')[1];
+    const payload = Auth.verifyToken(token);
+    const staff = staffs.filter(s => s.email === payload.email && s.isAdmin === true);
     if (staff[0].isAdmin === true) {
       const account = accounts.filter(acc => acc.id === Number(accountId));
       if (account.length <= 0) {
@@ -75,9 +77,10 @@ class Accounts {
    * @returns {object} JSON
    */
   static deleteAccount(req, res) {
-    const { staffId, accountId } = req.params;
-    const staff = staffs.filter(s => s.id === Number(staffId)
-        && s.isAdmin === true);
+    const { accountId } = req.params;
+    const token = req.headers.authorization.split(' ')[1];
+    const payload = Auth.verifyToken(token);
+    const staff = staffs.filter(s => s.email === payload.email && s.isAdmin === true);
     if (staff[0].isAdmin === true) {
       if (accounts.length <= 0) {
         res.status(404).json({
@@ -107,9 +110,11 @@ class Accounts {
    * @returns {object} JSON
    */
   static debitAccount(req, res) {
-    const { staffId, accountId } = req.params;
-    const staff = staffs.filter(s => s.id === Number(staffId) && s.type === 'staff');
+    const { accountId } = req.params;
     const { amount, accId } = req.body;
+    const token = req.headers.authorization.split(' ')[1];
+    const payload = Auth.verifyToken(token);
+    const staff = staffs.filter(s => s.email === payload.email && s.type === 'staff');
     if (staff[0].type === 'staff') {
       const s = `${staff[0].firstname} ${staff[0].lastname}`;
       const account = accounts.filter(acc => acc.id === Number(accountId));
@@ -143,9 +148,11 @@ class Accounts {
    * @returns {object} JSON
    */
   static creditAccount(req, res) {
-    const { staffId, accountId } = req.params;
-    const staff = staffs.filter(s => s.id === Number(staffId) && s.type === 'staff');
+    const { accountId } = req.params;
     const { amount, accId } = req.body;
+    const token = req.headers.authorization.split(' ')[1];
+    const payload = Auth.verifyToken(token);
+    const staff = staffs.filter(s => s.email === payload.email && s.type === 'staff');
     if (staff[0].type === 'staff') {
       const s = `${staff[0].firstname} ${staff[0].lastname}`;
       const account = accounts.filter(acc => acc.id === Number(accountId));
