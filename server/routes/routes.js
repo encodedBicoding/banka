@@ -38,23 +38,19 @@ const routes = (app) => {
     Validate.authenticateUser,
     Accounts.getSingleAccount);
   // Only Admin / Staff can activate or deactivate account
-  router.patch('/api/v1/:staffId/account/:accountId',
-    Validate.validateStaff,
+  router.patch('/api/v1/account/:accountId',
     Validate.authenticateStaff,
     Accounts.changeStatus);
   // Only Admin / staff can delete user account
-  router.delete('/api/v1/:staffId/account/:accountId',
-    Validate.validateStaff,
+  router.delete('/api/v1/account/:accountId',
     Validate.authenticateStaff,
     Accounts.deleteAccount);
   // Only Staff can debit an account
-  router.post('/api/v1/:staffId/transactions/:accountId/debit',
-    Validate.validateStaff,
+  router.post('/api/v1/transactions/:accountId/debit',
     Validate.authenticateStaff,
     Accounts.debitAccount);
   // Only Staff can credit an account
-  router.post('/api/v1/:staffId/transactions/:accountId/credit',
-    Validate.validateStaff,
+  router.post('/api/v1/transactions/:accountId/credit',
     Validate.authenticateStaff,
     Accounts.creditAccount);
   // Only Admin can create staff account

@@ -54,35 +54,35 @@ Banka API is currently on version 1 and is hosted on heroku [link](https://domin
         <td> - </td>
         <td>/api/v1/auth/login</td>
         <td>/api/v1/auth/signup</td>
-        <td>/api/v1/:user_id/accounts</td>
+        <td>/api/v1/accounts</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td>/api/v1/auth/admin/login</td>
         <td>/api/v1/auth/:staff_id/create</td>
-        <td>/api/v1/:staff_id/transactions/:account_id/debit</td>
+        <td>/api/v1/transactions/:accountId/debit</td>
     </tr>
      <tr>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
-        <td>/api/v1/:staff_id/transactions/:account_id/credit</td>
+        <td>/api/v1/transactions/:accountId/credit</td>
     </tr>
     <tr>
         <td>PATCH</td>
         <td>-</td>
         <td>-</td>
         <td>-</td>
-        <td>/api/v1/:staff_id/account/:account_id</td>
+        <td>/api/v1/account/:accountId</td>
     </tr>
     <tr>
         <td>DELETE</td>
         <td>-</td>
         <td>-</td>
         <td>-</td>
-        <td>/api/v1/:staff_id/account/:account_id</td>
+        <td>/api/v1/account/:accountId</td>
     </tr>
      <tr>
         <td>PUT</td>

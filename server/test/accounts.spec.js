@@ -168,7 +168,7 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should fail and return status 401 if token supplied is invalid', (done) => {
     chai
       .request(app)
-      .patch('/api/v1/2/account/2')
+      .patch('/api/v1/account/2')
       .set('authorization', 'Bearer 53gfhry54ybfghrf')
       .end((err, res) => {
         expect(res).to.have.status(401);
@@ -179,7 +179,7 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status of 200 if account has been successfully activated or deactivated', (done) => {
     chai
       .request(app)
-      .patch('/api/v1/2/account/2')
+      .patch('/api/v1/account/2')
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status((200));
@@ -189,7 +189,7 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status 200 if user account has been successfully deleted', (done) => {
     chai
       .request(app)
-      .delete('/api/v1/2/account/2')
+      .delete('/api/v1/account/2')
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -291,7 +291,7 @@ describe('Testing staff ability to debit and credit an account', () => {
   it('should return status 404 if account ID is not found', (done) => {
     chai
       .request(app)
-      .patch('/api/v1/1/transactions/3/debit')
+      .patch('/api/v1/transactions/3/debit')
       .send({
         amount: 30000,
         accId: 34436877,
@@ -305,7 +305,7 @@ describe('Testing staff ability to debit and credit an account', () => {
   it('should return status 401 if account has insufficient funds', (done) => {
     chai
       .request(app)
-      .post('/api/v1/1/transactions/1/debit')
+      .post('/api/v1/transactions/1/debit')
       .send({
         amount: 300000000000000,
         accId: 92039433,
@@ -319,7 +319,7 @@ describe('Testing staff ability to debit and credit an account', () => {
   it('should return status 200 if user account has been successfully credited', (done) => {
     chai
       .request(app)
-      .post('/api/v1/1/transactions/1/credit')
+      .post('/api/v1/transactions/1/credit')
       .send({
         amount: 30000,
         accId: 92039433,
@@ -333,7 +333,7 @@ describe('Testing staff ability to debit and credit an account', () => {
   it('should return status 200 if user account has been successfully debited', (done) => {
     chai
       .request(app)
-      .post('/api/v1/1/transactions/1/debit')
+      .post('/api/v1/transactions/1/debit')
       .send({
         amount: 30000,
         accId: 92039433,
