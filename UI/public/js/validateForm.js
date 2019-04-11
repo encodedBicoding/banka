@@ -30,7 +30,7 @@ function validateField(element) {
       const { value } = this;
       const p = this.nextElementSibling;
       if (!name.test(value)) {
-        p.textContent = 'lastname must be greater than 2 letters and must not contain digits';
+        p.textContent = 'Lastname must be greater than 2 letters and must not contain digits';
         signupBtn.setAttribute('disabled', 'disabled');
       } else {
         p.textContent = '';
