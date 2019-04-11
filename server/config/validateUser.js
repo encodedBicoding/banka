@@ -4,8 +4,19 @@ import Util from '../helpers/util';
 import Client from '../models/Client';
 import Admin from '../models/Admin';
 import Staff from '../models/Staff';
+import Acc from '../helpers/setup';
+/**
+ * @class ValidateUser
+ */
 
 class ValidateUser {
+  /**
+   * @description validates user login details before calling next middleware
+   * @param req express request object
+   * @param res express response object
+   * @param next express next to execute next middleware
+   * @returns {object} JSON
+   */
   static validateLogin(req, res, next) {
     const { email, password } = req.body;
     const user = Database.users.filter(u => u.email === email);
@@ -19,6 +30,13 @@ class ValidateUser {
     }
   }
 
+  /**
+   * @description validates admin login details before calling next middleware
+   * @param req express request object
+   * @param res express response object
+   * @param next express next to execute next middleware
+   * @returns {object} JSON
+   */
   static validateAdminLogin(req, res, next) {
     const { email, password } = req.body;
     const staff = Database.staffs.filter(s => s.email === email);
@@ -32,6 +50,13 @@ class ValidateUser {
     }
   }
 
+  /**
+   * @description checks if user exists returns error if true or next if false
+   * @param req express request object
+   * @param res express response object
+   * @param next express next to execute next middleware
+   * @returns {object} JSON
+   */
   static checkUserExists(req, res, next) {
     const { email } = req.body;
     const found = Database.users.find(user => user.email === email);
@@ -44,20 +69,26 @@ class ValidateUser {
       });
     }
   }
+  /**
+   * @description adds a new user to the database
+   * @param req express request object
+   * @param res express response object
+   * @returns {object} JSON
+   */
 
   static addToDatabase(req, res) {
     const {
-      firstname,
+      firstName,
       email,
       password,
-      lastname,
+      lastName,
     } = req.body;
-    const id = Database.users.length + 1;
-    const pass = Util.hashPassword(password);
-    const token = Auth.generateToken({ email, firstname });
-    const user = new Client(firstname, email, pass, lastname);
-    user.id = id;
-    Database.users.push(user);
+    const token = Auth.generateToken({ email, firstName });
+    const user = Acc.setup('client',
+      email,
+      password,
+      firstName,
+      lastName);
     res.status(201).json({
       status: 201,
       message: 'Account created successfully',
@@ -68,10 +99,16 @@ class ValidateUser {
     });
   }
 
+  /**
+   * @description adds new admin to the database
+   * @param req express request object
+   * @param res express response object
+   * @returns {object} JSON
+   */
 
   static addAdmin(req, res) {
     const {
-      firstname,
+      firstName,
       email,
       type,
       password,
@@ -79,12 +116,13 @@ class ValidateUser {
     const staff = Database.staffs.filter(s => s.email === email);
     if (staff.length <= 0) {
       if (type === 'staff') {
-        const id = Database.staffs.length + 1;
-        const pass = Util.hashPassword(password);
-        const token = Auth.generateToken({ email, firstname, isAdmin: true });
-        const newStaff = new Staff(firstname, email, type, pass);
-        newStaff.id = id + 1;
-        Database.staffs.push(newStaff);
+        const token = Auth.generateToken({
+          email, firstName, isAdmin: true, type: 'staff',
+        });
+        const newStaff = Acc.setup('staff',
+          email,
+          password,
+          firstName);
         res.status(201).json({
           status: 201,
           data: [
@@ -93,17 +131,16 @@ class ValidateUser {
           ],
         });
       } else if (type === 'admin') {
-        const id = Database.staffs.length + 1;
-        const pass = Util.hashPassword(password);
         const token = Auth.generateToken({
           email,
-          firstname,
+          firstName,
           isAdmin: true,
           type: 'admin',
         });
-        const newAdmin = new Admin(firstname, email, type, pass);
-        newAdmin.id = id + 1;
-        Database.staffs.push(newAdmin);
+        const newAdmin = Acc.setup('admin',
+          email,
+          password,
+          firstName);
         res.status(201).json({
           status: 201,
           data: [
@@ -120,16 +157,23 @@ class ValidateUser {
     }
   }
 
+  /**
+   * @description checks the user input field for error
+   * @param req express request object
+   * @param res express response object
+   * @param next express next to execute next middleware
+   * @returns {object} JSON
+   */
 
   static signupInputField(req, res, next) {
     const {
-      firstname, email, lastname, password,
+      firstName, email, lastName, password,
     } = req.body;
     const nameTest = /^[A-z]{3,20}$/;
     const emailTest = /([A-z0-9.-_]+)@([A-z]+)\.([A-z]){2,5}$/;
     const passText = /[a-zA-Z0-9\w!@#$%^&*()_+|]{8,20}$/;
-    if (!nameTest.test(firstname)
-        || !nameTest.test(lastname)
+    if (!nameTest.test(firstName)
+        || !nameTest.test(lastName)
         || !emailTest.test(email)
         || !passText.test(password)) {
       res.status(403).json({

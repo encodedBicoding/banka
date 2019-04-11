@@ -5,8 +5,16 @@ import multer from 'multer';
 
 const upload = multer({ dest: './UI/public/uploads/temp/' });
 
-
+/**
+ * @class Profile
+ */
 class Profile {
+  /**
+   * @description uploads a single image to user profile
+   * @param req express request object
+   * @param res express response object
+   * @returns {object} JSON
+   */
   static imageUpload(req, res) {
     const file = upload.single('user_img');
     file(req, res, (err) => {
