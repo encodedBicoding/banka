@@ -27,7 +27,7 @@ class Transaction {
     const account = accounts.filter(acc => acc.accountNumber === accNumber);
     this.id += 1;
     this.oldBalance = account[0].balance;
-    this.type = 'debit';
+    this.type = 'credit';
     account[0].balance += this.amount;
     this.newBalance = account[0].balance;
   }

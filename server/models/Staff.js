@@ -1,8 +1,8 @@
 import User from './User';
 
 class Staff extends User {
-  constructor(firstname, email, password, lastname) {
-    super(firstname, email, password, lastname);
+  constructor(firstName, email, password, lastName) {
+    super(firstName, email, password, lastName);
     this.type = 'staff';
     this.isAdmin = true;
   }

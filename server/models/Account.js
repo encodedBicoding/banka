@@ -2,8 +2,8 @@ class Account {
   constructor(id, accountNumber, type, userType, fn, ln, email, ob) {
     this.id = id;
     this.accountNumber = accountNumber;
-    this.firstname = fn;
-    this.lastname = ln;
+    this.firstName = fn;
+    this.lastName = ln;
     this.email = email;
     this.owner = '';
     this.type = type;
