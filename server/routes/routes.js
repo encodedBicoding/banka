@@ -33,8 +33,7 @@ const routes = (app) => {
     Validate.authenticateUser,
     Accounts.createAccount);
   // Client get single account transaction
-  router.get('/api/v1/:userId/accounts',
-    Validate.validateUser,
+  router.get('/api/v1/accounts',
     Validate.authenticateUser,
     Accounts.getSingleAccount);
   // Only Admin / Staff can activate or deactivate account
@@ -59,8 +58,7 @@ const routes = (app) => {
     Validate.authenticateAdmin,
     ValidateUser.addAdmin);
   // Api to allow client upload image
-  router.post('/api/v1/client/:userId/uploads',
-    Validate.validateUser,
+  router.post('/api/v1/client/uploads',
     Validate.authenticateUser,
     Profile.imageUpload);
   // Api to allow staff upload image

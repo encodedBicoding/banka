@@ -1,6 +1,9 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
+import Database from '../models/Database';
+
+const { accounts } = Database;
 
 
 chai.use(chaiHttp);
@@ -9,7 +12,6 @@ const { expect } = chai;
 let userToken;
 let staffToken;
 let cashierToken;
-let userID;
 
 describe('Testing user account creation on route /api/v1/accounts', () => {
   before((done) => {
@@ -19,16 +21,16 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
       .send({
         email: 'test@gmail.com',
         password: '123456789',
-        firstname: 'tester',
-        lastname: 'test',
+        firstName: 'tester',
+        lastName: 'test',
       })
       .end((err, res) => {
         userToken = res.body.data[1];
-        userID = res.body.data[0].id;
         done();
       });
   });
-  it('should return status 200 if user account has been successfully created', (done) => {
+  it('should return status 201 if user account has been successfully created', (done) => {
+    const id = accounts.length + 1;
     chai
       .request(app)
       .post('/api/v1/accounts')
@@ -39,6 +41,10 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
       .set('authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         expect(res).to.have.status(201);
+        expect(res.body.status).to.equal(201);
+        expect(res.body).to.be.an('object');
+        expect(res.body.data).to.be.an('object');
+        expect(id).to.equal(2);
         done();
       });
   });
@@ -49,8 +55,8 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
       .send({
         email: 'test@gmail.com',
         password: '123456789',
-        firstname: 'tester',
-        lastname: 'test',
+        firstName: 'tester',
+        lastName: 'test',
       })
       .end((err, res) => {
         expect(res).to.have.status(401);
@@ -65,8 +71,8 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
       .send({
         email: 'test@gmail.com',
         password: '123456789',
-        firstname: ' ',
-        lastname: 'test',
+        firstName: ' ',
+        lastName: 'test',
       })
       .end((err, res) => {
         expect(res).to.have.status(403);
@@ -81,8 +87,8 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
       .send({
         email: 'testgmail.com',
         password: '123456789',
-        firstname: 'test',
-        lastname: 'test',
+        firstName: 'test',
+        lastName: 'test',
       })
       .end((err, res) => {
         expect(res).to.have.status(403);
@@ -93,7 +99,7 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
   it('should fail and return status 401 if token supplied is invalid', (done) => {
     chai
       .request(app)
-      .get('/api/v1/2/accounts')
+      .get('/api/v1/accounts')
       .set('authorization', 'Bearer 53gfhry54ybfghrf')
       .end((err, res) => {
         expect(res).to.have.status(401);
@@ -130,7 +136,7 @@ describe('Test user login', () => {
   it('should return status 200 if user is a valid one', (done) => {
     chai
       .request(app)
-      .get('/api/v1/2/accounts')
+      .get('/api/v1/accounts')
       .set('authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -140,7 +146,7 @@ describe('Test user login', () => {
   it('should return status 200 if user image is a valid one', (done) => {
     chai
       .request(app)
-      .post('/api/v1/client/2/uploads')
+      .post('/api/v1/client/uploads')
       .set('authorization', `Bearer ${userToken}`)
       .field({ user_img: 'UI\\public\\uploads\\temp\\9134c30e9586bd2c2d9b2872060dba0b' })
       .attach('user_img', './UI/public/uploads/BANKA-IMG-2829.jpg')
@@ -186,6 +192,39 @@ describe('Testing admin account creation, account activation and deletion', () =
         done();
       });
   });
+  it('should return status of 404 no account was found to activate or deactivate', (done) => {
+    chai
+      .request(app)
+      .patch('/api/v1/account/32')
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status((404));
+        done();
+      });
+  });
+  it('should set account to dormant if account was active', (done) => {
+    const account = accounts.find(acc => acc.id === 2);
+    account.status = 'dormant';
+    chai
+      .request(app)
+      .patch('/api/v1/account/2')
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status((200));
+        expect(account.status).to.equal('active');
+        done();
+      });
+  });
+  it('should return status 200 if user account has been successfully deleted', (done) => {
+    chai
+      .request(app)
+      .delete('/api/v1/account/2')
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
   it('should return status 200 if user account has been successfully deleted', (done) => {
     chai
       .request(app)
@@ -201,7 +240,7 @@ describe('Testing admin account creation, account activation and deletion', () =
       .request(app)
       .post('/api/v1/2/create')
       .send({
-        firstname: 'admin',
+        firstName: 'admin',
         email: 'admin@gmail.com',
         type: 'admin',
         password: '123456789',
@@ -209,6 +248,10 @@ describe('Testing admin account creation, account activation and deletion', () =
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(201);
+        expect(res.body.data).to.be.an('array');
+        expect(res.body.status).to.equal(201);
+        expect(res.body.data[0]).to.be.an('object');
+        expect(res.body.data[1]).to.be.a('string');
         done();
       });
   });
@@ -217,7 +260,7 @@ describe('Testing admin account creation, account activation and deletion', () =
       .request(app)
       .post('/api/v1/2/create')
       .send({
-        firstname: 'staff',
+        firstName: 'staff',
         email: 'staff@gmail.com',
         type: 'staff',
         password: '123456789',
@@ -225,6 +268,10 @@ describe('Testing admin account creation, account activation and deletion', () =
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(201);
+        expect(res.body.data).to.be.an('array');
+        expect(res.body.status).to.equal(201);
+        expect(res.body.data[0]).to.be.an('object');
+        expect(res.body.data[1]).to.be.a('string');
         done();
       });
   });
@@ -233,7 +280,7 @@ describe('Testing admin account creation, account activation and deletion', () =
       .request(app)
       .post('/api/v1/2/create')
       .send({
-        firstname: 'admin',
+        firstName: 'admin',
         email: 'admin@gmail.com',
         type: 'admin',
         password: '123456789',
@@ -249,7 +296,7 @@ describe('Testing admin account creation, account activation and deletion', () =
       .request(app)
       .post('/api/v1/2/create')
       .send({
-        firstname: 'staff',
+        firstName: 'staff',
         email: 'staff@gmail.com',
         type: 'staff',
         password: '123456789',
@@ -274,6 +321,7 @@ describe('Testing admin account creation, account activation and deletion', () =
   });
 });
 describe('Testing staff ability to debit and credit an account', () => {
+  let accID;
   before('staff login OK', (done) => {
     chai
       .request(app)
@@ -287,7 +335,35 @@ describe('Testing staff ability to debit and credit an account', () => {
         done();
       });
   });
-
+  before('user should create an account', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/accounts')
+      .send({
+        accType: 'current',
+        userType: 'org',
+      })
+      .set('authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        accID = accounts[0].accountNumber;
+        done();
+      });
+  });
+  it('should return status 401 if account has insufficient funds', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/transactions/1/debit')
+      .send({
+        amount: 300000000000000,
+        accId: accID,
+      })
+      .set('authorization', `Bearer ${cashierToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
   it('should return status 404 if account ID is not found', (done) => {
     chai
       .request(app)
@@ -302,17 +378,39 @@ describe('Testing staff ability to debit and credit an account', () => {
         done();
       });
   });
-  it('should return status 401 if account has insufficient funds', (done) => {
+  it('should return status 404 if there is no account to credit', (done) => {
     chai
       .request(app)
-      .post('/api/v1/transactions/1/debit')
+      .post('/api/v1/transactions/34/credit')
       .send({
-        amount: 300000000000000,
+        amount: 30000,
         accId: 92039433,
       })
       .set('authorization', `Bearer ${cashierToken}`)
       .end((err, res) => {
-        expect(res).to.have.status(401);
+        expect(res).to.have.status(404);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.message).to.equal('Account ID not found');
+        expect(res.body.status).to.equal(404);
+        expect(res.body.status).to.be.a('number');
+        done();
+      });
+  });
+  it('should return status 404 if there is no account to credit', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/transactions/1/credit')
+      .send({
+        amount: 30000,
+        accId: 9203943345453,
+      })
+      .set('authorization', `Bearer ${cashierToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.message).to.equal('Invalid account number');
+        expect(res.body.status).to.equal(404);
+        expect(res.body.status).to.be.a('number');
         done();
       });
   });
@@ -321,8 +419,8 @@ describe('Testing staff ability to debit and credit an account', () => {
       .request(app)
       .post('/api/v1/transactions/1/credit')
       .send({
-        amount: 30000,
-        accId: 92039433,
+        amount: 40000,
+        accId: accID,
       })
       .set('authorization', `Bearer ${cashierToken}`)
       .end((err, res) => {
@@ -336,11 +434,29 @@ describe('Testing staff ability to debit and credit an account', () => {
       .post('/api/v1/transactions/1/debit')
       .send({
         amount: 30000,
-        accId: 92039433,
+        accId: accID,
       })
       .set('authorization', `Bearer ${cashierToken}`)
       .end((err, res) => {
         expect(res).to.have.status(200);
+        done();
+      });
+  });
+  it('should return status 404 if there is no account to debit', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/transactions/34/debit')
+      .send({
+        amount: 30000,
+        accId: 92039433,
+      })
+      .set('authorization', `Bearer ${cashierToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.message).to.equal('Account ID not found');
+        expect(res.body.status).to.equal(404);
+        expect(res.body.status).to.be.a('number');
         done();
       });
   });
@@ -362,12 +478,11 @@ describe('Handle user password reset', () => {
       .send({
         email: 'reset@gmail.com',
         password: '123456789',
-        firstname: 'rester',
-        lastname: 'reset',
+        firstName: 'rester',
+        lastName: 'reset',
       })
       .end((err, res) => {
         userToken = res.body.data[1];
-        userID = res.body.data[0].id;
         done();
       });
   });
@@ -413,7 +528,6 @@ describe('Handle staff password reset', () => {
       })
       .end((err, res) => {
         staffToken = res.body.data[1];
-        userID = res.body.data[0].id;
         done();
       });
   });
@@ -444,6 +558,36 @@ describe('Handle staff password reset', () => {
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body.message).to.equal('passwords do not match');
+        done();
+      });
+  });
+});
+describe('Handle staff ability to delete user account', () => {
+  before('staff should log in', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/admin/login')
+      .send({
+        email: 'johndoe@gmail.com',
+        password: '123456789',
+      })
+      .end((err, res) => {
+        staffToken = res.body.data[1];
+        done();
+      });
+  });
+  it('should fail and return status 404 if there is no account to delete', (done) => {
+    accounts.length = 0;
+    chai
+      .request(app)
+      .delete('/api/v1/account/:accountId')
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.message).to.equal('No account to delete');
+        expect(res.body.status).to.equal(404);
+        expect(res.body.status).to.be.a('number');
         done();
       });
   });

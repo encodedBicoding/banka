@@ -50,26 +50,6 @@ class Validate {
   }
 
   /**
-   * @description verify user authenticity before executing next middleware
-   * @param req express request object
-   * @param res express response object
-   * @param next express next to execute next middleware
-   * @returns {object} JSON
-   */
-  static validateUser(req, res, next) {
-    const { userId } = req.params;
-    const user = users.filter(client => client.id === Number(userId) && client.type === 'client');
-    if (user.length <= 0) {
-      res.status(401).json({
-        status: 401,
-        message: 'Not Authorized',
-      });
-    } else {
-      next();
-    }
-  }
-
-  /**
    * @description uses JWT to validate user authenticity
    * @param req express request object
    * @param res express response object
