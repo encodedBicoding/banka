@@ -30,7 +30,7 @@
                  <img src="./public/images/user.jpg" alt="user_profile" id="user_dp"/>
                  <form method="POST" enctype="multipart/form-data">
                      <img src="./public/images/tiny_camera.png" onclick="document.getElementById('user_img').click()" id="t_c" title="upload image"/>
-                     <input type='file' id="user_img" style="display:none">
+                     <input type='file' id="user_img" style="display:none" name="user_img">
                  </form>
                  <button id="toggle_nav">
                     <span class="fa fa-bars" id="xx"></span>
@@ -61,9 +61,11 @@
                 <div id="pages">
                     <div id="a_body">
                         <h2><span>Create </span>Account</h2>
-                        <form method="POST" action="#">
-                            <label for="username">Username: </label>
-                            <input type="text" name="username" id="username" placeholder="Username: " required/>
+                        <form method="POST">
+                            <label for="firstname">Firstname: </label>
+                            <input type="text" name="firstname" id="firstname" placeholder="Firstname: " required/>
+                            <label for="lastname">Lastname: </label>
+                            <input type="text" name="lastname" id="lastname" placeholder="Lastname: " required/>
                             <label for="email">Email: </label>
                             <input type="email" name="email" id="email" placeholder="Email: " required/>
                             <label for="type">Admin type:</label>

@@ -1,0 +1,59 @@
+{
+  "name": "banka",
+  "version": "1.0.0",
+  "description": "Banka is a light-weight core banking application that powers banking operation on the go. With Banka you can create an account, make deposit, see your transaction overview and much more...",
+  "main": "./server/app.js",
+  "scripts": {
+    "lint": "eslint ./server --fix",
+    "start": "babel-node ./server/app.js",
+    "build": "babel server -d server/",
+    "start-dev": "nodemon --exec babel-node server/app.js",
+    "test": "nyc mocha -r @babel/polyfill -r @babel/core -r @babel/register ./server/test/*.spec.js --timeout 10000 --exit",
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/encodedBicoding/banka.git"
+  },
+  "author": "Dominic Isioma",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/encodedBicoding/banka/issues"
+  },
+  "homepage": "https://github.com/encodedBicoding/banka#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/node": "^7.2.2",
+    "@babel/polyfill": "^7.4.3",
+    "@babel/register": "^7.4.0",
+    "babel-preset-airbnb": "^3.2.1",
+    "babel-preset-env": "^1.7.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "coveralls": "^3.0.3",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "jscover": "^1.0.0",
+    "mocha": "^6.0.2",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nodemon": "^1.18.10",
+    "nyc": "^13.3.0"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.5",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.1"
+  },
+  "engines": {
+    "node": "10.3.0"
+  }
+}
