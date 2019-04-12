@@ -8,7 +8,11 @@ var _app = _interopRequireDefault(require("../app"));
 
 var _Database = _interopRequireDefault(require("../models/Database"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
 
 var accounts = _Database["default"].accounts;
 
@@ -132,20 +136,20 @@ describe('Testing admin account creation, account activation and deletion', func
     });
   });
   it('should fail and return status 401 if token supplied is invalid', function (done) {
-    _chai["default"].request(_app["default"]).patch('/api/v1/accounts/2').set('authorization', 'Bearer 53gfhry54ybfghrf').end(function (err, res) {
+    _chai["default"].request(_app["default"]).patch('/api/v1/account/2').set('authorization', 'Bearer 53gfhry54ybfghrf').end(function (err, res) {
       expect(res).to.have.status(401);
       expect(res.body.message).to.equal('Not authorized');
       done();
     });
   });
   it('should return status of 200 if account has been successfully activated or deactivated', function (done) {
-    _chai["default"].request(_app["default"]).patch('/api/v1/accounts/2').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
+    _chai["default"].request(_app["default"]).patch('/api/v1/account/2').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
       expect(res).to.have.status(200);
       done();
     });
   });
   it('should return status of 404 no account was found to activate or deactivate', function (done) {
-    _chai["default"].request(_app["default"]).patch('/api/v1/accounts/32').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
+    _chai["default"].request(_app["default"]).patch('/api/v1/account/32').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
       expect(res).to.have.status(404);
       done();
     });
@@ -156,20 +160,20 @@ describe('Testing admin account creation, account activation and deletion', func
     });
     account.status = 'dormant';
 
-    _chai["default"].request(_app["default"]).patch('/api/v1/accounts/2').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
+    _chai["default"].request(_app["default"]).patch('/api/v1/account/2').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
       expect(res).to.have.status(200);
       expect(account.status).to.equal('active');
       done();
     });
   });
   it('should return status 200 if user account has been successfully deleted', function (done) {
-    _chai["default"].request(_app["default"])["delete"]('/api/v1/accounts/2').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
+    _chai["default"].request(_app["default"])["delete"]('/api/v1/account/2').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
       expect(res).to.have.status(200);
       done();
     });
   });
   it('should return status 200 if user account has been successfully deleted', function (done) {
-    _chai["default"].request(_app["default"])["delete"]('/api/v1/accounts/2').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
+    _chai["default"].request(_app["default"])["delete"]('/api/v1/account/2').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
       expect(res).to.have.status(200);
       done();
     });
@@ -415,7 +419,7 @@ describe('Handle staff ability to delete user account', function () {
   it('should fail and return status 404 if there is no account to delete', function (done) {
     accounts.length = 0;
 
-    _chai["default"].request(_app["default"])["delete"]('/api/v1/accounts/:accountId').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
+    _chai["default"].request(_app["default"])["delete"]('/api/v1/account/:accountId').set('authorization', "Bearer ".concat(staffToken)).end(function (err, res) {
       expect(res).to.have.status(404);
       expect(res.body.message).to.be.a('string');
       expect(res.body.message).to.equal('No account to delete');
