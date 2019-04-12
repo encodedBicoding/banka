@@ -9,7 +9,8 @@
     "build": "babel server -d server/build",
     "start-dev": "nodemon --exec babel-node server/app.js",
     "test": "nyc mocha -r @babel/polyfill -r @babel/core -r @babel/register ./server/test/*.spec.js --timeout 10000 --exit",
-    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
