@@ -174,7 +174,7 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should fail and return status 401 if token supplied is invalid', (done) => {
     chai
       .request(app)
-      .patch('/api/v1/account/2')
+      .patch('/api/v1/accounts/2')
       .set('authorization', 'Bearer 53gfhry54ybfghrf')
       .end((err, res) => {
         expect(res).to.have.status(401);
@@ -185,7 +185,7 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status of 200 if account has been successfully activated or deactivated', (done) => {
     chai
       .request(app)
-      .patch('/api/v1/account/2')
+      .patch('/api/v1/accounts/2')
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status((200));
@@ -195,7 +195,7 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status of 404 no account was found to activate or deactivate', (done) => {
     chai
       .request(app)
-      .patch('/api/v1/account/32')
+      .patch('/api/v1/accounts/32')
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status((404));
@@ -207,7 +207,7 @@ describe('Testing admin account creation, account activation and deletion', () =
     account.status = 'dormant';
     chai
       .request(app)
-      .patch('/api/v1/account/2')
+      .patch('/api/v1/accounts/2')
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status((200));
@@ -218,7 +218,7 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status 200 if user account has been successfully deleted', (done) => {
     chai
       .request(app)
-      .delete('/api/v1/account/2')
+      .delete('/api/v1/accounts/2')
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -228,7 +228,7 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status 200 if user account has been successfully deleted', (done) => {
     chai
       .request(app)
-      .delete('/api/v1/account/2')
+      .delete('/api/v1/accounts/2')
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -580,7 +580,7 @@ describe('Handle staff ability to delete user account', () => {
     accounts.length = 0;
     chai
       .request(app)
-      .delete('/api/v1/account/:accountId')
+      .delete('/api/v1/accounts/:accountId')
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(404);

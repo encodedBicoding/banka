@@ -37,11 +37,11 @@ const routes = (app) => {
     Validate.authenticateUser,
     Accounts.getSingleAccount);
   // Only Admin / Staff can activate or deactivate account
-  router.patch('/api/v1/account/:accountId',
+  router.patch('/api/v1/accounts/:accountId',
     Validate.authenticateStaff,
     Accounts.changeStatus);
   // Only Admin / staff can delete user account
-  router.delete('/api/v1/account/:accountId',
+  router.delete('/api/v1/accounts/:accountId',
     Validate.authenticateStaff,
     Accounts.deleteAccount);
   // Only Staff can debit an account
