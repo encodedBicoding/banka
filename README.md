@@ -5,6 +5,7 @@ Banka is a light-weight core banking application that powers banking operation o
 [![Maintainability](https://api.codeclimate.com/v1/badges/20e5a98548ee500f38b4/maintainability)](https://codeclimate.com/github/encodedBicoding/banka/maintainability)
 [![GitHub license](https://img.shields.io/github/license/encodedBicoding/banka.svg)](https://github.com/encodedBicoding/banka/blob/develop/LICENSE)
 [![Coverage Status](https://coveralls.io/repos/github/encodedBicoding/banka/badge.svg?branch=develop)](https://coveralls.io/github/encodedBicoding/banka?branch=develop)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/20e5a98548ee500f38b4/test_coverage)](https://codeclimate.com/github/encodedBicoding/banka/test_coverage)
 
 # Why Banka?
 Banka aims to ease banking operations for its users. Ever wanted to do operations like create and account or check account transactions, and you 
