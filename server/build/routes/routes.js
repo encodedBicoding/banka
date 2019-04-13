@@ -38,9 +38,9 @@ var routes = function routes(app) {
 
   router.get('/api/v1/accounts', _validate["default"].authenticateUser, _Accounts["default"].getSingleAccount); // Only Admin / Staff can activate or deactivate account
 
-  router.patch('/api/v1/account/:accountId', _validate["default"].authenticateStaff, _Accounts["default"].changeStatus); // Only Admin / staff can delete user account
+  router.patch('/api/v1/accounts/:accountId', _validate["default"].authenticateStaff, _Accounts["default"].changeStatus); // Only Admin / staff can delete user account
 
-  router["delete"]('/api/v1/account/:accountId', _validate["default"].authenticateStaff, _Accounts["default"].deleteAccount); // Only Staff can debit an account
+  router["delete"]('/api/v1/accounts/:accountId', _validate["default"].authenticateStaff, _Accounts["default"].deleteAccount); // Only Staff can debit an account
 
   router.post('/api/v1/transactions/:accountId/debit', _validate["default"].authenticateStaff, _Accounts["default"].debitAccount); // Only Staff can credit an account
 

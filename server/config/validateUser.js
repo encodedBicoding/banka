@@ -92,10 +92,10 @@ class ValidateUser {
     res.status(201).json({
       status: 201,
       message: 'Account created successfully',
-      data: [
+      data: {
         user,
         token,
-      ],
+      },
     });
   }
 
@@ -125,10 +125,10 @@ class ValidateUser {
           firstName);
         res.status(201).json({
           status: 201,
-          data: [
+          data: {
             newStaff,
             token,
-          ],
+          },
         });
       } else if (type === 'admin') {
         const token = Auth.generateToken({
@@ -143,10 +143,10 @@ class ValidateUser {
           firstName);
         res.status(201).json({
           status: 201,
-          data: [
+          data: {
             newAdmin,
             token,
-          ],
+          },
         });
       }
     } else {
