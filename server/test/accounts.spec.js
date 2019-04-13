@@ -25,7 +25,7 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
         lastName: 'test',
       })
       .end((err, res) => {
-        userToken = res.body.data[1];
+        userToken = res.body.data.token;
         done();
       });
   });
@@ -129,7 +129,7 @@ describe('Test user login', () => {
         password: '123456789',
       })
       .end((err, res) => {
-        userToken = res.body.data[1];
+        userToken = res.body.data.token;
         done();
       });
   });
@@ -167,7 +167,7 @@ describe('Testing admin account creation, account activation and deletion', () =
         password: '123456789',
       })
       .end((err, res) => {
-        staffToken = res.body.data[1];
+        staffToken = res.body.data.token;
         done();
       });
   });
@@ -248,10 +248,8 @@ describe('Testing admin account creation, account activation and deletion', () =
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(201);
-        expect(res.body.data).to.be.an('array');
+        expect(res.body.data).to.be.an('object');
         expect(res.body.status).to.equal(201);
-        expect(res.body.data[0]).to.be.an('object');
-        expect(res.body.data[1]).to.be.a('string');
         done();
       });
   });
@@ -268,10 +266,9 @@ describe('Testing admin account creation, account activation and deletion', () =
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(201);
-        expect(res.body.data).to.be.an('array');
+        expect(res.body.data).to.be.an('object');
         expect(res.body.status).to.equal(201);
-        expect(res.body.data[0]).to.be.an('object');
-        expect(res.body.data[1]).to.be.a('string');
+
         done();
       });
   });
@@ -331,7 +328,7 @@ describe('Testing staff ability to debit and credit an account', () => {
         password: '123456789',
       })
       .end((err, res) => {
-        cashierToken = res.body.data[1];
+        cashierToken = res.body.data.token;
         done();
       });
   });
@@ -482,7 +479,7 @@ describe('Handle user password reset', () => {
         lastName: 'reset',
       })
       .end((err, res) => {
-        userToken = res.body.data[1];
+        userToken = res.body.data.token;
         done();
       });
   });
@@ -527,7 +524,7 @@ describe('Handle staff password reset', () => {
         password: '123456789',
       })
       .end((err, res) => {
-        staffToken = res.body.data[1];
+        staffToken = res.body.data.token;
         done();
       });
   });
@@ -572,7 +569,7 @@ describe('Handle staff ability to delete user account', () => {
         password: '123456789',
       })
       .end((err, res) => {
-        staffToken = res.body.data[1];
+        staffToken = res.body.data.token;
         done();
       });
   });
