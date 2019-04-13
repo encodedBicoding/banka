@@ -75,14 +75,14 @@ Banka API is currently on version 1 and is hosted on heroku [link](https://domin
         <td>-</td>
         <td>-</td>
         <td>-</td>
-        <td>/api/v1/account/:accountId</td>
+        <td>/api/v1/accounts/:accountId</td>
     </tr>
     <tr>
         <td>DELETE</td>
         <td>-</td>
         <td>-</td>
         <td>-</td>
-        <td>/api/v1/account/:accountId</td>
+        <td>/api/v1/accounts/:accountId</td>
     </tr>
      <tr>
         <td>PUT</td>
