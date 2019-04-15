@@ -26,8 +26,8 @@
              <div id="profile_img">
                  <img src="./public/images/user.jpg" alt="user_profile" id="user_dp"/>
                  <form method="POST" enctype="multipart/form-data">
-                     <img src="./public/images/tiny_camera.png" onclick="document.getElementById('user_img').click()" id="t_c" title="upload image"/>
-                     <input type='file' id="user_img" style="display:none" name="user_img">
+                     <img src="./public/images/tiny_camera.png" id="t_c" title="upload image" alt="user profile image"/>
+                     <input type='file' id="user_img" name="user_img">
                  </form>
                  <button id="toggle_nav">
                     <span class="fa fa-bars" id="xx"></span>
@@ -36,11 +36,10 @@
              <div id="user_nav">
                  <nav>
                      <ul>
-                         <li onclick="document.getElementById('n_a').click()"><a href="./create_acc.html" id="n_a">New Bank Account</a></li>
-                         <li onclick="document.getElementById('v_a').click()"><a href="./view_all.html" id="v_a">View All Accounts</a></li>
-                         <li onclick="document.getElementById('p_b').click()"><a href="./pay_bills.html" id="p_b">Pay Bills</a></li>
-                         <li onclick="document.getElementById('settings').click()"><a href="./settings.html" id="settings">Settings</a></li>
-                         <li onclick="document.getElementById('logout').click()"><a href="#" id="logout">Log out</a></li>
+                         <li id="list_click1"><a href="./create_acc.html" id="one">New Bank Account</a></li>
+                         <li id="list_click2"><a href="./view_all.html" id="two">View Account History</a></li>
+                         <li id="list_click3"><a href="./settings.html" id="three">Settings</a></li>
+                         <li id="list_click4"><a href="#" id="four">Log out</a></li>
                      </ul>
                  </nav>
             </div>
@@ -49,7 +48,7 @@
         <section id="profile_body">
             <div class="container">
                 <div id="search">
-                    <form method="GET" action="search.html">
+                    <form method="GET" action="#">
                         <label for="s">Search Account ID</label>
                         <input type="text" id="s" name="s" placeholder="Account ID" required/>
                         <button>Search</button>

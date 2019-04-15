@@ -14,6 +14,10 @@ body{
     padding: 0;
     height: auto;
 }
+#nav_target{
+    background-color: #FF8C00;
+    border-radius: 4px;
+}
 #toggle_nav{
     display: none;   
 }
@@ -30,6 +34,9 @@ ul{
 a{
     text-decoration: none;
     color: #ffbc00;
+}
+#user_img {
+    display: none;
 }
 
 /*Header*/
@@ -263,7 +270,7 @@ header a{
     color: #fff;
     border-bottom: #ff8c00 solid 5px;
     margin: 0;
-    padding: 35px 0 80px 0;
+    padding: 5% 0 17% 0;
 }
 #login h2{
     text-align: center;
@@ -304,12 +311,12 @@ header a{
 }
 /*Footer*/
 footer{
-    padding: 70px;
+    padding: 1% 0 1% 0 ;
     height: auto;
 }
 footer p{
     color: grey;
-    font-size: 13px;
+    font-size: 52%;
     text-align: center;
     margin: 0;
     padding: 0;
@@ -573,7 +580,7 @@ footer p{
     #services #offer-header{
         padding: 8px;
         font-size: 20px;
-}
+    }
     #services #offer{
         width: 90%;
         margin: 0 10px 0 5px;
@@ -702,7 +709,7 @@ footer p{
     }
     #services #flex_offer{
         display: block;
-        margin: 0 0 0 13px;
+        margin: 0 2% 0 3%;
     }
     #services #offer-header{
         padding: 8px;
@@ -715,7 +722,7 @@ footer p{
         font-size: 14px;
     }
     #contact h2{
-        font-size: 20px;
+        font-size: 15px;
     }
     #contact form{
         margin: 0 0 0 30px;
@@ -805,6 +812,9 @@ footer p{
         padding: 5px;
         margin: 0;
     }
+    #login{
+        padding: 5% 0 35% 0;
+    }
 }
 /*Max-width 378px*/
 @media(max-width: 378px){
@@ -816,6 +826,7 @@ footer p{
     }
     #services #flex_offer{
         display: block;
+        margin: 0 2% 0 1.5%;
     }
     #services #offer-header{
         padding: 8px;
@@ -828,7 +839,7 @@ footer p{
         font-size: 14px;
     }
     #contact h2{
-        font-size: 20px;
+        font-size: 13px;
     }
     #contact form{
         margin: 0 0 0 30px;
@@ -838,6 +849,9 @@ footer p{
     }
     #contact #c_c{
         width:100%;
+    }
+    #login{
+        padding: 5% 0 37% 0;
     }
 
 }
