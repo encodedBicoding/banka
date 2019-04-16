@@ -4,7 +4,7 @@ import debug from 'debug';
 import config from './config/config';
 
 dotEnv.config();
-const logger = debug('banka');
+const logger = debug('banKa');
 
 const app = express();
 

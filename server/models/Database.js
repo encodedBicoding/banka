@@ -4,7 +4,6 @@ class DummyData {
       id: 1,
       firstName: 'john',
       lastName: 'doe',
-      username: 'jonny',
       email: 'johndoe@gmail.com',
       password: '$2b$10$rgZSWmHmx51L/VYEU10TcOKYVhLdFBI.yVkbxWoNz529r1WbxPoAK',
       imageUrl: '',

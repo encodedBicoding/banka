@@ -26,8 +26,8 @@
              <div id="profile_img">
                  <img src="./public/images/user.jpg" alt="user_profile" id="user_dp"/>
                  <form method="POST" enctype="multipart/form-data">
-                     <img src="./public/images/tiny_camera.png" onclick="document.getElementById('user_img').click()" id="t_c" title="upload image"/>
-                     <input type='file' id="user_img" style="display:none" name="user_img">
+                     <img src="./public/images/tiny_camera.png" id="t_c" title="upload image" alt="user image upload"/>
+                     <input type='file' id="user_img" name="user_img">
                  </form>
                  <button id="toggle_nav">
                     <span class="fa fa-bars" id="xx"></span>
@@ -36,11 +36,11 @@
              <div id="user_nav">
                  <nav>
                      <ul>
-                         <li onclick="document.getElementById('n_a').click()"><a href="./staff_accounts.html" id="n_a">All User Accounts</a></li>
-                         <li onclick="document.getElementById('v_a').click()"><a href="./credit.html" id="v_a">Credit User</a></li>
-                         <li onclick="document.getElementById('v_a').click()"><a href="./debit.html" id="v_a">Debit User</a></li>
-                         <li onclick="document.getElementById('settings').click()"><a href="./staff-settings.html" id="settings">Settings</a></li>
-                         <li onclick="document.getElementById('logout').click()"><a href="#" id="logout">Log out</a></li>
+                         <li id="list_click1"><a href="./staff_accounts.html" id="one">All User Accounts</a></li>
+                         <li id="list_click2"><a href="./credit.html" id="two">Credit User</a></li>
+                         <li id="list_click3"><a href="./debit.html" id="three">Debit User</a></li>
+                         <li id="list_click4"><a href="./staff-settings.html" id="four">Settings</a></li>
+                         <li id="list_click5"><a href="#" id="five">Log out</a></li>
                      </ul>
                  </nav>
             </div>
