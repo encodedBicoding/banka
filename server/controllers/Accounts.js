@@ -2,7 +2,6 @@ import Database from '../models/Database';
 import generateAccountNumber from '../helpers/generateAccountNumber';
 import Transaction from '../models/Transaction';
 import Account from '../models/Account';
-import Auth from '../helpers/auth';
 import Util from '../helpers/util';
 
 
@@ -20,11 +19,8 @@ class Accounts {
    */
   static createAccount(req, res) {
     const { accType, userType } = req.body;
-    const token = req.headers.authorization.split(' ')[1];
-    const payload = Auth.verifyToken(token);
-    console.log(users)
-    const user = users.filter(u => u.email === payload.email);
-    console.log(user);
+    const { email } = req.user;
+    const user = users.filter(u => u.email === email);
     const accountNumber = generateAccountNumber();
     const id = accounts.length + 1;
     const account = new Account(id,
@@ -75,9 +71,8 @@ class Accounts {
    */
   static deleteAccount(req, res) {
     const { accountId } = req.params;
-    const token = req.headers.authorization.split(' ')[1];
-    const payload = Auth.verifyToken(token);
-    const staff = staffs.filter(s => s.email === payload.email && s.isAdmin === true);
+    const { email } = req.user;
+    const staff = staffs.filter(s => s.email === email && s.isAdmin === true);
     if (accounts.length <= 0) {
       res.status(404).json({
         status: 404,
@@ -102,9 +97,8 @@ class Accounts {
   static debitAccount(req, res) {
     const { accountId } = req.params;
     const { amount, accId } = req.body;
-    const token = req.headers.authorization.split(' ')[1];
-    const payload = Auth.verifyToken(token);
-    const staff = staffs.filter(s => s.email === payload.email && s.type === 'staff');
+    const { email } = req.user;
+    const staff = staffs.filter(s => s.email === email && s.type === 'staff');
     const s = `${staff[0].firstName} ${staff[0].lastName}`;
     const account = accounts.filter(acc => acc.id === Number(accountId));
     if (account.length <= 0) {
@@ -138,9 +132,8 @@ class Accounts {
   static creditAccount(req, res) {
     const { accountId } = req.params;
     const { amount, accId } = req.body;
-    const token = req.headers.authorization.split(' ')[1];
-    const payload = Auth.verifyToken(token);
-    const staff = staffs.filter(s => s.email === payload.email && s.type === 'staff');
+    const { email } = req.user;
+    const staff = staffs.filter(s => s.email === email && s.type === 'staff');
     const s = `${staff[0].firstName} ${staff[0].lastName}`;
     const account = accounts.filter(acc => acc.id === Number(accountId));
     if (account.length <= 0) {
@@ -171,9 +164,8 @@ class Accounts {
    * @returns {object} JSON
    */
   static getSingleAccount(req, res) {
-    const token = req.headers.authorization.split(' ')[1];
-    const payload = Auth.verifyToken(token);
-    const user = users.filter(client => client.email === payload.email && client.type === 'client');
+    const { email } = req.user;
+    const user = users.filter(client => client.email === email && client.type === 'client');
     const acc = user[0].accounts;
     res.status(200).json({
       status: 200,
@@ -183,11 +175,10 @@ class Accounts {
 
   static resetPassword(req, res) {
     const { newPassword, oldPassword } = req.body;
-    const token = req.headers.authorization.split(' ')[1];
-    const payload = Auth.verifyToken(token);
-    const user = users.filter(u => u.email === payload.email);
+    const { email } = req.user;
+    const user = users.filter(u => u.email === email);
     if (user.length <= 0) {
-      const staff = staffs.filter(s => s.email === payload.email);
+      const staff = staffs.filter(s => s.email === email);
       if (Util.validatePassword(oldPassword, staff[0].password)) {
         staff[0].password = Util.hashPassword(newPassword);
         res.status(200).json({
