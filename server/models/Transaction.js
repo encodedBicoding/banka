@@ -15,21 +15,25 @@ class Transaction {
   }
 
   debitAccount(accNumber) {
+    const trans = this.printTransaction();
     const account = accounts.filter(acc => acc.accountNumber === accNumber);
     this.id += 1;
     this.oldBalance = account[0].balance;
     this.type = 'debit';
     account[0].balance -= this.amount;
     this.newBalance = account[0].balance;
+    account[0].transactions.push(trans);
   }
 
   creditAccount(accNumber) {
+    const trans = this.printTransaction();
     const account = accounts.filter(acc => acc.accountNumber === accNumber);
     this.id += 1;
     this.oldBalance = account[0].balance;
     this.type = 'credit';
     account[0].balance += this.amount;
     this.newBalance = account[0].balance;
+    account[0].transactions.push(trans);
   }
 
 
@@ -40,9 +44,9 @@ class Transaction {
       transactionType: this.type,
       accountNumber: this.accountNumber,
       cashier: this.cashier.toLocaleUpperCase(),
-      amount: this.amount,
-      oldBalance: this.oldBalance,
-      newBalance: this.newBalance,
+      amount: this.amount.toFixed(2),
+      oldBalance: this.oldBalance.toFixed(2),
+      newBalance: this.newBalance.toFixed(2),
     };
   }
 }

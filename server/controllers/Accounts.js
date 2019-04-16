@@ -22,7 +22,9 @@ class Accounts {
     const { accType, userType } = req.body;
     const token = req.headers.authorization.split(' ')[1];
     const payload = Auth.verifyToken(token);
+    console.log(users)
     const user = users.filter(u => u.email === payload.email);
+    console.log(user);
     const accountNumber = generateAccountNumber();
     const id = accounts.length + 1;
     const account = new Account(id,

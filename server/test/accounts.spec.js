@@ -430,7 +430,7 @@ describe('Testing staff ability to debit and credit an account', () => {
       .request(app)
       .post('/api/v1/transactions/1/debit')
       .send({
-        amount: 30000,
+        amount: 397.89,
         accId: accID,
       })
       .set('authorization', `Bearer ${cashierToken}`)
