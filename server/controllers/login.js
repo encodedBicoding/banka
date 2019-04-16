@@ -13,8 +13,9 @@ class Login {
 
   static login(req, res) {
     const { email, password } = req.body;
-    const token = Auth.generateToken({ email, password });
+    const token = Auth.generateToken({ email, password, isAdmin: false });
     const user = users.filter(u => u.email === email);
+    req.body.tokenAuth = token;
     res.status(200).json({
       status: 200,
       data: {
@@ -28,6 +29,7 @@ class Login {
     const { email, password } = req.body;
     const token = Auth.generateToken({ email, password, isAdmin: true });
     const staff = staffs.filter(s => s.email === email);
+    req.body.tokenAuth = token;
     res.status(200).json({
       status: 200,
       data: {

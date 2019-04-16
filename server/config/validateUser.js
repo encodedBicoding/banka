@@ -1,9 +1,7 @@
 import Database from '../models/Database';
 import Auth from '../helpers/auth';
 import Util from '../helpers/util';
-import Client from '../models/Client';
-import Admin from '../models/Admin';
-import Staff from '../models/Staff';
+
 import Acc from '../helpers/setup';
 /**
  * @class ValidateUser
@@ -89,6 +87,7 @@ class ValidateUser {
       password,
       firstName,
       lastName);
+    req.body.tokenAuth = token;
     res.status(201).json({
       status: 201,
       message: 'Account created successfully',
@@ -123,6 +122,7 @@ class ValidateUser {
           email,
           password,
           firstName);
+        req.body.tokenAuth = token;
         res.status(201).json({
           status: 201,
           data: {
@@ -141,6 +141,7 @@ class ValidateUser {
           email,
           password,
           firstName);
+        req.body.tokenAuth = token;
         res.status(201).json({
           status: 201,
           data: {

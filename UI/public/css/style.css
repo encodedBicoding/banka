@@ -41,8 +41,9 @@ a{
 
 /*Header*/
 header{
-    background-color: #00003a;
-    color: #fff;
+    background-color: #fff;
+    color: #00003d;
+    font-weight: bolder;
     padding: 10px;
     border-bottom: #FF8C00 solid 10px; 
 }
@@ -57,7 +58,7 @@ header{
     text-align: center;
 }
 #brand #slogan{
-    color: #fff;
+    color: #00003d;
     font-size: 10px;
     display: block;
     position: relative;
@@ -72,7 +73,7 @@ header li{
     padding: 20px;
 }
 header a{
-    color: #fff;
+    color: #00003d;
     font-size: 15px;
     text-decoration: none;
     text-transform: uppercase;
@@ -82,11 +83,9 @@ header a{
 }
 /*About us*/
 #about{
-    background: url(../images/banking-lights.jpg) no-repeat -20px -20px;
-    color: #fff;
+    color: #00003a;
     margin: 0;
-    padding: 35px 0 200px 0;
-    border-bottom: #FF8c00 solid 7px;
+    padding: 35px 0 100px 0;
 }
 #about h2{
     text-align: center;
@@ -105,11 +104,10 @@ header a{
 }
 /*Services*/
 #services{
-    background-color: #00003a;
-    color: #fff;
+    background-color: #fff;
+    color: #00003d;
     padding: 9% 0 10% 0;
     margin: 0 0 0 2px;
-    border-bottom: #ff8c00 solid 7px;
 }
 #services #s_header{
     text-align: center;
@@ -129,16 +127,16 @@ header a{
     background-color: #ff8c00;
     display: inline;
     border-top-right-radius: 15px;
-    border-left: #fff solid 10px;
-    color: #00003a;
+    border-left: #00003d solid 10px;
+    color: #fff;
 }
 #services #offer{
     width: 30%;
     margin: 0 4px 0 0;
     padding: 30px;
-    border: 1px solid #f4f4f4;
+    border: 1px solid #00003d;
     border-radius: 4px;
-    box-shadow: 1px 1px 2px 1px rgba(255,255,255, 3)
+    box-shadow: 1px 1px 2px 1px rgba(0,0,255, 3)
 }
 #services #flex_offer{
     display: flex;
@@ -149,7 +147,7 @@ header a{
 
 /*Contact us*/
 #contact{
-    background: url(../images/banking-transformation.jpg) no-repeat 0 -30px;
+    background: url(../images/banking-transformation.jpg) rgba(244,244,255,0.9) no-repeat 0 -30px;
     padding: 9% 0 9% 0;
     border-bottom: #ff8c00 solid 7px;
     color: #fff;
@@ -161,15 +159,18 @@ header a{
 #contact #c_c{
     width: 50%;
     margin: 0 20px 20px 0;
-    background-color: #00003a;
+    background-color: rgba(255,255,255, 0.1);
     padding: 0 0 20px 0;
     border-top-right-radius: 50px;
-    border-bottom: #ff8c00 solid 10px;
 }
 #c_c h2{
     text-align: center;
     text-transform: uppercase;
     font-size: 19px;
+}
+#c_c p {
+    text-align: center;
+    margin-top: 16%;
 }
 #c_c span{
     color: #ff8c00;
@@ -206,8 +207,8 @@ header a{
 }
 /*Signup*/
 #signup{
-    background-color: #00003a;
-    color: #fff;
+    background-color: transparent;
+    color: #00003a;
     border-bottom: #ff8c00 solid 5px;
     margin: 0;
     padding: 35px 0 0 0;
@@ -266,8 +267,8 @@ header a{
 }
 /*User Login*/
 #login{
-    background-color: #00003a;
-    color: #fff;
+    background-color: transparent;
+    color: #00003a;
     border-bottom: #ff8c00 solid 5px;
     margin: 0;
     padding: 5% 0 17% 0;
@@ -341,7 +342,7 @@ footer p{
     margin: 0 0 0 3px;
     width: 20%;
     height: auto;
-    background-color: #00003a;
+    background-color: rgba(255,255,255,0.4);
     border-radius: 5px;
 }
 #profile_img #user_dp{
@@ -687,9 +688,9 @@ footer p{
         display: block;
         padding: 4px;
         border: none;
-        background-color: #00003a;
+        background-color: transparent;
         position: absolute;
-        top: 52%;
+        top: 59%;
         left: 83%;
     }
     #user_nav{
@@ -763,7 +764,6 @@ footer p{
     #user_profile{
         margin: 0 0 2% 0;
         height: auto;
-        border-bottom: 9px solid #ff8c00;
     }
     #user_nav{
         margin: 0 0 0 8%;
