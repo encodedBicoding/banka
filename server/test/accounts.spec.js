@@ -115,7 +115,7 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
     chai
       .request(app)
       .post('/api/v1/accounts')
-      .send({ tokenAuth: 'gfkmkitdfgfgfdgf', })
+      .send({ tokenAuth: 'gfkmkitdfgfgfdgf' })
       .end((err, res) => {
         expect(res).to.have.status(401);
         expect(res.body.message).to.equal('Not Authorized');
@@ -167,7 +167,7 @@ describe('Testing admin account creation, account activation and deletion', () =
     chai
       .request(app)
       .patch('/api/v1/accounts/2')
-      .send( { tokenAuth: 'kngutrenjsndjdsdfs' } )
+      .send({ tokenAuth: 'kngutrenjsndjdsdfs' })
       .end((err, res) => {
         expect(res).to.have.status(401);
         expect(res.body.message).to.equal('Not authorized');
@@ -348,7 +348,7 @@ describe('Testing staff ability to debit and credit an account', () => {
       .send({
         amount: 30000,
         accId: 34436877,
-        tokenAuth: cashierToken
+        tokenAuth: cashierToken,
       })
       .end((err, res) => {
         expect(res).to.have.status(404);
@@ -558,13 +558,68 @@ describe('Handle staff ability to delete user account', () => {
     chai
       .request(app)
       .delete('/api/v1/accounts/:accountId')
-      .send({tokenAuth: staffToken,})
+      .send({ tokenAuth: staffToken })
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body.message).to.be.a('string');
         expect(res.body.message).to.equal('No account to delete');
         expect(res.body.status).to.equal(404);
         expect(res.body.status).to.be.a('number');
+        done();
+      });
+  });
+});
+describe('Test user ability to get single accounts', () => {
+  let accNum;
+  before((done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'test@gmail.com',
+        password: '123456789',
+      })
+      .end((err, res) => {
+        userToken = res.body.data.token;
+        done();
+      });
+  });
+  before('user should create and account', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/accounts')
+      .send({
+        tokenAuth: userToken,
+        userType: 'personal',
+        accType: 'current',
+      })
+      .end((err, res) => {
+        accNum = res.body.data.accountNumber;
+        done();
+      });
+  });
+  it('should return status 200 if accountNumber specified exist and user is a valid one', (done) => {
+    chai
+      .request(app)
+      .get(`/api/v1/accounts/${accNum}/transactions`)
+      .send({ tokenAuth: userToken })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.data).to.be.an('array');
+        expect(res.body.status).to.equal(200);
+        done();
+      });
+  });
+  it('should return status 404 and fail if accountNumber specified does exist and user is a valid one', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/accounts/343443/transactions')
+      .send({ tokenAuth: userToken })
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.status).to.equal(404);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.message).to.equal('Account number not found');
         done();
       });
   });
