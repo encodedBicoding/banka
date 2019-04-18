@@ -8,7 +8,7 @@
     padding: 0;
 }
 body{
-    background-color: #f4f4f4;
+    background-color: #f4f4f4 !important;
     font: 17px/1.5 Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
@@ -39,9 +39,22 @@ a{
     display: none;
 }
 
+#user_profile .active {
+    background-color: mintcream;
+}
+#overlay {
+    z-index: 2;
+    background-color: rgba(0,0,0,0.3);
+    margin:0;
+    width: 100%;
+    padding: inherit;
+    height: 100%;
+    position: relative;
+}
+
 /*Header*/
 header{
-    background-color: #fff;
+    background-color: #f4f4f4;
     color: #00003d;
     font-weight: bolder;
     padding: 10px;
@@ -57,7 +70,8 @@ header{
     font-size: 75px;
     text-align: center;
 }
-#brand #slogan{
+#brand #slogan,
+#admin_brand #slogan{
     color: #00003d;
     font-size: 10px;
     display: block;
@@ -85,7 +99,8 @@ header a{
 #about{
     color: #00003a;
     margin: 0;
-    padding: 35px 0 100px 0;
+    height: auto;
+    padding: 35px 0 10% 0;
 }
 #about h2{
     text-align: center;
@@ -104,9 +119,9 @@ header a{
 }
 /*Services*/
 #services{
-    background-color: #fff;
+    background-color: #f4f4f4;
     color: #00003d;
-    padding: 9% 0 10% 0;
+    padding: 1.7% 0 10% 0;
     margin: 0 0 0 2px;
 }
 #services #s_header{
@@ -132,7 +147,7 @@ header a{
 }
 #services #offer{
     width: 30%;
-    margin: 0 4px 0 0;
+    margin: 0 1.8% 0 2%;
     padding: 30px;
     border: 1px solid #00003d;
     border-radius: 4px;
@@ -144,11 +159,14 @@ header a{
     margin: 10px 0 0 20px;
     padding: 0;
 }
+#services p{
+    text-align: justify;
+}
 
 /*Contact us*/
 #contact{
-    background: url(../images/banking-transformation.jpg) rgba(244,244,255,0.9) no-repeat 0 -30px;
-    padding: 9% 0 9% 0;
+    background: url(../images/banking-transformation.jpg) no-repeat 0 -30px;
+    padding: 5% 0 5% 0;
     border-bottom: #ff8c00 solid 7px;
     color: #fff;
 }
@@ -377,8 +395,11 @@ footer p{
 }
 #user_profile li:hover{
     background-color: #f4f4f4;
+    transition: background-color ease-out .4s;
 }
-
+#user_profile .active {
+    background-color: #f4f4f4;
+}
 /*Profile Body*/
 #profile_body{
     float: right;
@@ -573,6 +594,9 @@ footer p{
     }
     #services h2{
         font-size: 20px;
+    }
+    #services p{
+        text-align: justify;
     }
     #services #flex_offer{
         margin: 0 0 20px 20px;

@@ -37,8 +37,9 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
       .send({
         accType: 'current',
         userType: 'org',
-        tokenAuth: userToken,
       })
+      .set('authorization', `Bearer ${userToken}`)
+      .set('x-access-token', `Bearer ${userToken}`)
       .end((err, res) => {
         expect(res).to.have.status(201);
         expect(res.body.status).to.equal(201);
@@ -57,8 +58,9 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
         password: '123456789',
         firstName: 'tester',
         lastName: 'test',
-        tokenAuth: userToken,
       })
+      .set('authorization', `Bearer ${userToken}`)
+      .set('x-access-token', `Bearer ${userToken}`)
       .end((err, res) => {
         expect(res).to.have.status(401);
         expect(res.body.message).to.equal('A user with the given email already exists');
@@ -74,8 +76,9 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
         password: '123456789',
         firstName: ' ',
         lastName: 'test',
-        tokenAuth: userToken,
       })
+      .set('authorization', `Bearer ${userToken}`)
+      .set('x-access-token', `Bearer ${userToken}`)
       .end((err, res) => {
         expect(res).to.have.status(403);
         expect(res.body.message).to.equal('Please check that all fields are filled');
@@ -115,7 +118,7 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
     chai
       .request(app)
       .post('/api/v1/accounts')
-      .send({ tokenAuth: 'gfkmkitdfgfgfdgf', })
+      .send({ tokenAuth: 'gfkmkitdfgfgfdgf' })
       .end((err, res) => {
         expect(res).to.have.status(401);
         expect(res.body.message).to.equal('Not Authorized');
@@ -167,7 +170,7 @@ describe('Testing admin account creation, account activation and deletion', () =
     chai
       .request(app)
       .patch('/api/v1/accounts/2')
-      .send( { tokenAuth: 'kngutrenjsndjdsdfs' } )
+      .send({ tokenAuth: 'kngutrenjsndjdsdfs' })
       .end((err, res) => {
         expect(res).to.have.status(401);
         expect(res.body.message).to.equal('Not authorized');
@@ -178,7 +181,8 @@ describe('Testing admin account creation, account activation and deletion', () =
     chai
       .request(app)
       .patch('/api/v1/accounts/2')
-      .send({ tokenAuth: staffToken })
+      .set('authorization', `Bearer ${staffToken}`)
+      .set('x-access-token', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status((200));
         done();
@@ -188,7 +192,8 @@ describe('Testing admin account creation, account activation and deletion', () =
     chai
       .request(app)
       .patch('/api/v1/accounts/32')
-      .send({ tokenAuth: staffToken })
+      .set('authorization', `Bearer ${staffToken}`)
+      .set('x-access-token', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status((404));
         done();
@@ -200,7 +205,8 @@ describe('Testing admin account creation, account activation and deletion', () =
     chai
       .request(app)
       .patch('/api/v1/accounts/2')
-      .send({ tokenAuth: staffToken })
+      .set('authorization', `Bearer ${staffToken}`)
+      .set('x-access-token', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status((200));
         expect(account.status).to.equal('active');
@@ -211,7 +217,8 @@ describe('Testing admin account creation, account activation and deletion', () =
     chai
       .request(app)
       .delete('/api/v1/accounts/2')
-      .send({ tokenAuth: staffToken })
+      .set('authorization', `Bearer ${staffToken}`)
+      .set('x-access-token', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(200);
         done();
@@ -221,7 +228,8 @@ describe('Testing admin account creation, account activation and deletion', () =
     chai
       .request(app)
       .delete('/api/v1/accounts/2')
-      .send({ tokenAuth: staffToken })
+      .set('authorization', `Bearer ${staffToken}`)
+      .set('x-access-token', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(200);
         done();
@@ -236,8 +244,9 @@ describe('Testing admin account creation, account activation and deletion', () =
         email: 'admin@gmail.com',
         type: 'admin',
         password: '123456789',
-        tokenAuth: staffToken,
       })
+      .set('authorization', `Bearer ${staffToken}`)
+      .set('x-access-token', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(201);
         expect(res.body.data).to.be.an('object');
@@ -254,8 +263,9 @@ describe('Testing admin account creation, account activation and deletion', () =
         email: 'staff@gmail.com',
         type: 'staff',
         password: '123456789',
-        tokenAuth: staffToken,
       })
+      .set('authorization', `Bearer ${staffToken}`)
+      .set('x-access-token', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(201);
         expect(res.body.data).to.be.an('object');
@@ -273,8 +283,9 @@ describe('Testing admin account creation, account activation and deletion', () =
         email: 'admin@gmail.com',
         type: 'admin',
         password: '123456789',
-        tokenAuth: staffToken,
       })
+      .set('authorization', `Bearer ${staffToken}`)
+      .set('x-access-token', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(401);
         done();
@@ -289,8 +300,9 @@ describe('Testing admin account creation, account activation and deletion', () =
         email: 'staff@gmail.com',
         type: 'staff',
         password: '123456789',
-        tokenAuth: staffToken,
       })
+      .set('authorization', `Bearer ${staffToken}`)
+      .set('x-access-token', `Bearer ${staffToken}`)
       .end((err, res) => {
         expect(res).to.have.status(401);
         done();
@@ -319,8 +331,9 @@ describe('Testing staff ability to debit and credit an account', () => {
       .send({
         accType: 'current',
         userType: 'org',
-        tokenAuth: userToken,
       })
+      .set('authorization', `Bearer ${userToken}`)
+      .set('x-access-token', `Bearer ${userToken}`)
       .end((err, res) => {
         expect(res).to.have.status(201);
         accID = accounts[0].accountNumber;
@@ -334,8 +347,9 @@ describe('Testing staff ability to debit and credit an account', () => {
       .send({
         amount: 300000000000000,
         accId: accID,
-        tokenAuth: cashierToken,
       })
+      .set('authorization', `Bearer ${cashierToken}`)
+      .set('x-access-token', `Bearer ${cashierToken}`)
       .end((err, res) => {
         expect(res).to.have.status(401);
         done();
@@ -348,8 +362,10 @@ describe('Testing staff ability to debit and credit an account', () => {
       .send({
         amount: 30000,
         accId: 34436877,
-        tokenAuth: cashierToken
+        tokenAuth: cashierToken,
       })
+      .set('authorization', `Bearer ${cashierToken}`)
+      .set('x-access-token', `Bearer ${cashierToken}`)
       .end((err, res) => {
         expect(res).to.have.status(404);
         done();
@@ -364,6 +380,8 @@ describe('Testing staff ability to debit and credit an account', () => {
         accId: 92039433,
         tokenAuth: cashierToken,
       })
+      .set('authorization', `Bearer ${cashierToken}`)
+      .set('x-access-token', `Bearer ${cashierToken}`)
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body.message).to.be.a('string');
@@ -382,6 +400,8 @@ describe('Testing staff ability to debit and credit an account', () => {
         accId: 9203943345453,
         tokenAuth: cashierToken,
       })
+      .set('authorization', `Bearer ${cashierToken}`)
+      .set('x-access-token', `Bearer ${cashierToken}`)
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body.message).to.be.a('string');
@@ -400,6 +420,8 @@ describe('Testing staff ability to debit and credit an account', () => {
         accId: accID,
         tokenAuth: cashierToken,
       })
+      .set('authorization', `Bearer ${cashierToken}`)
+      .set('x-access-token', `Bearer ${cashierToken}`)
       .end((err, res) => {
         expect(res).to.have.status(200);
         done();
@@ -558,13 +580,68 @@ describe('Handle staff ability to delete user account', () => {
     chai
       .request(app)
       .delete('/api/v1/accounts/:accountId')
-      .send({tokenAuth: staffToken,})
+      .send({ tokenAuth: staffToken })
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body.message).to.be.a('string');
         expect(res.body.message).to.equal('No account to delete');
         expect(res.body.status).to.equal(404);
         expect(res.body.status).to.be.a('number');
+        done();
+      });
+  });
+});
+describe('Test user ability to get single accounts', () => {
+  let accNum;
+  before((done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'test@gmail.com',
+        password: '123456789',
+      })
+      .end((err, res) => {
+        userToken = res.body.data.token;
+        done();
+      });
+  });
+  before('user should create and account', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/accounts')
+      .send({
+        tokenAuth: userToken,
+        userType: 'personal',
+        accType: 'current',
+      })
+      .end((err, res) => {
+        accNum = res.body.data.accountNumber;
+        done();
+      });
+  });
+  it('should return status 200 if accountNumber specified exist and user is a valid one', (done) => {
+    chai
+      .request(app)
+      .get(`/api/v1/accounts/${accNum}/transactions`)
+      .send({ tokenAuth: userToken })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.data).to.be.an('array');
+        expect(res.body.status).to.equal(200);
+        done();
+      });
+  });
+  it('should return status 404 and fail if accountNumber specified does exist and user is a valid one', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/accounts/343443/transactions')
+      .send({ tokenAuth: userToken })
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.status).to.equal(404);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.message).to.equal('Account number not found');
         done();
       });
   });

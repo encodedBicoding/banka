@@ -10,30 +10,28 @@ class Authorize {
    * @returns {object} JSON
    */
   static authenticateUser(req, res, next) {
-    if (!req.body.tokenAuth) {
+    let token = req.body.tokenAuth
+      || req.headers.authorization
+      || req.headers['x-access-token'];
+    if (token.startsWith('Bearer ')) {
+      token = token.slice(7, token.length);
+    }
+    if (token) {
+      const payload = Auth.verifyToken(token);
+      if (!payload.email && payload.isAdmin !== false) {
+        res.status(401).json({
+          status: 401,
+          message: 'Not Authorized',
+        });
+      } else {
+        req.user = payload;
+        next();
+      }
+    } else {
       res.status(400).json({
         status: 400,
         message: 'No token supplied',
       });
-    } else {
-      const token = req.body.tokenAuth;
-      if ((!Auth.verifyToken(token))) {
-        res.status(401).json({
-          status: 401,
-          message: 'Incorrect token supplied',
-        });
-      } else {
-        const payload = Auth.verifyToken(token);
-        if (!payload.email && payload.isAdmin !== false) {
-          res.status(401).json({
-            status: 401,
-            message: 'Not Authorized',
-          });
-        } else {
-          req.user = payload;
-          next();
-        }
-      }
     }
   }
 
@@ -45,31 +43,29 @@ class Authorize {
    * @returns {object} JSON
    */
   static authenticateStaff(req, res, next) {
-    if (!req.body.tokenAuth) {
-      res.status(400).json({
-        status: 400,
-        message: 'No token supplied'
-      });
-    } else {
-      const token = req.body.tokenAuth;
-      if ((!Auth.verifyToken(token))) {
+    let token = req.body.tokenAuth
+      || req.headers.authorization
+      || req.headers['x-access-token'];
+    if (token.startsWith('Bearer ')) {
+      token = token.slice(7, token.length);
+    }
+    if (token) {
+      const payload = Auth.verifyToken(token);
+      const { isAdmin } = payload;
+      if (isAdmin !== true) {
         res.status(401).json({
           status: 401,
           message: 'Not authorized',
         });
       } else {
-        const payload = Auth.verifyToken(token);
-        const { isAdmin } = payload;
-        if (isAdmin !== true) {
-          res.status(401).json({
-            status: 401,
-            message: 'Not authorized',
-          });
-        } else {
-          req.user = payload;
-          next();
-        }
+        req.user = payload;
+        next();
       }
+    } else {
+      res.status(400).json({
+        status: 400,
+        message: 'No token supplied',
+      });
     }
   }
 
@@ -81,32 +77,29 @@ class Authorize {
    * @returns {object} JSON
    */
   static authenticateAdmin(req, res, next) {
-    if (req.body.tokenAuth.length <= 0) {
-      res.status(400).json({
-        status: 400,
-        message: 'Not token supplied',
-      });
-    } else {
-      const token = req.body.tokenAuth;
-
-      if ((!Auth.verifyToken(token))) {
+    let token = req.body.tokenAuth
+      || req.headers.authorization
+      || req.headers['x-access-token'];
+    if (token.startsWith('Bearer ')) {
+      token = token.slice(7, token.length);
+    }
+    if (token) {
+      const payload = Auth.verifyToken(token);
+      const { isAdmin, type } = payload;
+      if (isAdmin !== true && type !== 'admin') {
         res.status(401).json({
           status: 401,
           message: 'Not authorized',
         });
       } else {
-        const payload = Auth.verifyToken(token);
-        const { isAdmin, type } = payload;
-        if (isAdmin !== true && type !== 'admin') {
-          res.status(401).json({
-            status: 401,
-            message: 'Not authorized',
-          });
-        } else {
-          req.user = payload;
-          next();
-        }
+        req.user = payload;
+        next();
       }
+    } else {
+      res.status(400).json({
+        status: 400,
+        message: 'Not token supplied',
+      });
     }
   }
 }

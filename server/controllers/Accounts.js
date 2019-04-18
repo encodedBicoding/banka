@@ -163,7 +163,7 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static getSingleAccount(req, res) {
+  static getAllAccount(req, res) {
     const { email } = req.user;
     const user = users.filter(client => client.email === email && client.type === 'client');
     const acc = user[0].accounts;
@@ -171,6 +171,23 @@ class Accounts {
       status: 200,
       data: acc,
     });
+  }
+
+  static getSingleAccountTransactions(req, res) {
+    const { accountId } = req.params;
+    const account = accounts.filter(acc => acc.accountNumber === Number(accountId));
+    if (account.length <= 0) {
+      res.status(404).json({
+        status: 404,
+        message: 'Account number not found',
+      });
+    } else {
+      const { transactions } = account[0];
+      res.status(200).json({
+        status: 200,
+        data: transactions,
+      });
+    }
   }
 
   static resetPassword(req, res) {

@@ -32,10 +32,15 @@ const routes = (app) => {
   router.post('/api/v1/accounts',
     Authorize.authenticateUser,
     Accounts.createAccount);
-  // Client get single account transaction
+  // Client get all account transaction
   router.get('/api/v1/accounts',
     Authorize.authenticateUser,
-    Accounts.getSingleAccount);
+    Accounts.getAllAccount);
+
+  // Client get single account transactions
+  router.get('/api/v1/accounts/:accountId/transactions',
+    Authorize.authenticateUser,
+    Accounts.getSingleAccountTransactions);
   // Only Admin / Staff can activate or deactivate account
   router.patch('/api/v1/accounts/:accountId',
     Authorize.authenticateStaff,
