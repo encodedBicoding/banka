@@ -16,7 +16,7 @@ class Authorize {
     if (token.startsWith('Bearer ')) {
       token = token.slice(7, token.length);
     }
-    if (token) {
+    if (token !== undefined) {
       const payload = Auth.verifyToken(token);
       if (!payload.email && payload.isAdmin !== false) {
         res.status(401).json({
@@ -49,7 +49,7 @@ class Authorize {
     if (token.startsWith('Bearer ')) {
       token = token.slice(7, token.length);
     }
-    if (token) {
+    if (token !== undefined) {
       const payload = Auth.verifyToken(token);
       const { type, isAdmin } = payload;
       if (type !== 'staff' && isAdmin !== true) {
@@ -83,7 +83,7 @@ class Authorize {
     if (token.startsWith('Bearer ')) {
       token = token.slice(7, token.length);
     }
-    if (token) {
+    if (token !== undefined) {
       const payload = Auth.verifyToken(token);
       const { isAdmin, type } = payload;
       if (isAdmin !== true && type !== 'admin') {

@@ -26,7 +26,7 @@ var router = _express["default"].Router();
 var routes = function routes(app) {
   router.get('/', _index["default"].home); // User Login Routes
 
-  router.get('/api/v1/login', _login["default"].index);
+  router.get('/api/v1/login', _login["default"].dbConnection);
   router.post('/api/v1/auth/login', _validateUser["default"].validateLogin, _login["default"].login); // Admin Login routes
 
   router.post('/api/v1/auth/admin/login', _validateUser["default"].validateAdminLogin, _login["default"].adminLogin); // Signup routes
