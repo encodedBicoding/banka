@@ -2,8 +2,8 @@ class DummyData {
   constructor() {
     this.users = [{
       id: 1,
-      firstName: 'john',
-      lastName: 'doe',
+      firstname: 'john',
+      lastname: 'doe',
       email: 'johndoe@gmail.com',
       password: '$2b$10$rgZSWmHmx51L/VYEU10TcOKYVhLdFBI.yVkbxWoNz529r1WbxPoAK',
       imageUrl: '',
@@ -37,8 +37,8 @@ class DummyData {
     }];
     this.staffs = [{
       id: 1,
-      firstName: 'dominic',
-      lastName: 'isioma',
+      firstname: 'dominic',
+      lastname: 'isioma',
       email: 'dominic@gmail.com',
       password: '$2b$10$rgZSWmHmx51L/VYEU10TcOKYVhLdFBI.yVkbxWoNz529r1WbxPoAK',
       imageUrl: '',
@@ -46,8 +46,8 @@ class DummyData {
       isAdmin: true,
     }, {
       id: 2,
-      firstName: 'john',
-      lastName: 'doe',
+      firstname: 'john',
+      lastname: 'doe',
       email: 'johndoe@gmail.com',
       password: '$2b$10$rgZSWmHmx51L/VYEU10TcOKYVhLdFBI.yVkbxWoNz529r1WbxPoAK',
       imageUrl: '',

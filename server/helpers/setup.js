@@ -9,25 +9,25 @@ class Acc {
     let obj;
     if (string === 'staff') {
       const id = Database.staffs.length + 1;
-      const [email, password, firstName] = argument;
+      const [email, password, firstname, lastname] = argument;
       const pass = Util.hashPassword(password);
-      const newStaff = new Staff(firstName, email, pass);
+      const newStaff = new Staff(firstname, email, pass, lastname);
       newStaff.id = id;
       Database.staffs.push(newStaff);
       obj = newStaff;
     } else if (string === 'admin') {
       const id = Database.staffs.length + 1;
-      const [email, password, firstName] = argument;
+      const [email, password, firstname, lastname] = argument;
       const pass = Util.hashPassword(password);
-      const newAdmin = new Admin(firstName, email, pass);
+      const newAdmin = new Admin(firstname, email, pass, lastname);
       newAdmin.id = id;
       Database.staffs.push(newAdmin);
       obj = newAdmin;
     } else if (string === 'client') {
       const id = Database.users.length + 1;
-      const [email, password, firstName, lastName] = argument;
+      const [email, password, firstname, lastname] = argument;
       const pass = Util.hashPassword(password);
-      const newClient = new Client(firstName, email, pass, lastName);
+      const newClient = new Client(firstname, email, pass, lastname);
       newClient.id = id;
       Database.users.push(newClient);
       obj = newClient;

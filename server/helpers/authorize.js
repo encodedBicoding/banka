@@ -51,8 +51,8 @@ class Authorize {
     }
     if (token) {
       const payload = Auth.verifyToken(token);
-      const { isAdmin } = payload;
-      if (isAdmin !== true) {
+      const { type, isAdmin } = payload;
+      if (type !== 'staff' && isAdmin !== true) {
         res.status(401).json({
           status: 401,
           message: 'Not authorized',
