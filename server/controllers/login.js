@@ -27,7 +27,26 @@ class Login {
 
   static adminLogin(req, res) {
     const { email, password } = req.body;
-    const token = Auth.generateToken({ email, password, isAdmin: true });
+    const token = Auth.generateToken({
+      email, password, isAdmin: true, type: 'admin',
+    });
+    const staff = staffs.filter(s => s.email === email);
+    req.body.tokenAuth = token;
+    res.status(200).json({
+      status: 200,
+      data: {
+        staff: staff[0],
+        token,
+      },
+
+    });
+  }
+
+  static staffLogin(req, res) {
+    const { email, password } = req.body;
+    const token = Auth.generateToken({
+      email, password, isAdmin: true, type: 'staff',
+    });
     const staff = staffs.filter(s => s.email === email);
     req.body.tokenAuth = token;
     res.status(200).json({

@@ -21,8 +21,8 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
       .send({
         email: 'test@gmail.com',
         password: '123456789',
-        firstName: 'tester',
-        lastName: 'test',
+        firstname: 'tester',
+        lastname: 'test',
       })
       .end((err, res) => {
         userToken = res.body.data.token;
@@ -56,8 +56,8 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
       .send({
         email: 'test@gmail.com',
         password: '123456789',
-        firstName: 'tester',
-        lastName: 'test',
+        firstname: 'test',
+        lastname: 'testician',
       })
       .set('authorization', `Bearer ${userToken}`)
       .set('x-access-token', `Bearer ${userToken}`)
@@ -74,14 +74,14 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
       .send({
         email: 'test@gmail.com',
         password: '123456789',
-        firstName: ' ',
-        lastName: 'test',
+        firstname: ' ',
+        lastname: 'test',
       })
       .set('authorization', `Bearer ${userToken}`)
       .set('x-access-token', `Bearer ${userToken}`)
       .end((err, res) => {
         expect(res).to.have.status(403);
-        expect(res.body.message).to.equal('Please check that all fields are filled');
+        expect(res.body.message).to.be.a('string');
         done();
       });
   });
@@ -92,12 +92,12 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
       .send({
         email: 'testgmail.com',
         password: '123456789',
-        firstName: 'test',
-        lastName: 'test',
+        firstname: 'test',
+        lastname: 'test',
       })
       .end((err, res) => {
         expect(res).to.have.status(403);
-        expect(res.body.message).to.equal('Please check that all fields are filled');
+        expect(res.body.message).to.be.a('string');
         done();
       });
   });
@@ -118,6 +118,10 @@ describe('Testing user account creation on route /api/v1/accounts', () => {
     chai
       .request(app)
       .post('/api/v1/accounts')
+      .send({
+        accType: 'saving',
+        userType: 'personal',
+      })
       .send({ tokenAuth: 'gfkmkitdfgfgfdgf' })
       .end((err, res) => {
         expect(res).to.have.status(401);
@@ -238,11 +242,12 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status 201 if admin account has been successfully created', (done) => {
     chai
       .request(app)
-      .post('/api/v1/2/create')
+      .post('/api/v1/admin/create')
       .send({
-        firstName: 'admin',
+        firstname: 'admin',
         email: 'admin@gmail.com',
         type: 'admin',
+        lastname: 'istration',
         password: '123456789',
       })
       .set('authorization', `Bearer ${staffToken}`)
@@ -257,11 +262,12 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status 201 if staff account has been successfully created', (done) => {
     chai
       .request(app)
-      .post('/api/v1/2/create')
+      .post('/api/v1/admin/create')
       .send({
-        firstName: 'staff',
+        firstname: 'staff',
         email: 'staff@gmail.com',
         type: 'staff',
+        lastname: 'istration',
         password: '123456789',
       })
       .set('authorization', `Bearer ${staffToken}`)
@@ -277,12 +283,13 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status 401 if admin account already exists', (done) => {
     chai
       .request(app)
-      .post('/api/v1/2/create')
+      .post('/api/v1/admin/create')
       .send({
-        firstName: 'admin',
+        firstname: 'admin',
         email: 'admin@gmail.com',
         type: 'admin',
-        password: '123456789',
+        lastname: 'istration',
+        password: '123456789'
       })
       .set('authorization', `Bearer ${staffToken}`)
       .set('x-access-token', `Bearer ${staffToken}`)
@@ -294,10 +301,11 @@ describe('Testing admin account creation, account activation and deletion', () =
   it('should return status 401 if staff account already exists', (done) => {
     chai
       .request(app)
-      .post('/api/v1/2/create')
+      .post('/api/v1/admin/create')
       .send({
-        firstName: 'staff',
+        firstname: 'staff',
         email: 'staff@gmail.com',
+        lastname: 'istration',
         type: 'staff',
         password: '123456789',
       })
@@ -459,15 +467,6 @@ describe('Testing staff ability to debit and credit an account', () => {
         done();
       });
   });
-  it('should return status 401 if user id is invalid', (done) => {
-    chai
-      .request(app)
-      .post('/api/v1/23/create')
-      .end((err, res) => {
-        expect(res).to.have.status(401);
-        done();
-      });
-  });
 });
 describe('Handle user password reset', () => {
   before('should should have an account', (done) => {
@@ -477,8 +476,8 @@ describe('Handle user password reset', () => {
       .send({
         email: 'reset@gmail.com',
         password: '123456789',
-        firstName: 'rester',
-        lastName: 'reset',
+        firstname: 'rester',
+        lastname: 'reset',
       })
       .end((err, res) => {
         userToken = res.body.data.token;
