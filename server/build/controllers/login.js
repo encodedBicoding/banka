@@ -28,7 +28,7 @@ function () {
   }
 
   _createClass(Login, null, [{
-    key: "index",
+    key: "dbConnection.js",
     value: function index(req, res) {
       res.status(200).json({
         status: 200,
