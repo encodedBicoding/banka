@@ -19,6 +19,7 @@ class Login {
       req.user = Auth.verifyToken(token);
       res.status(200).json({
         status: 200,
+        message: 'Log in successful',
         data: {
           user,
           token,
@@ -32,21 +33,29 @@ class Login {
     }
   }
 
-  static adminLogin(req, res) {
+  static async adminLogin(req, res) {
     const { email, password } = req.body;
     const token = Auth.generateToken({
       email, password, isAdmin: true, type: 'admin',
     });
-    const staff = staffs.filter(s => s.email === email);
-    req.body.tokenAuth = token;
-    res.status(200).json({
-      status: 200,
-      data: {
-        staff: staff[0],
-        token,
-      },
-
-    });
+    try {
+      const user = await staffs.findByEmail('email, password', [email]);
+      req.body.token = token;
+      req.user = Auth.verifyToken(token);
+      res.status(200).json({
+        status: 200,
+        message: 'Log in successful',
+        data: {
+          user,
+          token,
+        },
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: err.statusCode,
+        message: `Error: ${err.message}`,
+      });
+    }
   }
 
   static staffLogin(req, res) {

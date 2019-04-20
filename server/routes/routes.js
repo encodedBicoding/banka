@@ -23,7 +23,7 @@ const routes = (app) => {
   // Admin Login routes
   router.post('/api/v1/auth/admin/login',
     Validate.validateLoginForm,
-    Validate.validateLogin,
+    Validate.validateAdminLogin,
     Login.adminLogin);
 
   // Staff/Cashier Login routes
