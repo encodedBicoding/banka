@@ -1,9 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
-import { userTableQuery } from '../postgresDB/models/createTables';
-import { dropUserTableQuery } from '../postgresDB/models/dropTables';
-import pool from '../postgresDB/DB/dbConnection';
+import { users } from '../postgresDB/DB/index';
 
 
 chai.use(chaiHttp);
@@ -14,26 +12,31 @@ let staffToken;
 let cashierToken;
 
 describe('Handle user signup to database', () => {
-  it('should return status 201 if user is successfully added to database', (done) => {
-    chai
-      .request(app)
-      .post('/api/v1/auth/signup')
-      .send({
-        firstname: 'johnathan',
-        lastname: 'Emmanuel',
-        email: 'joe@gmail.com',
-        password: '1234567890',
-      })
-      .end((err, res) => {
-        expect(res).to.have.status(201);
-        expect(res.body.status).to.equal(201);
-        expect(res.body.message).to.be.a('string');
-        expect(res.body.message).to.equal('Account created successfully');
-        expect(res.body.data).to.be.an('object');
-        expect(res.body.data).to.have.property('user');
-        expect(res.body.data).to.have.property('token');
-        done();
-      });
+  it('should return status 201 if user is successfully added to database', async () => {
+    try {
+      await users.dropUsersTable();
+      await users.createUsersTable();
+      chai
+        .request(app)
+        .post('/api/v1/auth/signup')
+        .send({
+          firstname: 'johnathan',
+          lastname: 'Emmanuel',
+          email: 'joe@gmail.com',
+          password: '1234567890',
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body.status).to.equal(201);
+          expect(res.body.message).to.be.a('string');
+          expect(res.body.message).to.equal('Account created successfully');
+          expect(res.body.data).to.be.an('object');
+          expect(res.body.data).to.have.property('user');
+          expect(res.body.data).to.have.property('token');
+        });
+    } catch (err) {
+      console.log(err);
+    }
   });
   it('should fail and return an error if email already exists in database with status 400', (done) => {
     chai

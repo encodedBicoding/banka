@@ -1,6 +1,5 @@
 import pool from './dbConnection';
 
-
 class Model {
   constructor(table) {
     this.table = table;
@@ -49,10 +48,25 @@ class Model {
     return rows[0];
   }
 
-  async dropTable() {
-    const query = `DROP TABLE IF EXISTS ${this.table}`;
-    const { rows } = await this.pool.query(query);
-    return rows[0];
+  async dropUsersTable() {
+    const query = 'DROP TABLE IF EXISTS users';
+    return this.pool.query(query);
+  }
+
+  createUsersTable() {
+    const query = `
+    CREATE TABLE IF NOT EXISTS users(
+   id SERIAL PRIMARY KEY NOT NULL,
+   firstname VARCHAR(255) NOT NULL,
+   lastname VARCHAR(255) NOT NULL,
+   email VARCHAR(255) UNIQUE NOT NULL,
+   password TEXT NOT NULL,
+   type VARCHAR(10) NOT NULL DEFAULT 'client',
+   isadmin VARCHAR(10) NOT NULL DEFAULT 'false',
+   noofaccounts INTEGER NOT NULL DEFAULT 0,
+   joined TIMESTAMP WITH TIME ZONE DEFAULT now()
+)`;
+    return this.pool.query(query);
   }
 }
 const users = new Model('users');
