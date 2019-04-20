@@ -1,5 +1,5 @@
-import { users, staffs } from '../postgresDB/DB/index';
-import Util from './util';
+import { users, staffs } from '../DB/index';
+import Util from '../../helpers/util';
 
 
 class Acc {

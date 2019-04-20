@@ -1,4 +1,3 @@
-import Database from '../models/Database';
 import Auth from '../helpers/auth';
 import Acc from '../helpers/setup';
 
@@ -10,7 +9,7 @@ class Signup {
     * @returns {object} JSON
     */
 
-  static addToDatabase(req, res) {
+  static async addToDatabase(req, res) {
     const {
       firstname,
       email,
@@ -18,21 +17,28 @@ class Signup {
       lastname,
     } = req.body;
     const token = Auth.generateToken({ email, firstname });
-    const user = Acc.setup('client',
-      email,
-      password,
-      firstname,
-      lastname);
-    req.body.tokenAuth = token;
-    req.user = Auth.verifyToken(token);
-    res.status(201).json({
-      status: 201,
-      message: 'Account created successfully',
-      data: {
-        user,
-        token,
-      },
-    });
+    try {
+      const user = await Acc.setup('client',
+        email,
+        password,
+        firstname,
+        lastname);
+      req.body.tokenAuth = token;
+      req.user = Auth.verifyToken(token);
+      res.status(201).json({
+        status: 201,
+        message: 'Account created successfully',
+        data: {
+          user,
+          token,
+        },
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        message: 'A user with the given email already exists',
+      });
+    }
   }
   /**
     * @description adds new admin to the database
@@ -41,7 +47,7 @@ class Signup {
     * @returns {object} JSON
     */
 
-  static addAdmin(req, res) {
+  static async addAdmin(req, res) {
     const {
       firstname,
       lastname,
@@ -49,13 +55,12 @@ class Signup {
       type,
       password,
     } = req.body;
-    const staff = Database.staffs.filter(s => s.email === email);
-    if (staff.length <= 0) {
-      if (type === 'staff') {
-        const token = Auth.generateToken({
-          email, firstname, lastname, isAdmin: true, type: 'staff',
-        });
-        const newStaff = Acc.setup('staff',
+    if (type === 'staff') {
+      const token = Auth.generateToken({
+        email, firstname, lastname, isAdmin: true, type: 'staff',
+      });
+      try {
+        const newStaff = await Acc.setup('staff',
           email,
           password,
           firstname,
@@ -69,15 +74,22 @@ class Signup {
             token,
           },
         });
-      } else if (type === 'admin') {
-        const token = Auth.generateToken({
-          email,
-          firstname,
-          lastname,
-          isAdmin: true,
-          type: 'admin',
+      } catch (err) {
+        res.status(400).json({
+          status: 400,
+          message: `Error: ${err.message}`,
         });
-        const newAdmin = Acc.setup('admin',
+      }
+    } else if (type === 'admin') {
+      const token = Auth.generateToken({
+        email,
+        firstname,
+        lastname,
+        isAdmin: true,
+        type: 'admin',
+      });
+      try {
+        const newAdmin = await Acc.setup('admin',
           email,
           password,
           firstname,
@@ -91,12 +103,12 @@ class Signup {
             token,
           },
         });
+      } catch (err) {
+        res.status(400).json({
+          status: 400,
+          message: `Error: ${err.message}`,
+        });
       }
-    } else {
-      res.status(401).json({
-        status: 401,
-        message: 'Email already exists',
-      });
     }
   }
 }

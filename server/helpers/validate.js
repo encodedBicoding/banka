@@ -50,7 +50,7 @@ class Validate {
       next();
     }
   }
-  
+
   /**
    * @description checks if user exists returns error if true or next if false
    * @param req express request object
@@ -59,7 +59,7 @@ class Validate {
    * @returns {object} JSON
    */
   static checkUserExistence(req, res, next) {
-    const {email} = req.body;
+    const { email } = req.body;
     const found = users.find(user => user.email === email);
     if (typeof found !== 'object') {
       next();
@@ -70,11 +70,24 @@ class Validate {
       });
     }
   }
-  
+
+  static checkAdminExistence(req, res, next) {
+    const { email } = req.body;
+    const found = staffs.find(user => user.email === email);
+    if (typeof found !== 'object') {
+      next();
+    } else {
+      res.status(401).json({
+        status: 401,
+        message: 'A staff with the given email already exists',
+      });
+    }
+  }
+
   static validateLoginForm(req, res, next) {
     const emailTest = /([A-z0-9.-_]+)@([A-z]+)\.([A-z]){2,5}$/;
     const passText = /[a-zA-Z0-9\w!@#$%^&*()_+|]{8,20}$/;
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     const errArr = [];
     let errMsg;
     if (!emailTest.test(email) || email === undefined) {
@@ -98,7 +111,7 @@ class Validate {
       next();
     }
   }
-  
+
   /**
    * @description validates user login details before calling next middleware
    * @param req express request object
@@ -107,10 +120,10 @@ class Validate {
    * @returns {object} JSON
    */
   static validateLogin(req, res, next) {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     const user = users.filter(u => u.email === email);
-    if (user.length <= 0 ||
-        (!Util.validatePassword(password, user[0].password))) {
+    if (user.length <= 0
+        || (!Util.validatePassword(password, user[0].password))) {
       res.status(404).json({
         status: 404,
         message: 'email or password not found',
@@ -119,7 +132,7 @@ class Validate {
       next();
     }
   }
-  
+
   /**
    * @description validates admin login details before calling next middleware
    * @param req express request object
@@ -128,10 +141,10 @@ class Validate {
    * @returns {object} JSON
    */
   static validateAdminLogin(req, res, next) {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     const staff = staffs.filter(s => s.email === email);
-    if (staff.length <= 0 ||
-        (!Util.validatePassword(password, staff[0].password))) {
+    if (staff.length <= 0
+        || (!Util.validatePassword(password, staff[0].password))) {
       res.status(404).json({
         status: 404,
         message: 'email or password not found',
@@ -140,9 +153,9 @@ class Validate {
       next();
     }
   }
-  
+
   static validateAccountForm(req, res, next) {
-    const {userType, accType} = req.body;
+    const { userType, accType } = req.body;
     const errArr = [];
     let errMsg;
     const valueTest = /^([A-z]+)$/;
@@ -167,7 +180,7 @@ class Validate {
       next();
     }
   }
-  
+
   /**
    * @description checks the user input field for error
    * @param req express request object
@@ -175,7 +188,7 @@ class Validate {
    * @param next express next to execute next middleware
    * @returns {object} JSON
    */
-  
+
   static validateAdminSignupField(req, res, next) {
     const {
       firstname, lastname, email, password, type,
@@ -214,7 +227,7 @@ class Validate {
   }
 
   static validateAccountTransForm(req, res, next) {
-    const {amount, accId} = req.body;
+    const { amount, accId } = req.body;
     const amountTest = /^([0-9.]+)$/;
     const accTest = /^([0-9]+)$/;
     const errArr = [];
@@ -242,7 +255,7 @@ class Validate {
   }
 
   static validatePasswordResetForm(req, res, next) {
-    const { oldPassword, newPassword} = req.body;
+    const { oldPassword, newPassword } = req.body;
     const errArr = [];
     let errMsg;
     const valueTest = /[a-zA-Z0-9\w!@#$%^&*()_+|]{8,20}$/;
