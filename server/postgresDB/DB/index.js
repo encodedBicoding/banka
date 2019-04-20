@@ -25,8 +25,14 @@ class Model {
   }
 
   async findById(params, id) {
-    const query = `SELECT ${params} FROM ${this.table} WHERE id = ${id}`;
-    const { rows } = await this.pool.query(query);
+    const query = `SELECT ${params} FROM ${this.table} WHERE id = $1`;
+    const { rows } = await this.pool.query(query, id);
+    return rows[0];
+  }
+
+  async findByEmail(params, email) {
+    const query = `SELECT ${params} FROM ${this.table} WHERE email = $1`;
+    const { rows } = await this.pool.query(query, email);
     return rows[0];
   }
 
@@ -48,8 +54,8 @@ class Model {
     return rows[0];
   }
 
-  async dropUsersTable() {
-    const query = 'DROP TABLE IF EXISTS users';
+  async dropTable() {
+    const query = `DROP TABLE IF EXISTS ${this.table}`;
     return this.pool.query(query);
   }
 

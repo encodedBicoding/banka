@@ -23,19 +23,18 @@ const routes = (app) => {
   // Admin Login routes
   router.post('/api/v1/auth/admin/login',
     Validate.validateLoginForm,
-    Validate.validateAdminLogin,
+    Validate.validateLogin,
     Login.adminLogin);
 
   // Staff/Cashier Login routes
   router.post('/api/v1/auth/staff/login',
     Validate.validateLoginForm,
-    Validate.validateAdminLogin,
+    Validate.validateLogin,
     Login.staffLogin);
 
   // Signup routes
   router.post('/api/v1/auth/signup',
     Validate.validateSignupField,
-    Validate.checkUserExistence,
     Signup.addToDatabase);
 
   // Accounts routes

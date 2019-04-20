@@ -1,7 +1,6 @@
 import Auth from '../helpers/auth';
-import Database from '../models/Database';
+import { users, staffs } from '../postgresDB/DB/index';
 
-const { users, staffs } = Database;
 
 class Login {
   static index(req, res) {
@@ -11,18 +10,26 @@ class Login {
     });
   }
 
-  static login(req, res) {
+  static async login(req, res) {
     const { email, password } = req.body;
     const token = Auth.generateToken({ email, password, isAdmin: false });
-    const user = users.filter(u => u.email === email);
-    req.body.tokenAuth = token;
-    res.status(200).json({
-      status: 200,
-      data: {
-        user: user[0],
-        token,
-      },
-    });
+    try {
+      const user = await users.findByEmail('*', [email]);
+      req.body.token = token;
+      req.user = Auth.verifyToken(token);
+      res.status(200).json({
+        status: 200,
+        data: {
+          user: user[0],
+          token,
+        },
+      });
+    } catch (err) {
+      res.status(err.statusCode).json({
+        status: err.statusCode,
+        message: `Error: ${err.message}`,
+      });
+    }
   }
 
   static adminLogin(req, res) {

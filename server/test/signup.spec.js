@@ -7,14 +7,11 @@ import { users } from '../postgresDB/DB/index';
 chai.use(chaiHttp);
 
 const { expect } = chai;
-let userToken;
-let staffToken;
-let cashierToken;
 
 describe('Handle user signup to database', () => {
   it('should return status 201 if user is successfully added to database', async () => {
     try {
-      await users.dropUsersTable();
+      await users.dropTable();
       await users.createUsersTable();
       chai
         .request(app)
