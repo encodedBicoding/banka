@@ -29,6 +29,11 @@ class Model {
     const { rows } = await this.pool.query(query, id);
     return rows[0];
   }
+  async findByAccountNumber(params, accountnumber) {
+    const query = `SELECT ${params} FROM ${this.table} WHERE accountnumber = $1`;
+    const { rows } = await this.pool.query(query, accountnumber);
+    return rows[0];
+  }
 
   async findByEmail(params, email) {
     const query = `SELECT ${params} FROM ${this.table} WHERE email = $1`;
@@ -43,7 +48,13 @@ class Model {
   }
 
   async updateById(params, id) {
-    const query = `UPDATE ${this.table} SET ${params} WHERE id = ${id} returning *`;
+    const query = `UPDATE ${this.table} SET ${params} WHERE id = $1 returning *`;
+    const { rows } = await this.pool.query(query, id);
+    return rows[0];
+  }
+
+  async updateStatusById(params, id) {
+    const query = `UPDATE ${this.table} SET STATUS = '${params}' WHERE id = ${id} returning *`;
     const { rows } = await this.pool.query(query);
     return rows[0];
   }

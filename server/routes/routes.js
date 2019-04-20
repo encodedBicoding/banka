@@ -55,7 +55,7 @@ const routes = (app) => {
     Accounts.getSingleAccountTransactions);
 
   // Only Admin / Staff can activate or deactivate account
-  router.patch('/api/v1/accounts/:accountId',
+  router.patch('/api/v1/accounts/:accountNumber',
     Authorize.authenticateStaff,
     Accounts.changeStatus);
 

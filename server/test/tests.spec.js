@@ -12,6 +12,8 @@ chai.use(chaiHttp);
 const { expect } = chai;
 let userToken;
 let adminToken;
+let staffToken;
+let accNumber;
 
 describe('Handle user signup to database', () => {
   it('should return status 201 if user is successfully added to database', async () => {
@@ -224,6 +226,7 @@ describe('Handle user bank account creation', () => {
         userType: 'personal',
       })
       .end((err, res) => {
+        accNumber = res.body.data.accountnumber;
         expect(res).to.have.status(201);
         expect(res.body).to.be.an('object');
         expect(res.body.data).to.be.an('object');
@@ -281,6 +284,7 @@ describe('Handle Admin Login', () => {
         password: '1234567890',
       })
       .end((err, res) => {
+        adminToken = res.body.data.token;
         expect(res).to.have.status(200);
         done();
       });
@@ -306,6 +310,24 @@ describe('Handle Admin Login', () => {
         done();
       });
     });
+  it('should allow Admin to successfully deactivate a user account', (done) => {
+    chai.request(app)
+      .patch(`/api/v1/accounts/${accNumber}`)
+      .set('authorization', `Bearer ${adminToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
+  it('should fail if admin token is invalid with a 401 status code', (done) => {
+    chai.request(app)
+      .patch(`/api/v1/accounts/${accNumber}`)
+      .set('authorization', 'Bearer fjnjnjidjsf0wjkdsjdnj')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
 });
 describe('Handle Staff Login', () => {
   before('add staff to database', async () => {
@@ -328,6 +350,7 @@ describe('Handle Staff Login', () => {
         password: '1234567890',
       })
       .end((err, res) => {
+        staffToken = res.body.data.token;
         expect(res).to.have.status(200);
         done();
       });
@@ -353,4 +376,22 @@ describe('Handle Staff Login', () => {
         done();
       });
     });
+  it('should allow Staff to successfully deactivate a user account', (done) => {
+    chai.request(app)
+    .patch(`/api/v1/accounts/${accNumber}`)
+    .set('authorization', `Bearer ${staffToken}`)
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      done();
+    });
+  });
+  it('should fail if staff token is invalid with a 401 status code', (done) => {
+    chai.request(app)
+    .patch(`/api/v1/accounts/${accNumber}`)
+    .set('authorization', 'Bearer fjnjnjidjsf0wjkdsjdnj')
+    .end((err, res) => {
+      expect(res).to.have.status(401);
+      done();
+    });
+  });
 });

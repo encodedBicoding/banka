@@ -1,8 +1,8 @@
 import generateAccountNumber from '../helpers/generateAccountNumber';
 import Transaction from '../models/Transaction';
 import Util from '../helpers/util';
-import pool from '../postgresDB/DB/dbConnection'
-import { accountTableQuery} from '../postgresDB/models/createTables';
+import pool from '../postgresDB/DB/dbConnection';
+import { accountTableQuery } from '../postgresDB/models/createTables';
 
 import { users, accounts } from '../postgresDB/DB/index';
 
@@ -48,31 +48,30 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static changeStatus(req, res) {
-    const { accountId } = req.params;
+  static async changeStatus(req, res) {
+    const { accountNumber } = req.params;
+    let updated;
     try {
-      const account = accounts.filter(acc => acc.id === Number(accountId));
-      if (account.length <= 0) {
-        res.status(404).json({
-          status: 404,
-          message: 'No account found',
-        });
-      } else {
-        if (account[0].status === 'active') {
-          account[0].status = 'dormant';
-        } else {
-          account[0].status = 'active';
-        }
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
+      if (account.status === 'active') {
+        updated = await accounts.updateStatusById('dormant', `${account.id}`);
         res.status(200).json({
           status: 200,
-          message: 'Success',
-          data: account,
+          message: `Account status changed to ${updated.status}`,
+          data: updated,
+        });
+      } else {
+        updated = await accounts.updateStatusById('active', `${account.id}`);
+        res.status(200).json({
+          status: 200,
+          message: `Account status changed to ${updated.status}`,
+          data: updated,
         });
       }
     } catch (err) {
       res.status(400).json({
         status: 400,
-        message: 'Error: credentials not in database',
+        message: `Error: ${err.message}`,
       });
     }
   }
