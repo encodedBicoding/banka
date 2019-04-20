@@ -11,6 +11,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 let userToken;
+let adminToken;
 
 describe('Handle user signup to database', () => {
   it('should return status 201 if user is successfully added to database', async () => {
@@ -298,6 +299,53 @@ describe('Handle Admin Login', () => {
   it('it should fail and return error 403 if all fields are not filled or fields are missing',
     (done) => {
       chai.request(app).post('/api/v1/auth/admin/login').send({
+        password: '23ewdfdfdjhu',
+      }).end((err, res) => {
+        expect(res).to.have.status(403);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+    });
+});
+describe('Handle Staff Login', () => {
+  before('add staff to database', async () => {
+    try {
+      await staffs.dropTable();
+      await staffs.createStaffsTable();
+      await staffs.insert(
+        'firstname, lastname, email, password, type',
+        ['staff', 'staff', 'staff@gmail.com', '$2b$10$zrRfpRv1ntXO6h2h8wbC0.eWgLp0odJSaUYA5GEOd1XApg8AjWB.y', 'staff'],
+      );
+    } catch (err) {
+      throw err;
+    }
+  });
+  it('should pass and return a status of 200 if admin details are in database', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/staff/login')
+      .send({
+        email: 'staff@gmail.com',
+        password: '1234567890',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
+  it('it should fail and return error 400 if admin details are not found in database',
+    (done) => {
+      chai.request(app).post('/api/v1/auth/staff/login').send({
+        email: 'taichi@gmail.com',
+        password: '23ewdfdfdjhu',
+      }).end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.message).to.equal('User does not exists');
+        done();
+      });
+    });
+  it('it should fail and return error 403 if all fields are not filled or fields are missing',
+    (done) => {
+      chai.request(app).post('/api/v1/auth/staff/login').send({
         password: '23ewdfdfdjhu',
       }).end((err, res) => {
         expect(res).to.have.status(403);
