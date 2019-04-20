@@ -48,15 +48,21 @@ class Model {
     const { rows } = await this.pool.query(query);
     return rows[0];
   }
+
+  async dropTable() {
+    const query = `DROP TABLE IF EXISTS ${this.table}`;
+    const { rows } = await this.pool.query(query);
+    return rows[0];
+  }
 }
-const userQuery = new Model('users');
-const staffQuery = new Model('staffs');
-const accountQuery = new Model('accounts');
-const transactionQuery = new Model('transactions');
+const users = new Model('users');
+const staffs = new Model('staffs');
+const accounts = new Model('accounts');
+const transactions = new Model('transactions');
 
 export {
-  userQuery,
-  staffQuery,
-  accountQuery,
-  transactionQuery,
+  users,
+  staffs,
+  accounts,
+  transactions,
 };

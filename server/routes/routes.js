@@ -81,6 +81,7 @@ const routes = (app) => {
   router.post('/api/v1/admin/create',
     Validate.validateAdminSignupField,
     Authorize.authenticateAdmin,
+    Validate.checkAdminExistence,
     Signup.addAdmin);
 
   // Api to handle user password reset
