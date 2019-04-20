@@ -101,10 +101,9 @@ class Validate {
   static async validateLogin(req, res, next) {
     const { email, password } = req.body;
     try {
-      const user = await users.findByEmail('email, password', [email])
-                   || await staffs.findByEmail('email, password', [email]);
+      const user = await users.findByEmail('email, password', [email]);
       const match = Util.validatePassword(password, user.password);
-      if (match) {
+      if (match !== false) {
         next();
       } else {
         res.status(400).json({
