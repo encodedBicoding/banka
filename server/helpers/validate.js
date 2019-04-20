@@ -119,6 +119,34 @@ class Validate {
     }
   }
 
+  /**
+   * @description validates admin login details before calling next middleware
+   * @param req express request object
+   * @param res express response object
+   * @param next express next to execute next middleware
+   * @returns {object} JSON
+   */
+  static async validateAdminLogin(req, res, next) {
+    const { email, password } = req.body;
+    try {
+      const user = await staffs.findByEmail('email, password', [email]);
+      const match = Util.validatePassword(password, user.password);
+      if (match) {
+        next();
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'email or password incorrect',
+        });
+      }
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        message: 'User does not exists',
+      });
+    }
+  }
+
   static validateAccountForm(req, res, next) {
     const { userType, accType } = req.body;
     const errArr = [];

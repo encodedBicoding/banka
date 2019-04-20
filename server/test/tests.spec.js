@@ -1,7 +1,9 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
-import { users } from '../postgresDB/DB/index';
+import {
+  users, staffs, accounts, transactions,
+} from '../postgresDB/DB/index';
 import pool from '../postgresDB/DB/dbConnection';
 
 
@@ -13,6 +15,7 @@ let userToken;
 describe('Handle user signup to database', () => {
   it('should return status 201 if user is successfully added to database', async () => {
     try {
+      await accounts.dropTable();
       await users.dropTable();
       await users.createUsersTable();
       chai
@@ -35,7 +38,7 @@ describe('Handle user signup to database', () => {
           expect(res.body.data).to.have.property('token');
         });
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   });
   it('should fail and return an error if email already exists in database with status 400', (done) => {
@@ -208,17 +211,6 @@ describe('Handle user(Client) login to database', () => {
       throw err;
     }
   });
-  // it('it should fail and return error 404 if staff details are not found in database',
-  //   (done) => {
-  //     chai.request(app).post('/api/v1/auth/admin/login').send({
-  //       email: 'taichi@gmail.com',
-  //       password: '23ewdfdfd',
-  //     }).end((err, res) => {
-  //       expect(res).to.have.status(404);
-  //       expect(res.body.message).to.equal('email or password not found');
-  //       done();
-  //     });
-  //   });
 });
 
 describe('Handle user bank account creation', () => {
@@ -265,4 +257,52 @@ describe('Handle user bank account creation', () => {
         done();
       });
   });
+});
+
+describe('Handle Admin Login', () => {
+  before('add admin to database', async () => {
+    try {
+      await staffs.dropTable();
+      await staffs.createStaffsTable();
+      await staffs.insert(
+        'firstname, lastname, email, password, type',
+        ['admin', 'admin', 'admin@gmail.com', '$2b$10$zrRfpRv1ntXO6h2h8wbC0.eWgLp0odJSaUYA5GEOd1XApg8AjWB.y', 'admin'],
+      );
+    } catch (err) {
+      throw err;
+    }
+  });
+  it('should pass and return a status of 200 if admin details are in database', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/admin/login')
+      .send({
+        email: 'admin@gmail.com',
+        password: '1234567890',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
+  it('it should fail and return error 400 if admin details are not found in database',
+    (done) => {
+      chai.request(app).post('/api/v1/auth/admin/login').send({
+        email: 'taichi@gmail.com',
+        password: '23ewdfdfdjhu',
+      }).end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.message).to.equal('User does not exists');
+        done();
+      });
+    });
+  it('it should fail and return error 403 if all fields are not filled or fields are missing',
+    (done) => {
+      chai.request(app).post('/api/v1/auth/admin/login').send({
+        password: '23ewdfdfdjhu',
+      }).end((err, res) => {
+        expect(res).to.have.status(403);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+    });
 });
