@@ -8,6 +8,7 @@ import pool from '../postgresDB/DB/dbConnection';
 chai.use(chaiHttp);
 
 const { expect } = chai;
+let userToken;
 
 describe('Handle user signup to database', () => {
   it('should return status 201 if user is successfully added to database', async () => {
@@ -24,6 +25,7 @@ describe('Handle user signup to database', () => {
           password: '1234567890',
         })
         .end((err, res) => {
+          userToken = res.body.data.token;
           expect(res).to.have.status(201);
           expect(res.body.status).to.equal(201);
           expect(res.body.message).to.be.a('string');
@@ -149,6 +151,7 @@ describe('Handle user(Client) login to database', () => {
           email: 'joe@gmail.com',
           password: '1234567890',
         }).end((err, res) => {
+          userToken = res.body.data.token;
           expect(res).to.have.status(200);
         });
       } catch (err) {
@@ -216,4 +219,50 @@ describe('Handle user(Client) login to database', () => {
   //       done();
   //     });
   //   });
+});
+
+describe('Handle user bank account creation', () => {
+  it('should pass and return a response of 201, if account is successfully created', (done) => {
+    chai.request(app)
+      .post('/api/v1/accounts')
+      .set('authorization', `Bearer ${userToken}`)
+      .send({
+        accType: 'current',
+        userType: 'personal',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body).to.be.an('object');
+        expect(res.body.data).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.status).to.equal(201);
+        expect(res.body.message).to.equal('Bank account created successfully');
+        done();
+      });
+  });
+  it('should fail if user token is invalid', (done) => {
+    chai.request(app)
+      .post('/api/v1/accounts')
+      .set('authorization', '12dsvcvfsfdfgdgdgdfada')
+      .send({
+        accType: 'current',
+        userType: 'personal',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
+  it('should fail if any field is missing', (done) => {
+    chai.request(app)
+      .post('/api/v1/accounts')
+      .set('authorization', `Bearer ${userToken}`)
+      .send({
+        accType: 'current',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
+      });
+  });
 });
