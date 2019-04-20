@@ -25,9 +25,9 @@ CREATE TABLE IF NOT EXISTS staffs(
 
 const accountTableQuery = `
 CREATE TABLE IF NOT EXISTS accounts(
-   id SERIAL KEY NOT NULL,
+   id SERIAL NOT NULL,
    accountnumber INTEGER PRIMARY KEY NOT NULL,
-   owner INTEGER NOT NULL REFERENCES users(id),
+   owner INTEGER REFERENCES users (id) ON DELETE CASCADE,
    ownercategory VARCHAR(25) NOT NULL,
    status VARCHAR(10) DEFAULT 'active',
    type VARCHAR(15) NOT NULL,

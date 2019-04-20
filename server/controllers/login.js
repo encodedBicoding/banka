@@ -14,7 +14,7 @@ class Login {
     const { email, password } = req.body;
     const token = Auth.generateToken({ email, password, isAdmin: false });
     try {
-     const user = await users.findByEmail('email, password', [email]);
+      const user = await users.findByEmail('email, password', [email]);
       req.body.token = token;
       req.user = Auth.verifyToken(token);
       res.status(200).json({

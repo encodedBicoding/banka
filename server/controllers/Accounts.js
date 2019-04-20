@@ -1,11 +1,10 @@
-import Database from '../models/Database';
 import generateAccountNumber from '../helpers/generateAccountNumber';
 import Transaction from '../models/Transaction';
-import Account from '../models/Account';
 import Util from '../helpers/util';
+import pool from '../postgresDB/DB/dbConnection'
+import { accountTableQuery} from '../postgresDB/models/createTables';
 
-
-const { users, accounts, staffs } = Database;
+import { users, accounts } from '../postgresDB/DB/index';
 
 /**
  * @class Accounts
@@ -17,29 +16,28 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static createAccount(req, res) {
+  static async createAccount(req, res) {
     const { accType, userType } = req.body;
     const { email } = req.user;
     try {
-      const user = users.filter(u => u.email === email);
+      const user = await users.findByEmail('*', [email]);
       const accountNumber = generateAccountNumber();
-      const id = accounts.length + 1;
-      const account = new Account(id,
-        accountNumber, accType, userType,
-        user[0].firstname, user[0].lastname, user[0].email);
-      account.owner = user[0].id;
-      user[0].accounts.push(account);
-      user[0].noOfAccounts += 1;
-      accounts.push(account);
+      await pool.query(accountTableQuery);
+      const account = await accounts.insert(
+        'accountnumber, owner, ownercategory, type',
+        [accountNumber, user.id, userType, accType],
+      );
+      const noOfAccount = user.noofaccounts + 1;
+      await users.updateById(`noofaccounts = ${noOfAccount}`, [user.id]);
       res.status(201).json({
         status: 201,
-        message: 'Success',
+        message: 'Bank account created successfully',
         data: account,
       });
     } catch (err) {
       res.status(400).json({
         status: 400,
-        message: 'Error: credentials not in database',
+        message: `Error: ${err.message}`,
       });
     }
   }
