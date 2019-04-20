@@ -36,8 +36,8 @@ describe('Handle user(Client) login to database', () => {
           expect(res.body.message).to.be.a('string');
           expect(res.body.message).to.equal('email or password incorrect');
         });
-      } catch (e) {
-        console.log(e);
+      } catch (err) {
+        console.log(err);
       }
     });
   it('it should fail and return error 400 if user details are not found in database',
