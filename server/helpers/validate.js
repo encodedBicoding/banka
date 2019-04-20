@@ -1,8 +1,6 @@
-import Database from '../models/Database';
 import Util from './util';
+import { users, staffs } from '../postgresDB/DB/index';
 
-
-const { staffs, users } = Database;
 
 /**
  * @class Validate
@@ -51,25 +49,6 @@ class Validate {
     }
   }
 
-  /**
-   * @description checks if user exists returns error if true or next if false
-   * @param req express request object
-   * @param res express response object
-   * @param next express next to execute next middleware
-   * @returns {object} JSON
-   */
-  static checkUserExistence(req, res, next) {
-    const { email } = req.body;
-    const found = users.find(user => user.email === email);
-    if (typeof found !== 'object') {
-      next();
-    } else {
-      res.status(401).json({
-        status: 401,
-        message: 'A user with the given email already exists',
-      });
-    }
-  }
 
   static checkAdminExistence(req, res, next) {
     const { email } = req.body;
@@ -119,38 +98,24 @@ class Validate {
    * @param next express next to execute next middleware
    * @returns {object} JSON
    */
-  static validateLogin(req, res, next) {
+  static async validateLogin(req, res, next) {
     const { email, password } = req.body;
-    const user = users.filter(u => u.email === email);
-    if (user.length <= 0
-        || (!Util.validatePassword(password, user[0].password))) {
-      res.status(404).json({
-        status: 404,
-        message: 'email or password not found',
+    try {
+      const user = await users.findByEmail('email, password', [email]);
+      const match = Util.validatePassword(password, user.password);
+      if (match) {
+        next();
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'email or password incorrect',
+        });
+      }
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        message: 'User does not exists',
       });
-    } else {
-      next();
-    }
-  }
-
-  /**
-   * @description validates admin login details before calling next middleware
-   * @param req express request object
-   * @param res express response object
-   * @param next express next to execute next middleware
-   * @returns {object} JSON
-   */
-  static validateAdminLogin(req, res, next) {
-    const { email, password } = req.body;
-    const staff = staffs.filter(s => s.email === email);
-    if (staff.length <= 0
-        || (!Util.validatePassword(password, staff[0].password))) {
-      res.status(404).json({
-        status: 404,
-        message: 'email or password not found',
-      });
-    } else {
-      next();
     }
   }
 
