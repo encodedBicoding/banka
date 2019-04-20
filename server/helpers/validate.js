@@ -103,7 +103,7 @@ class Validate {
     try {
       const user = await users.findByEmail('email, password', [email]);
       const match = Util.validatePassword(password, user.password);
-      if (match !== false) {
+      if (match) {
         next();
       } else {
         res.status(400).json({

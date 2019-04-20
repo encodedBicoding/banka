@@ -18,7 +18,7 @@ const routes = (app) => {
   router.post('/api/v1/auth/login',
     Validate.validateLoginForm,
     Validate.validateLogin,
-    Login.login);
+    Login.clientLogin);
 
   // Admin Login routes
   router.post('/api/v1/auth/admin/login',

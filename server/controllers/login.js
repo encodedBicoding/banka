@@ -10,16 +10,11 @@ class Login {
     });
   }
 
-  static async login(req, res) {
+  static async clientLogin(req, res) {
     const { email, password } = req.body;
     const token = Auth.generateToken({ email, password, isAdmin: false });
     try {
-      let user;
-      if (await staffs.findByEmail('email, password', [email]) !== undefined) {
-        user = await staffs.findByEmail('email, password', [email]) !== undefined;
-      } else {
-        user = await users.findByEmail('email, password', [email]);
-      }
+     const user = await users.findByEmail('email, password', [email]);
       req.body.token = token;
       req.user = Auth.verifyToken(token);
       res.status(200).json({
