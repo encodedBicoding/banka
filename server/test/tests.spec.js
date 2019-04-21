@@ -56,6 +56,7 @@ describe('Handle user signup to database', () => {
         password: '1234567890',
       })
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.have.status(400);
         expect(res.body.status).to.equal(400);
         expect(res.body.message).to.be.a('string');
