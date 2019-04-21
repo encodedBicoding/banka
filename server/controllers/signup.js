@@ -36,7 +36,7 @@ class Signup {
     } catch (err) {
       res.status(400).json({
         status: 400,
-        message: `A user with the given email already exists`,
+        message: `Error: ${err.message}`,
       });
     }
   }

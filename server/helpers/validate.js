@@ -50,15 +50,42 @@ class Validate {
   }
 
 
-  static checkAdminExistence(req, res, next) {
+  static async checkAdminExistence(req, res, next) {
     const { email } = req.body;
-    const found = staffs.find(user => user.email === email);
-    if (typeof found !== 'object') {
-      next();
-    } else {
-      res.status(401).json({
-        status: 401,
-        message: 'A staff with the given email already exists',
+    try {
+      const found = await staffs.findByEmail('*', [email]);
+      if (typeof found !== 'object') {
+        next();
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'A staff with the given email already exists',
+        });
+      }
+    } catch (err) {
+      res.status(err.statusCode).json({
+        status: err.statusCode,
+        message: `Error: ${err.message}`,
+      });
+    }
+  }
+
+  static async checkUserExistence(req, res, next) {
+    const { email } = req.body;
+    try {
+      const found = await users.findByEmail('*', [email]);
+      if (typeof found !== 'object') {
+        next();
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'A user with the given email already exists',
+        });
+      }
+    } catch (err) {
+      res.status(err.statusCode).json({
+        status: err.statusCode,
+        message: `Error: ${err.message}`,
       });
     }
   }

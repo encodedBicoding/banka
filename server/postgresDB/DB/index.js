@@ -61,8 +61,14 @@ class Model {
   }
 
   async deleteById(id) {
-    const query = `DELETE FROM ${this.table} WHERE id = ${id} returning *`;
-    const { rows } = await this.pool.query(query);
+    const query = `DELETE FROM ${this.table} WHERE id = $1 returning *`;
+    const { rows } = await this.pool.query(query,id);
+    return rows[0];
+  }
+
+  async deleteByAccountNumber(accNumber) {
+    const query = `DELETE FROM ${this.table} WHERE accountnumber = $1 returning *`;
+    const { rows } = await this.pool.query(query,accNumber);
     return rows[0];
   }
 
@@ -101,6 +107,7 @@ class Model {
    )`;
     return this.pool.query(query);
   }
+
   createTransactionTable() {
     const query = `
     CREATE TABLE IF NOT EXISTS transactions(
