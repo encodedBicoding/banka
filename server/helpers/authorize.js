@@ -16,8 +16,8 @@ class Authorize {
     if (token.startsWith('Bearer ')) {
       token = token.slice(7, token.length);
     }
-    if (token !== undefined) {
-      const payload = Auth.verifyToken(token);
+    const payload = Auth.verifyToken(token);
+    if (payload !== undefined && payload !== false) {
       if (!payload.email && payload.isAdmin !== false) {
         res.status(401).json({
           status: 401,
@@ -49,8 +49,8 @@ class Authorize {
     if (token.startsWith('Bearer ')) {
       token = token.slice(7, token.length);
     }
-    if (token !== undefined) {
-      const payload = Auth.verifyToken(token);
+    const payload = Auth.verifyToken(token);
+    if (payload !== undefined && payload !== false) {
       const { type, isAdmin } = payload;
       if (type !== 'staff' && isAdmin !== true) {
         res.status(401).json({
@@ -83,10 +83,37 @@ class Authorize {
     if (token.startsWith('Bearer ')) {
       token = token.slice(7, token.length);
     }
-    if (token !== undefined) {
-      const payload = Auth.verifyToken(token);
+    const payload = Auth.verifyToken(token);
+    if (payload !== undefined && payload !== false) {
       const { isAdmin, type } = payload;
       if (isAdmin !== true && type !== 'admin') {
+        res.status(401).json({
+          status: 401,
+          message: 'Not authorized',
+        });
+      } else {
+        req.user = payload;
+        next();
+      }
+    } else {
+      res.status(400).json({
+        status: 400,
+        message: 'Not token supplied',
+      });
+    }
+  }
+
+  static authenticateBothAdminAndStaff(req, res, next) {
+    let token = req.body.tokenAuth
+      || req.headers.authorization
+      || req.headers['x-access-token'];
+    if (token.startsWith('Bearer ')) {
+      token = token.slice(7, token.length);
+    }
+    const payload = Auth.verifyToken(token);
+    if (payload !== undefined && payload !== false) {
+      const { isAdmin } = payload;
+      if (isAdmin !== true) {
         res.status(401).json({
           status: 401,
           message: 'Not authorized',

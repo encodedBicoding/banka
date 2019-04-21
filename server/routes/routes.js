@@ -35,6 +35,7 @@ const routes = (app) => {
   // Signup routes
   router.post('/api/v1/auth/signup',
     Validate.validateSignupField,
+    Validate.checkUserExistence,
     Signup.addToDatabase);
 
   // Accounts routes
@@ -56,12 +57,12 @@ const routes = (app) => {
 
   // Only Admin / Staff can activate or deactivate account
   router.patch('/api/v1/accounts/:accountNumber',
-    Authorize.authenticateStaff,
+    Authorize.authenticateBothAdminAndStaff,
     Accounts.changeStatus);
 
   // Only Admin / staff can delete user account
-  router.delete('/api/v1/accounts/:accountId',
-    Authorize.authenticateStaff,
+  router.delete('/api/v1/accounts/:accountNumber',
+    Authorize.authenticateBothAdminAndStaff,
     Accounts.deleteAccount);
 
   // Only Staff can debit an account

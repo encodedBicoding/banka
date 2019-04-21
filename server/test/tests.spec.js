@@ -59,7 +59,6 @@ describe('Handle user signup to database', () => {
         expect(res).to.have.status(400);
         expect(res.body.status).to.equal(400);
         expect(res.body.message).to.be.a('string');
-        expect(res.body.message).to.equal('A user with the given email already exists');
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.property('status');
         expect(res.body).to.have.property('message');
@@ -152,18 +151,15 @@ describe('Handle user signup to database', () => {
 
 describe('Handle user(Client) login to database', () => {
   it('should pass and return a status of 200 if user details are in database',
-    async () => {
-      try {
-        chai.request(app).post('/api/v1/auth/login').send({
-          email: 'joe@gmail.com',
-          password: '1234567890',
-        }).end((err, res) => {
-          userToken = res.body.data.token;
-          expect(res).to.have.status(200);
-        });
-      } catch (err) {
-        throw err;
-      }
+    (done) => {
+      chai.request(app).post('/api/v1/auth/login').send({
+        email: 'joe@gmail.com',
+        password: '1234567890',
+      }).end((err, res) => {
+        userToken = res.body.data.token;
+        expect(res).to.have.status(200);
+        done();
+      });
     });
   it('should fail and return error 400 if user details are incorrect',
     async () => {
@@ -268,7 +264,7 @@ describe('Handle Admin Login', () => {
         ['admin', 'admin', 'admin@gmail.com', '$2b$10$zrRfpRv1ntXO6h2h8wbC0.eWgLp0odJSaUYA5GEOd1XApg8AjWB.y', 'admin'],
       );
     } catch (err) {
-      throw err;
+      expect(err.status).to.be.an('integer');
     }
   });
   it('should pass and return a status of 200 if admin details are in database', (done) => {
@@ -541,6 +537,33 @@ describe('Handle staff ability to credit user account', () => {
         expect(res).to.have.status(401);
         expect(res.body.status).to.equal(401);
         expect(res.body).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+});
+
+describe('Handle user account deleting by staff or admin', () => {
+  it('should pass and return 200 if staff token is valid', (done) => {
+    chai.request(app)
+      .delete(`/api/v1/accounts/${accNumber}`)
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.status).to.equal(200);
+        expect(res.body.message).to.equal('Account Successfully Deleted');
+        done();
+      });
+  });
+  it('should fail and return 401 if staff token is invalid', (done) => {
+    chai.request(app)
+      .delete(`/api/v1/accounts/${accNumber}`)
+      .set('authorization', 'Bearer uuhu88dhdh8sdufjhfuhsuh8')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.status).to.equal(401);
         expect(res.body.message).to.be.a('string');
         done();
       });

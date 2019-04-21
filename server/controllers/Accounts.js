@@ -83,30 +83,26 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static deleteAccount(req, res) {
-    const { accountId } = req.params;
+  static async deleteAccount(req, res) {
+    const { accountNumber } = req.params;
     const { email } = req.user;
     try {
-      const staff = staffs.filter(s => s.email === email && s.isAdmin === true);
-      if (accounts.length <= 0) {
-        res.status(404).json({
-          status: 404,
-          message: 'No account to delete',
-        });
-      } else {
-        accounts.splice(
-          accounts.findIndex(account => account.id === Number(accountId)),
-        );
-        res.status(200).json({
-          status: 200,
-          message: 'Account Successfully Deleted',
-          deletedBy: `${staff[0].firstname} ${staff[0].lastname}`,
-        });
-      }
+      const staff = await staffs.findByEmail('firstname, lastname', [email]);
+      const accountToDelete = await accounts.findByAccountNumber('*', [accountNumber]);
+      await transactions.deleteByAccountNumber([accountToDelete.accountnumber]);
+      await accounts.deleteById([accountToDelete.id]);
+      const user = await users.findById('*', [accountToDelete.owner]);
+      const subtractNoOfAccount = Number(user.noofaccounts) - 1;
+      await users.updateById(`noofaccounts = '${subtractNoOfAccount}'`,[user.id]);
+      res.status(200).json({
+        status: 200,
+        message: 'Account Successfully Deleted',
+        deletedBy: `${staff.firstname} ${staff.lastname}`,
+      });
     } catch (err) {
       res.status(400).json({
         status: 400,
-        message: 'Error: credentials not in database',
+        message: `Error: ${err.message}`,
       });
     }
   }
