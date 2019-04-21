@@ -71,7 +71,7 @@ const routes = (app) => {
     Accounts.debitAccount);
 
   // Only Staff can credit an account
-  router.post('/api/v1/transactions/:accountId/credit',
+  router.post('/api/v1/transactions/:accountNumber/credit',
     Validate.validateAccountTransForm,
     Authorize.authenticateStaff,
     Accounts.creditAccount);

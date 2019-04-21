@@ -1,5 +1,4 @@
 import generateAccountNumber from '../helpers/generateAccountNumber';
-import Transaction from '../models/Transaction';
 import Util from '../helpers/util';
 import pool from '../postgresDB/DB/dbConnection';
 import { accountTableQuery } from '../postgresDB/models/createTables';
@@ -167,39 +166,40 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static creditAccount(req, res) {
-    const { accountId } = req.params;
-    const { amount, accId } = req.body;
+  static async creditAccount(req, res) {
+    const { accountNumber } = req.params;
+    const { amount, accountnumber } = req.body;
     const { email } = req.user;
     try {
-      const staff = staffs.filter(s => s.email === email && s.type === 'staff');
-      const s = `${staff[0].firstname} ${staff[0].lastname}`;
-      const account = accounts.filter(acc => acc.id === Number(accountId));
-      if (account.length <= 0) {
-        res.status(404).json({
-          status: 404,
-          message: 'Account ID not found',
-        });
-      } else if (account[0].id === Number(accountId)
-          && account[0].accountNumber === Number(accId)) {
-        const transaction = new Transaction(s, account[0].accountNumber,
-          Number(amount));
-        transaction.creditAccount(account[0].accountNumber);
-        res.status(200).json({
-          status: 200,
-          message: 'Success',
-          data: transaction.printTransaction(),
-        });
-      } else {
-        res.status(404).json({
-          status: 404,
-          message: 'Invalid account number',
+      const staff = await staffs.findByEmail('*', [email]);
+      const s = `${staff.firstname} ${staff.lastname}`;
+      const account = await accounts.findByAccountNumber('*', [accountnumber]);
+      const bal = parseFloat(account.balance).toFixed(0);
+      const credit = {
+        balance: Number(bal) + Number(amount),
+        date: new Date().toUTCString(),
+      };
+      const updated = await accounts.updateById(`balance = '${credit.balance}', lastdeposit = '${credit.date}'`, [account.id]);
+      await transactions.createTransactionTable();
+      const transaction = await transactions.insert(
+        'accountnumber, type, cashier, amount, oldbalance, newbalance',
+        [account.accountnumber, 'credit', s, amount, account.balance, updated.balance],
+      );
+      res.status(200).json({
+        status: 200,
+        message: 'Account credited successfully',
+        data: transaction,
+      });
+      if (Number(accountNumber) !== account.accountnumber) {
+        res.status(400).json({
+          status: 400,
+          message: 'Specified account via URL doesn\'t exists',
         });
       }
     } catch (err) {
       res.status(400).json({
         status: 400,
-        message: 'Error: credentials not in database',
+        message: `${err.message}`,
       });
     }
   }

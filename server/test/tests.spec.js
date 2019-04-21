@@ -183,37 +183,31 @@ describe('Handle user(Client) login to database', () => {
       }
     });
   it('it should fail and return error 400 if user details are not found in database',
-    async () => {
-      try {
-        chai.request(app).post('/api/v1/auth/login').send({
-          email: 'taichi@gmail.com',
-          password: '23ewdfdfd',
-        }).end((err, res) => {
-          expect(res).to.have.status(400);
-          expect(res.body.status).to.equal(400);
-          expect(res.body.message).to.be.a('string');
-          expect(res.body.message).to.equal('User does not exists');
-        });
-      } catch (err) {
-        throw err;
-      }
+    (done) => {
+      chai.request(app).post('/api/v1/auth/login').send({
+        email: 'taichi@gmail.com',
+        password: '23ewdfdfd',
+      }).end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.status).to.equal(400);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.message).to.equal('User does not exists');
+        done();
+      });
     });
-  it('should fail if all fields have not been filled', async () => {
-    try {
-      chai.request(app)
-        .post('/api/v1/auth/login')
-        .send({
-          password: '1234567890',
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(403);
-          expect(res.body.message).to.be.a('string');
-          expect(res.body.status).to.equal(403);
-          expect(res.body.message).to.equal('Email field is empty, missing or values not valid');
-        });
-    } catch (err) {
-      throw err;
-    }
+  it('should fail if all fields have not been filled', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        password: '1234567890',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.status).to.equal(403);
+        expect(res.body.message).to.equal('Email field is empty, missing or values not valid');
+        done();
+      });
   });
 });
 
@@ -400,7 +394,7 @@ describe('Handle Staff Login', () => {
 describe('Handle staff ability to debit a user account', () => {
   before('drop any transaction tables, add money to account', async () => {
     await transactions.dropTable();
-    const amount = 500000.00;
+    const amount = 500000;
     await accounts.updateById(`balance = '${amount}'`, [1]);
   });
   it('should pass and return status 200 if account has been successfully debited', (done) => {
@@ -444,7 +438,6 @@ describe('Handle staff ability to debit a user account', () => {
         accountnumber: '27383238932',
       })
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.have.status(400);
         expect(res.body.status).to.equal(400);
         expect(res.body).to.be.an('object');
@@ -463,6 +456,90 @@ describe('Handle staff ability to debit a user account', () => {
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+
+  it('should fail and return status 401 if staff token is wrong', (done) => {
+    chai.request(app)
+      .post(`/api/v1/transactions/${accNumber}/debit`)
+      .set('authorization', 'Bearer 99jijdsij8j99ds')
+      .send({
+        amount: 34324323534534000,
+        accountnumber: `${accNumber}`,
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.status).to.equal(401);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+});
+
+describe('Handle staff ability to credit user account', () => {
+  it('should pass and return status 200 if account has been successfully credited', (done) => {
+    chai.request(app)
+      .post(`/api/v1/transactions/${accNumber}/credit`)
+      .set('authorization', `Bearer ${staffToken}`)
+      .send({
+        amount: 2000.89,
+        accountnumber: accNumber,
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.data).to.be.an('object');
+        done();
+      });
+  });
+  it('should fail and return status 403 if all fields are not filled', (done) => {
+    chai.request(app)
+      .post(`/api/v1/transactions/${accNumber}/credit`)
+      .set('authorization', `Bearer ${staffToken}`)
+      .send({
+        amount: 2000,
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        expect(res.body.status).to.equal(403);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should fail and return status 400 if account number doesn\'t exists', (done) => {
+    chai.request(app)
+      .post(`/api/v1/transactions/${accNumber}/credit`)
+      .set('authorization', `Bearer ${staffToken}`)
+      .send({
+        amount: 2000,
+        accountnumber: '27383238932',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should fail and return status 401 if staff token is wrong', (done) => {
+    chai.request(app)
+      .post(`/api/v1/transactions/${accNumber}/credit`)
+      .set('authorization', 'Bearer 99jijdsij8j99ds')
+      .send({
+        amount: 34324323534534000,
+        accountnumber: `${accNumber}`,
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.status).to.equal(401);
         expect(res.body).to.be.an('object');
         expect(res.body.message).to.be.a('string');
         done();
