@@ -83,8 +83,8 @@ class Validate {
         });
       }
     } catch (err) {
-      res.status(err.statusCode).json({
-        status: err.statusCode,
+      res.status(400).json({
+        status: 400,
         message: `Error: ${err.message}`,
       });
     }
