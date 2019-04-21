@@ -65,7 +65,7 @@ const routes = (app) => {
     Accounts.deleteAccount);
 
   // Only Staff can debit an account
-  router.post('/api/v1/transactions/:accountId/debit',
+  router.post('/api/v1/transactions/:accountNumber/debit',
     Validate.validateAccountTransForm,
     Authorize.authenticateStaff,
     Accounts.debitAccount);

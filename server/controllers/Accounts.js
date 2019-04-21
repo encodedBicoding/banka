@@ -4,7 +4,9 @@ import Util from '../helpers/util';
 import pool from '../postgresDB/DB/dbConnection';
 import { accountTableQuery } from '../postgresDB/models/createTables';
 
-import { users, accounts } from '../postgresDB/DB/index';
+import {
+  users, accounts, staffs, transactions,
+} from '../postgresDB/DB/index';
 
 /**
  * @class Accounts
@@ -116,40 +118,45 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static debitAccount(req, res) {
-    const { accountId } = req.params;
-    const { amount, accId } = req.body;
+  static async debitAccount(req, res) {
+    const { accountNumber } = req.params;
+    const { amount, accountnumber } = req.body;
     const { email } = req.user;
     try {
-      const staff = staffs.filter(s => s.email === email && s.type === 'staff');
-      const s = `${staff[0].firstname} ${staff[0].lastname}`;
-      const account = accounts.filter(acc => acc.id === Number(accountId));
-      if (account.length <= 0) {
-        res.status(404).json({
-          status: 404,
-          message: 'Account ID not found',
-        });
-      } else if (account[0].id === Number(accountId)
-          && account[0].accountNumber === Number(accId)
-          && account[0].balance >= amount) {
-        const transaction = new Transaction(s, account[0].accountNumber,
-          amount);
-        transaction.debitAccount(account[0].accountNumber);
+      const staff = await staffs.findByEmail('*', [email]);
+      const s = `${staff.firstname} ${staff.lastname}`;
+      const account = await accounts.findByAccountNumber('*', [accountnumber]);
+      if (account.balance >= amount) {
+        const debit = {
+          balance: account.balance - amount,
+          date: new Date().toUTCString(),
+        };
+        const updated = await accounts.updateById(`balance = '${debit.balance}', lastwithdrawal = '${debit.date}'`, [account.id]);
+        await transactions.createTransactionTable();
+        const transaction = await transactions.insert(
+          'accountnumber, type, cashier, amount, oldbalance, newbalance',
+          [account.accountnumber, 'debit', s, amount, account.balance, updated.balance],
+        );
         res.status(200).json({
           status: 200,
-          message: 'Success',
-          data: transaction.printTransaction(),
+          message: 'Account debited successfully',
+          data: transaction,
+        });
+      } else if (Number(accountNumber) !== account.accountnumber) {
+        res.status(400).json({
+          status: 400,
+          message: 'Specified account via URL doesn\'t exists',
         });
       } else {
-        res.status(401).json({
-          status: 401,
+        res.status(400).json({
+          status: 400,
           message: 'Insufficient Funds',
         });
       }
     } catch (err) {
       res.status(400).json({
         status: 400,
-        message: 'Error: credential not in database',
+        message: 'Specified account number doesn\'t exists',
       });
     }
   }

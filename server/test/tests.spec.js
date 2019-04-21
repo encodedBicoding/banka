@@ -18,6 +18,7 @@ let accNumber;
 describe('Handle user signup to database', () => {
   it('should return status 201 if user is successfully added to database', async () => {
     try {
+      await transactions.dropTable();
       await accounts.dropTable();
       await users.dropTable();
       await users.createUsersTable();
@@ -378,20 +379,93 @@ describe('Handle Staff Login', () => {
     });
   it('should allow Staff to successfully deactivate a user account', (done) => {
     chai.request(app)
-    .patch(`/api/v1/accounts/${accNumber}`)
-    .set('authorization', `Bearer ${staffToken}`)
-    .end((err, res) => {
-      expect(res).to.have.status(200);
-      done();
-    });
+      .patch(`/api/v1/accounts/${accNumber}`)
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
   });
   it('should fail if staff token is invalid with a 401 status code', (done) => {
     chai.request(app)
-    .patch(`/api/v1/accounts/${accNumber}`)
-    .set('authorization', 'Bearer fjnjnjidjsf0wjkdsjdnj')
-    .end((err, res) => {
-      expect(res).to.have.status(401);
-      done();
-    });
+      .patch(`/api/v1/accounts/${accNumber}`)
+      .set('authorization', 'Bearer fjnjnjidjsf0wjkdsjdnj')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
+});
+
+describe('Handle staff ability to debit a user account', () => {
+  before('drop any transaction tables, add money to account', async () => {
+    await transactions.dropTable();
+    const amount = 500000.00;
+    await accounts.updateById(`balance = '${amount}'`, [1]);
+  });
+  it('should pass and return status 200 if account has been successfully debited', (done) => {
+    chai.request(app)
+      .post(`/api/v1/transactions/${accNumber}/debit`)
+      .set('authorization', `Bearer ${staffToken}`)
+      .send({
+        amount: 2000,
+        accountnumber: accNumber,
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.data).to.be.an('object');
+        done();
+      });
+  });
+  it('should fail and return status 403 if all fields are not filled', (done) => {
+    chai.request(app)
+      .post(`/api/v1/transactions/${accNumber}/debit`)
+      .set('authorization', `Bearer ${staffToken}`)
+      .send({
+        amount: 2000,
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        expect(res.body.status).to.equal(403);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should fail and return status 400 if account number doesn\'t exists', (done) => {
+    chai.request(app)
+      .post(`/api/v1/transactions/${accNumber}/debit`)
+      .set('authorization', `Bearer ${staffToken}`)
+      .send({
+        amount: 2000,
+        accountnumber: '27383238932',
+      })
+      .end((err, res) => {
+        console.log(res.body);
+        expect(res).to.have.status(400);
+        expect(res.body.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should fail and return status 400 if account balance is less than amount to debit', (done) => {
+    chai.request(app)
+      .post(`/api/v1/transactions/${accNumber}/debit`)
+      .set('authorization', `Bearer ${staffToken}`)
+      .send({
+        amount: 34324323534534000,
+        accountnumber: `${accNumber}`,
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
   });
 });

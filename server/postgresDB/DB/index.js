@@ -13,7 +13,7 @@ class Model {
     } else if (this.table === 'staffs') {
       insertValue = '$1, $2, $3, $4, $5';
     } else if (this.table === 'transactions') {
-      insertValue = '$1, $2, $3, $4, $5, $6, $7';
+      insertValue = '$1, $2, $3, $4, $5, $6';
     }
     return insertValue;
   }
@@ -29,6 +29,7 @@ class Model {
     const { rows } = await this.pool.query(query, id);
     return rows[0];
   }
+
   async findByAccountNumber(params, accountnumber) {
     const query = `SELECT ${params} FROM ${this.table} WHERE accountnumber = $1`;
     const { rows } = await this.pool.query(query, accountnumber);
@@ -48,8 +49,8 @@ class Model {
   }
 
   async updateById(params, id) {
-    const query = `UPDATE ${this.table} SET ${params} WHERE id = $1 returning *`;
-    const { rows } = await this.pool.query(query, id);
+    const query = `UPDATE ${this.table} SET ${params} WHERE id = ${id} returning *`;
+    const { rows } = await this.pool.query(query);
     return rows[0];
   }
 
@@ -85,6 +86,7 @@ class Model {
 )`;
     return this.pool.query(query);
   }
+
   createStaffsTable() {
     const query = `
      CREATE TABLE IF NOT EXISTS staffs(
@@ -97,6 +99,20 @@ class Model {
    isadmin VARCHAR(10) NOT NULL DEFAULT 'true',
    joined TIMESTAMP WITH TIME ZONE DEFAULT now()
    )`;
+    return this.pool.query(query);
+  }
+  createTransactionTable() {
+    const query = `
+    CREATE TABLE IF NOT EXISTS transactions(
+   id SERIAL PRIMARY KEY NOT NULL,
+   accountnumber INTEGER NOT NULL REFERENCES accounts(accountnumber),
+   type VARCHAR(15) NOT NULL,
+   cashier VARCHAR(255) NOT NULL,
+   amount DECIMAL(12,2) NOT NULL,
+   oldbalance DECIMAL(12,2) NOT NULL,
+   newbalance DECIMAL(12,2) NOT NULL,
+   createdon TIMESTAMP WITH TIME ZONE DEFAULT now()
+)`;
     return this.pool.query(query);
   }
 }

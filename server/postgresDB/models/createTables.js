@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS accounts(
    status VARCHAR(10) DEFAULT 'active',
    type VARCHAR(15) NOT NULL,
    balance DECIMAL(12,2) NOT NULL DEFAULT 0.00,
-   lastwithdrawal TIMESTAMP WITH TIME ZONE DEFAULT now(),
-   lastdeposit TIMESTAMP WITH TIME ZONE DEFAULT now(),
+   lastwithdrawal TEXT DEFAULT 'no transactions yet',
+   lastdeposit TEXT DEFAULT 'no transactions yet',
    createdon TIMESTAMP WITH TIME ZONE DEFAULT now()
 )`;
 

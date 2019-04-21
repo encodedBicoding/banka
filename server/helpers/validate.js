@@ -220,14 +220,14 @@ class Validate {
   }
 
   static validateAccountTransForm(req, res, next) {
-    const { amount, accId } = req.body;
+    const { amount, accountnumber } = req.body;
     const amountTest = /^([0-9.]+)$/;
     const accTest = /^([0-9]+)$/;
     const errArr = [];
     let errMsg;
     if (!amountTest.test(amount) || amount === undefined) {
       errArr.push('Amount');
-    } if (!accTest.test(accId) || accId === undefined) {
+    } if (!accTest.test(accountnumber) || accountnumber === undefined) {
       errArr.push('Account');
     }
     if (errArr.length > 1) {
