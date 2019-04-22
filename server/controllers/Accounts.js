@@ -230,12 +230,20 @@ class Accounts {
     const { accountNumber } = req.params;
     try {
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
-      const transaction = await transactions.findByAccountNumber('*', [account.accountnumber]);
-      res.status(200).json({
-        status: 200,
-        message: 'success',
-        data: [transaction],
-      });
+      try {
+        const transaction = await transactions.findByAccountNumber('*', [account.accountnumber]);
+        res.status(200).json({
+          status: 200,
+          message: 'success',
+          data: [transaction],
+        });
+      } catch (err) {
+        res.status(200).json({
+          status: 200,
+          message: 'success',
+          data: [],
+        });
+      }
     } catch (err) {
       res.status(400).json({
         status: 400,
@@ -243,6 +251,25 @@ class Accounts {
       });
     }
   }
+
+  static async getTransactionById(req, res) {
+    const { transactionId } = req.params;
+    try {
+      const transaction = await transactions.findById('*', [transactionId]);
+      res.status(200).json({
+        status: 200,
+        message: 'success',
+        data: [transaction],
+      });
+    } catch (err) {
+      res.status(404).json({
+        status: err.statusCode,
+        message: `Error: ${err.message}`,
+        data: [],
+      });
+    }
+  }
+
 
   static resetPassword(req, res) {
     const { newPassword, oldPassword } = req.body;
