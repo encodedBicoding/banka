@@ -343,14 +343,6 @@ describe('Handle Admin Login', () => {
   });
 });
 describe('Handle admin ability to create a staff', () => {
-  before('make sure staff table exist', async () => {
-    try {
-      await staffs.dropTable();
-      await staffs.createStaffsTable();
-    } catch (err) {
-      throw err;
-    }
-  });
   it('should pass and return status 201 if staff/cashier account has been created', (done) => {
     chai.request(app)
       .post('/api/v1/admin/create')
@@ -363,6 +355,7 @@ describe('Handle admin ability to create a staff', () => {
         password: '1234567890',
       })
       .end((err, res) => {
+        staffToken = res.body.data.token;
         expect(res).to.have.status(201);
         expect(res.body.status).to.equal(201);
         expect(res.body.message).to.be.a('string');
@@ -462,7 +455,7 @@ describe('Handle Staff Login', () => {
         password: '1234567890',
       })
       .end((err, res) => {
-        staffToken = res.body.data.token;
+        adminToken = res.body.data.token;
         expect(res).to.have.status(200);
         done();
       });
@@ -663,7 +656,41 @@ describe('Handle staff ability to credit user account', () => {
       });
   });
 });
-
+describe('Handle user ability to view transaction on a single account', () => {
+  it('should pass and return status 200 if account number is valid', (done) => {
+    chai.request(app)
+      .get(`/accounts/${accNumber}/transactions`)
+      .set('authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.equal(200);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.data).to.be.an('array');
+      });
+    done();
+  });
+  it('should fail and return status 400 user token is not provided', (done) => {
+    chai.request(app)
+      .get(`/accounts/${accNumber}/transactions`)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.status).to.equal(400);
+        expect(res.body.message).to.be.a('string');
+      });
+    done();
+  });
+  it('should pass and return status 401 user token is invalid', (done) => {
+    chai.request(app)
+      .get(`/accounts/${accNumber}/transactions`)
+      .set('authorization', 'Bearer mkskdfjisfsofds')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.status).to.equal(401);
+        expect(res.body.message).to.be.a('string');
+      });
+    done();
+  });
+});
 describe('Handle user account deleting by staff or admin', () => {
   it('should pass and return 200 if staff token is valid', (done) => {
     chai.request(app)

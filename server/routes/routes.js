@@ -51,7 +51,7 @@ const routes = (app) => {
     Accounts.getAllAccount);
 
   // Client get single account transactions
-  router.get('/api/v1/accounts/:accountId/transactions',
+  router.get('/accounts/:accountNumber/transactions',
     Authorize.authenticateUser,
     Accounts.getSingleAccountTransactions);
 
