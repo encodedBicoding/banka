@@ -42,6 +42,12 @@ class Model {
     return rows[0];
   }
 
+  async findByOwnerID(params, email) {
+    const query = `SELECT ${params} FROM ${this.table} WHERE owner = $1`;
+    const { rows } = await this.pool.query(query, email);
+    return rows[0];
+  }
+
   async findMany() {
     const query = `SELECT * FROM ${this.table} returning *`;
     const { rows } = await this.pool.query(query);
@@ -62,13 +68,13 @@ class Model {
 
   async deleteById(id) {
     const query = `DELETE FROM ${this.table} WHERE id = $1 returning *`;
-    const { rows } = await this.pool.query(query,id);
+    const { rows } = await this.pool.query(query, id);
     return rows[0];
   }
 
   async deleteByAccountNumber(accNumber) {
     const query = `DELETE FROM ${this.table} WHERE accountnumber = $1 returning *`;
-    const { rows } = await this.pool.query(query,accNumber);
+    const { rows } = await this.pool.query(query, accNumber);
     return rows[0];
   }
 
@@ -122,6 +128,7 @@ class Model {
 )`;
     return this.pool.query(query);
   }
+
   createAccountsTable() {
     const query = `
     CREATE TABLE IF NOT EXISTS accounts(
