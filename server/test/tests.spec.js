@@ -253,7 +253,29 @@ describe('Handle user bank account creation', () => {
       });
   });
 });
-
+describe('Handle user ability to get all their accounts details', () => {
+  it('should pass and return status 200 if user successfully gets the accounts', (done) => {
+    chai.request(app)
+      .get('/api/v1/user/joe@gmail.com/accounts')
+      .set('authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.status).to.equal(200);
+        done();
+      });
+  });
+  it('should fail and return status 400 req.params email is wrong or different from user in session email', (done) => {
+    chai.request(app)
+      .get('/api/v1/user/joeh@gmail.com/accounts')
+      .set('authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+});
 describe('Handle Admin Login', () => {
   before('add admin to database', async () => {
     try {

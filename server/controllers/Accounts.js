@@ -93,7 +93,7 @@ class Accounts {
       await accounts.deleteById([accountToDelete.id]);
       const user = await users.findById('*', [accountToDelete.owner]);
       const subtractNoOfAccount = Number(user.noofaccounts) - 1;
-      await users.updateById(`noofaccounts = '${subtractNoOfAccount}'`,[user.id]);
+      await users.updateById(`noofaccounts = '${subtractNoOfAccount}'`, [user.id]);
       res.status(200).json({
         status: 200,
         message: 'Account Successfully Deleted',
@@ -206,22 +206,22 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static getAllAccount(req, res) {
+  static async getAllAccount(req, res) {
     const { email } = req.user;
+    const { emailAddress } = req.params;
     try {
-      const user = users.filter(
-        client => client.email === email && client.type === 'client',
-      );
-      const acc = user[0].accounts;
+      const user = await users.findByEmail('*', [email && emailAddress]);
+      const userAccounts = await accounts.findByOwnerID('*', [user.id]);
       res.status(200).json({
         status: 200,
         message: 'Success',
-        data: acc,
+        data: [userAccounts],
       });
     } catch (err) {
       res.status(400).json({
         status: 400,
-        message: 'Error: credentials not in database',
+        serverMessage: `Error: ${err.message}`,
+        message: 'Ensure the email on request.params matches that of user in token',
       });
     }
   }

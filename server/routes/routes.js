@@ -46,7 +46,7 @@ const routes = (app) => {
     Accounts.createAccount);
 
   // Client get all account transaction
-  router.get('/api/v1/accounts',
+  router.get('/api/v1/user/:emailAddress/accounts',
     Authorize.authenticateUser,
     Accounts.getAllAccount);
 
