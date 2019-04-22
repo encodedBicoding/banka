@@ -14,7 +14,7 @@ class Login {
     const { email, password } = req.body;
     const token = Auth.generateToken({ email, password, isAdmin: false });
     try {
-      const user = await users.findByEmail('email, password', [email]);
+      const user = await users.findByEmail('*', [email]);
       req.body.token = token;
       req.user = Auth.verifyToken(token);
       res.status(200).json({
@@ -39,7 +39,7 @@ class Login {
       email, password, isAdmin: true, type: 'admin',
     });
     try {
-      const user = await staffs.findByEmail('email, password', [email]);
+      const user = await staffs.findByEmail('*', [email]);
       req.body.token = token;
       req.user = Auth.verifyToken(token);
       res.status(200).json({
@@ -64,7 +64,7 @@ class Login {
       email, password, isAdmin: true, type: 'staff',
     });
     try {
-      const user = await staffs.findByEmail('email, password', [email]);
+      const user = await staffs.findByEmail('*', [email]);
       req.body.token = token;
       req.user = Auth.verifyToken(token);
       res.status(200).json({

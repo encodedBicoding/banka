@@ -122,6 +122,22 @@ class Model {
 )`;
     return this.pool.query(query);
   }
+  createAccountsTable() {
+    const query = `
+    CREATE TABLE IF NOT EXISTS accounts(
+   id SERIAL NOT NULL,
+   accountnumber INTEGER PRIMARY KEY NOT NULL,
+   owner INTEGER REFERENCES users (id) ON DELETE CASCADE,
+   ownercategory VARCHAR(25) NOT NULL,
+   status VARCHAR(10) DEFAULT 'active',
+   type VARCHAR(15) NOT NULL,
+   balance DECIMAL(12,2) NOT NULL DEFAULT 0.00,
+   lastwithdrawal TEXT DEFAULT 'no transactions yet',
+   lastdeposit TEXT DEFAULT 'no transactions yet',
+   createdon TIMESTAMP WITH TIME ZONE DEFAULT now()
+)`;
+    return this.pool.qury(query);
+  }
 }
 const users = new Model('users');
 const staffs = new Model('staffs');

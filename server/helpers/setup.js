@@ -10,8 +10,8 @@ class Acc {
       const pass = Util.hashPassword(password);
       try {
         obj = await staffs.insert(
-          'firstname, lastname, email, password',
-          [firstname, lastname, email, pass],
+          'firstname, lastname, email, password, type',
+          [firstname, lastname, email, pass, 'staff'],
         );
       } catch (err) {
         throw err;
@@ -21,8 +21,8 @@ class Acc {
       const pass = Util.hashPassword(password);
       try {
         obj = await staffs.insert(
-          'fistname, lastname, email, password',
-          [firstname, lastname, email, pass],
+          'firstname, lastname, email, password, type',
+          [firstname, lastname, email, pass, 'admin'],
         );
       } catch (err) {
         throw err;

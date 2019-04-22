@@ -46,20 +46,27 @@ class Authorize {
     let token = req.body.tokenAuth
       || req.headers.authorization
       || req.headers['x-access-token'];
-    if (token.startsWith('Bearer ')) {
-      token = token.slice(7, token.length);
-    }
-    const payload = Auth.verifyToken(token);
-    if (payload !== undefined && payload !== false) {
-      const { type, isAdmin } = payload;
-      if (type !== 'staff' && isAdmin !== true) {
+    if (token !== undefined) {
+      if (token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length);
+      }
+      const payload = Auth.verifyToken(token);
+      if (payload !== undefined && payload !== false) {
+        const { type, isAdmin } = payload;
+        if (type !== 'staff' && isAdmin !== true) {
+          res.status(401).json({
+            status: 401,
+            message: 'Not authorized',
+          });
+        } else {
+          req.user = payload;
+          next();
+        }
+      } else {
         res.status(401).json({
           status: 401,
           message: 'Not authorized',
         });
-      } else {
-        req.user = payload;
-        next();
       }
     } else {
       res.status(400).json({
@@ -80,20 +87,27 @@ class Authorize {
     let token = req.body.tokenAuth
       || req.headers.authorization
       || req.headers['x-access-token'];
-    if (token.startsWith('Bearer ')) {
-      token = token.slice(7, token.length);
-    }
-    const payload = Auth.verifyToken(token);
-    if (payload !== undefined && payload !== false) {
-      const { isAdmin, type } = payload;
-      if (isAdmin !== true && type !== 'admin') {
+    if (token !== undefined) {
+      if (token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length);
+      }
+      const payload = Auth.verifyToken(token);
+      if (payload !== undefined && payload !== false) {
+        const { isAdmin, type } = payload;
+        if (isAdmin !== true && type !== 'admin') {
+          res.status(401).json({
+            status: 401,
+            message: 'Not authorized',
+          });
+        } else {
+          req.user = payload;
+          next();
+        }
+      } else {
         res.status(401).json({
           status: 401,
           message: 'Not authorized',
         });
-      } else {
-        req.user = payload;
-        next();
       }
     } else {
       res.status(400).json({

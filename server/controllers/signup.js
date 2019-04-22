@@ -69,6 +69,7 @@ class Signup {
         req.user = Auth.verifyToken(token);
         res.status(201).json({
           status: 201,
+          message: 'Staff created successfully',
           data: {
             newStaff,
             token,
@@ -98,6 +99,7 @@ class Signup {
         req.user = Auth.verifyToken(token);
         res.status(201).json({
           status: 201,
+          message: 'Admin created successfully',
           data: {
             newAdmin,
             token,
