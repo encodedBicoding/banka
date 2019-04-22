@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _auth = _interopRequireDefault(require("../helpers/auth"));
 
-var _Database = _interopRequireDefault(require("../models/Database"));
+var _index = require("../postgresDB/DB/index");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -17,9 +17,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var users = _Database["default"].users,
-    staffs = _Database["default"].staffs;
-
 var Login =
 /*#__PURE__*/
 function () {
@@ -28,7 +25,7 @@ function () {
   }
 
   _createClass(Login, null, [{
-    key: "dbConnection.js",
+    key: "index",
     value: function index(req, res) {
       res.status(200).json({
         status: 200,
@@ -36,28 +33,40 @@ function () {
       });
     }
   }, {
-    key: "login",
-    value: function login(req, res) {
+    key: "clientLogin",
+    value: async function clientLogin(req, res) {
       var _req$body = req.body,
           email = _req$body.email,
           password = _req$body.password;
 
       var token = _auth["default"].generateToken({
         email: email,
-        password: password
+        password: password,
+        isAdmin: false
       });
 
-      var user = users.filter(function (u) {
-        return u.email === email;
-      });
-      res.status(200).json({
-        status: 200,
-        data: [user[0], token]
-      });
+      try {
+        var user = await _index.users.findByEmail('email, password', [email]);
+        req.body.token = token;
+        req.user = _auth["default"].verifyToken(token);
+        res.status(200).json({
+          status: 200,
+          message: 'Log in successful',
+          data: {
+            user: user,
+            token: token
+          }
+        });
+      } catch (err) {
+        res.status(400).json({
+          status: err.statusCode,
+          message: "Error: ".concat(err.message)
+        });
+      }
     }
   }, {
     key: "adminLogin",
-    value: function adminLogin(req, res) {
+    value: async function adminLogin(req, res) {
       var _req$body2 = req.body,
           email = _req$body2.email,
           password = _req$body2.password;
@@ -65,18 +74,61 @@ function () {
       var token = _auth["default"].generateToken({
         email: email,
         password: password,
-        isAdmin: true
+        isAdmin: true,
+        type: 'admin'
       });
 
-      var staff = staffs.filter(function (s) {
-        return s.email === email;
+      try {
+        var user = await _index.staffs.findByEmail('email, password', [email]);
+        req.body.token = token;
+        req.user = _auth["default"].verifyToken(token);
+        res.status(200).json({
+          status: 200,
+          message: 'Log in successful',
+          data: {
+            user: user,
+            token: token
+          }
+        });
+      } catch (err) {
+        res.status(400).json({
+          status: err.statusCode,
+          message: "Error: ".concat(err.message)
+        });
+      }
+    }
+  }, {
+    key: "staffLogin",
+    value: async function staffLogin(req, res) {
+      var _req$body3 = req.body,
+          email = _req$body3.email,
+          password = _req$body3.password;
+
+      var token = _auth["default"].generateToken({
+        email: email,
+        password: password,
+        isAdmin: true,
+        type: 'staff'
       });
-      res.status(200).json({
-        status: 200,
-        data: [{
-          staff: staff[0]
-        }, token]
-      });
+
+      try {
+        var user = await _index.staffs.findByEmail('email, password', [email]);
+        req.body.token = token;
+        req.user = _auth["default"].verifyToken(token);
+        res.status(200).json({
+          status: 200,
+          message: 'Log in successful',
+          data: {
+            user: user,
+            token: token
+          }
+        });
+      } catch (err) {
+        res.status(400).json({
+          status: err.statusCode,
+          message: "Error: ".concat(err.message)
+        });
+      }
     }
   }]);
 

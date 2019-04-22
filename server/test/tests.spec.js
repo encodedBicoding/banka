@@ -56,7 +56,6 @@ describe('Handle user signup to database', () => {
         password: '1234567890',
       })
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.have.status(400);
         expect(res.body.status).to.equal(400);
         expect(res.body.message).to.be.a('string');
@@ -321,24 +320,123 @@ describe('Handle Admin Login', () => {
       });
   });
 });
-describe('Handle Staff Login', () => {
-  before('add staff to database', async () => {
+describe('Handle admin ability to create a staff', () => {
+  before('make sure staff table exist', async () => {
     try {
       await staffs.dropTable();
       await staffs.createStaffsTable();
-      await staffs.insert(
-        'firstname, lastname, email, password, type',
-        ['staff', 'staff', 'staff@gmail.com', '$2b$10$zrRfpRv1ntXO6h2h8wbC0.eWgLp0odJSaUYA5GEOd1XApg8AjWB.y', 'staff'],
-      );
     } catch (err) {
       throw err;
     }
+  });
+  it('should pass and return status 201 if staff/cashier account has been created', (done) => {
+    chai.request(app)
+      .post('/api/v1/admin/create')
+      .set('authorization', `Bearer ${adminToken}`)
+      .send({
+        firstname: 'Dominic',
+        lastname: 'Staff',
+        email: 'dominicstaff@gmail.com',
+        type: 'staff',
+        password: '1234567890',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body.status).to.equal(201);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should pass and return status 201 if Admin account has been created', (done) => {
+    chai.request(app)
+      .post('/api/v1/admin/create')
+      .set('authorization', `Bearer ${adminToken}`)
+      .send({
+        firstname: 'Dominic',
+        lastname: 'Admin',
+        email: 'dominicadmin@gmail.com',
+        type: 'admin',
+        password: '1234567890',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body.status).to.equal(201);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should fail and return status 401 if admin token is invalid', (done) => {
+    chai.request(app)
+      .post('/api/v1/admin/create')
+      .set('authorization', 'm,kdsmmnnjdfnjg')
+      .send({
+        firstname: 'Dominic',
+        lastname: 'Admin',
+        email: 'dominicadmin@gmail.com',
+        type: 'admin',
+        password: '1234567890',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.status).to.equal(401);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should fail and return status 403 if all fields are not filled', (done) => {
+    chai.request(app)
+      .post('/api/v1/admin/create')
+      .set('authorization', `Bearer ${adminToken}`)
+      .send({
+        firstname: 'Dominic',
+        lastname: 'Admin',
+        email: 'dominicadmin@gmail.com',
+        type: 'admin',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        expect(res.body.status).to.equal(403);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should fail and return status 400 if no token was supplied', (done) => {
+    chai.request(app)
+      .post('/api/v1/admin/create')
+      .send({
+        firstname: 'Dominic',
+        lastname: 'Admin',
+        email: 'dominicadmin@gmail.com',
+        type: 'admin',
+        password: '1234567890',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.status).to.equal(400);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+});
+describe('Handle Staff Login', () => {
+  it('should pass and return a status of 200 if staff details are in database', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/staff/login')
+      .send({
+        email: 'dominicstaff@gmail.com',
+        password: '1234567890',
+      })
+      .end((err, res) => {
+        staffToken = res.body.data.token;
+        expect(res).to.have.status(200);
+        done();
+      });
   });
   it('should pass and return a status of 200 if admin details are in database', (done) => {
     chai.request(app)
       .post('/api/v1/auth/staff/login')
       .send({
-        email: 'staff@gmail.com',
+        email: 'dominicadmin@gmail.com',
         password: '1234567890',
       })
       .end((err, res) => {

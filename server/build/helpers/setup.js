@@ -5,15 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _Database = _interopRequireDefault(require("../models/Database"));
+var _index = require("../postgresDB/DB/index");
 
 var _util = _interopRequireDefault(require("./util"));
-
-var _Client = _interopRequireDefault(require("../models/Client"));
-
-var _Admin = _interopRequireDefault(require("../models/Admin"));
-
-var _Staff = _interopRequireDefault(require("../models/Staff"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -32,7 +26,7 @@ function () {
 
   _createClass(Acc, null, [{
     key: "setup",
-    value: function setup(string) {
+    value: async function setup(string) {
       var obj;
 
       for (var _len = arguments.length, argument = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -40,50 +34,44 @@ function () {
       }
 
       if (string === 'staff') {
-        var id = _Database["default"].staffs.length + 1;
         var email = argument[0],
             password = argument[1],
-            firstName = argument[2];
+            firstname = argument[2],
+            lastname = argument[3];
 
         var pass = _util["default"].hashPassword(password);
 
-        var newStaff = new _Staff["default"](firstName, email, pass);
-        newStaff.id = id;
-
-        _Database["default"].staffs.push(newStaff);
-
-        obj = newStaff;
+        try {
+          obj = await _index.staffs.insert('firstname, lastname, email, password', [firstname, lastname, email, pass]);
+        } catch (err) {
+          throw err;
+        }
       } else if (string === 'admin') {
-        var _id = _Database["default"].staffs.length + 1;
-
         var _email = argument[0],
             _password = argument[1],
-            _firstName = argument[2];
+            _firstname = argument[2],
+            _lastname = argument[3];
 
         var _pass = _util["default"].hashPassword(_password);
 
-        var newAdmin = new _Admin["default"](_firstName, _email, _pass);
-        newAdmin.id = _id;
-
-        _Database["default"].staffs.push(newAdmin);
-
-        obj = newAdmin;
+        try {
+          obj = await _index.staffs.insert('fistname, lastname, email, password', [_firstname, _lastname, _email, _pass]);
+        } catch (err) {
+          throw err;
+        }
       } else if (string === 'client') {
-        var _id2 = _Database["default"].users.length + 1;
-
         var _email2 = argument[0],
             _password2 = argument[1],
-            _firstName2 = argument[2],
-            lastName = argument[3];
+            _firstname2 = argument[2],
+            _lastname2 = argument[3];
 
         var _pass2 = _util["default"].hashPassword(_password2);
 
-        var newClient = new _Client["default"](_firstName2, _email2, _pass2, lastName);
-        newClient.id = _id2;
-
-        _Database["default"].users.push(newClient);
-
-        obj = newClient;
+        try {
+          obj = await _index.users.insert('firstname, lastname, email, password', [_firstname2, _lastname2, _email2, _pass2]);
+        } catch (err) {
+          throw err;
+        }
       }
 
       return obj;
