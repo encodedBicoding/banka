@@ -51,9 +51,13 @@ const routes = (app) => {
     Accounts.getAllAccount);
 
   // Client get single account transactions
-  router.get('/accounts/:accountNumber/transactions',
+  router.get('/api/v1/accounts/:accountNumber/transactions',
     Authorize.authenticateUser,
     Accounts.getSingleAccountTransactions);
+  // Client get all transactions by id
+  router.get('/api/v1/transactions/:transactionId',
+    Authorize.authenticateUser,
+    Accounts.getTransactionById);
 
   // Only Admin / Staff can activate or deactivate account
   router.patch('/api/v1/accounts/:accountNumber',
