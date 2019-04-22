@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS accounts(
 const transactionTableQuery = `
 CREATE TABLE IF NOT EXISTS transactions(
    id SERIAL PRIMARY KEY NOT NULL,
-   accountnumber INTEGER NOT NULL REFERENCE accounts (accountnumber) ON DELETE CASCADE,
+   accountnumber INTEGER NOT NULL REFERENCES accounts (accountnumber) ON DELETE CASCADE,
    type VARCHAR(15) NOT NULL,
    cashier VARCHAR(255) NOT NULL,
    amount DECIMAL(12,2) NOT NULL,

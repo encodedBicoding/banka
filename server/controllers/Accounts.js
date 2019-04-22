@@ -226,22 +226,20 @@ class Accounts {
     }
   }
 
-  static getSingleAccountTransactions(req, res) {
-    const { accountId } = req.params;
-    const account = accounts.filter(
-      acc => acc.accountNumber === Number(accountId),
-    );
-    if (account.length <= 0) {
-      res.status(404).json({
-        status: 404,
-        message: 'Account number not found',
-      });
-    } else {
-      const { transactions } = account[0];
+  static async getSingleAccountTransactions(req, res) {
+    const { accountNumber } = req.params;
+    try {
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
+      const transaction = await transactions.findByAccountNumber('*', [account.accountnumber]);
       res.status(200).json({
         status: 200,
-        message: 'Transaction successful',
-        data: transactions,
+        message: 'success',
+        data: [transaction],
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        message: `Error: ${err.message}`,
       });
     }
   }
