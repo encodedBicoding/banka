@@ -47,6 +47,12 @@ class Model {
     const { rows } = await this.pool.query(query, email);
     return rows[0];
   }
+  
+  async findByStatus(params, status) {
+    const query = `SELECT ${params} FROM ${this.table} WHERE status = $1`;
+    const { rows } = await this.pool.query(query, status);
+    return rows[0];
+  }
 
   async findMany() {
     const query = `SELECT * FROM ${this.table}`;

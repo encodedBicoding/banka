@@ -542,7 +542,6 @@ describe('Handle staff/admin ability to view all accounts ', () => {
       .get('/api/v1/accounts')
       .set('authorization', `Bearer ${staffToken}`)
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.have.status(200);
         done();
       });
@@ -550,6 +549,39 @@ describe('Handle staff/admin ability to view all accounts ', () => {
   it('should fail and return status 401 if the staff token is wrong', (done) => {
     chai.request(app)
       .get('/api/v1/accounts')
+      .set('authorization', 'Bearer mnjnuokokooko')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
+});
+describe('Handle staff/admin ability to view all active accounts accounts ', () => {
+  it('should pass and return status 200 if it was successful and there is a data to return', (done) => {
+    chai.request(app)
+      .get('/api/v1/accounts?status=active')
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.equal(200);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should fail and return status 400 no account was found for a status', (done) => {
+    chai.request(app)
+      .get('/api/v1/accounts?status=dormant')
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.status).to.equal(400);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should fail and return status 401 if the staff token is wrong', (done) => {
+    chai.request(app)
+      .get('/api/v1/accounts?status=active')
       .set('authorization', 'Bearer mnjnuokokooko')
       .end((err, res) => {
         expect(res).to.have.status(401);

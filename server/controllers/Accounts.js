@@ -308,25 +308,49 @@ class Accounts {
   }
 
   static async getAccounts(req, res) {
-    try {
-      const account = await accounts.findMany();
-      if (account !== undefined) {
-        res.status(200).json({
-          status: 200,
-          message: 'success',
-          data: [account],
-        });
-      } else {
+    const { status } = req.query;
+    if (status === undefined) {
+      try {
+        const account = await accounts.findMany();
+        if (account !== undefined) {
+          res.status(200).json({
+            status: 200,
+            message: 'success',
+            data: [account],
+          });
+        } else {
+          res.status(400).json({
+            status: 400,
+            message: 'no registered accounts',
+          });
+        }
+      } catch (err) {
         res.status(400).json({
           status: 400,
-          message: 'no registered accounts',
+          message: `Error: ${err.message}`,
         });
       }
-    } catch (err) {
-      res.status(400).json({
-        status: 400,
-        message: `Error: ${err.message}`,
-      });
+    } else {
+      try {
+        const account = await accounts.findByStatus('*', [status]);
+        if (account !== undefined) {
+          res.status(200).json({
+            status: 200,
+            message: `Fetched all ${status} accounts`,
+            data: [account],
+          });
+        } else {
+          res.status(400).json({
+            status: 400,
+            message: `No ${status} accounts found`,
+          });
+        }
+      } catch (err) {
+        res.status(400).json({
+          status: 400,
+          error: `Error:  ${err.message}`,
+        });
+      }
     }
   }
 
