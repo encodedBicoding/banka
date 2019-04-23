@@ -736,6 +736,15 @@ describe('Handle user ability to view transaction by id', () => {
         done();
       });
   });
+  it('should fail and return status 400 if transactionID is not found in the database', (done) => {
+    chai.request(app)
+      .get('/api/v1/transactions/90')
+      .set('authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
   it('should fail and return status 401 user token is invalid', (done) => {
     chai.request(app)
       .get('/api/v1/transactions/1')

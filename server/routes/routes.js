@@ -93,16 +93,16 @@ const routes = (app) => {
     Signup.addAdmin);
 
   // Api to handle user password reset
-  router.put('/api/v1/client/password_reset',
-    Validate.validatePasswordResetForm,
-    Authorize.authenticateUser,
-    Accounts.resetPassword);
+  // router.put('/api/v1/client/password_reset',
+  //   Validate.validatePasswordResetForm,
+  //   Authorize.authenticateUser,
+  //   Accounts.resetPassword);
 
   // Api to handle staff password reset
-  router.put('/api/v1/staff/password_reset',
-    Validate.validatePasswordResetForm,
-    Authorize.authenticateStaff,
-    Accounts.resetPassword);
+  // router.put('/api/v1/staff/password_reset',
+  //   Validate.validatePasswordResetForm,
+  //   Authorize.authenticateStaff,
+  //   Accounts.resetPassword);
 
 
   router.use((req, res) => {

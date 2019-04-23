@@ -49,6 +49,7 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
+
   static async changeStatus(req, res) {
     const { accountNumber } = req.params;
     let updated;
@@ -307,45 +308,45 @@ class Accounts {
   }
 
 
-  static resetPassword(req, res) {
-    const { newPassword, oldPassword } = req.body;
-    const { email } = req.user;
-    try {
-      const user = users.filter(u => u.email === email);
-      if (user.length <= 0) {
-        const staff = staffs.filter(s => s.email === email);
-        if (Util.validatePassword(oldPassword, staff[0].password)) {
-          staff[0].password = Util.hashPassword(newPassword);
-          res.status(200).json({
-            status: 200,
-            message: 'password changed successfully',
-          });
-        } else {
-          res.status(404).json({
-            status: 404,
-            message: 'passwords do not match',
-          });
-        }
-      } else if (user.length > 0) {
-        if (Util.validatePassword(oldPassword, user[0].password)) {
-          user[0].password = Util.hashPassword(newPassword);
-          res.status(200).json({
-            status: 200,
-            message: 'password changed successfully',
-          });
-        } else {
-          res.status(404).json({
-            status: 404,
-            message: 'passwords do not match',
-          });
-        }
-      }
-    } catch (err) {
-      res.status(400).json({
-        status: 400,
-        message: 'Error: credentials not in database',
-      });
-    }
-  }
+  // static resetPassword(req, res) {
+  //   const { newPassword, oldPassword } = req.body;
+  //   const { email } = req.user;
+  //   try {
+  //     const user = users.filter(u => u.email === email);
+  //     if (user.length <= 0) {
+  //       const staff = staffs.filter(s => s.email === email);
+  //       if (Util.validatePassword(oldPassword, staff[0].password)) {
+  //         staff[0].password = Util.hashPassword(newPassword);
+  //         res.status(200).json({
+  //           status: 200,
+  //           message: 'password changed successfully',
+  //         });
+  //       } else {
+  //         res.status(404).json({
+  //           status: 404,
+  //           message: 'passwords do not match',
+  //         });
+  //       }
+  //     } else if (user.length > 0) {
+  //       if (Util.validatePassword(oldPassword, user[0].password)) {
+  //         user[0].password = Util.hashPassword(newPassword);
+  //         res.status(200).json({
+  //           status: 200,
+  //           message: 'password changed successfully',
+  //         });
+  //       } else {
+  //         res.status(404).json({
+  //           status: 404,
+  //           message: 'passwords do not match',
+  //         });
+  //       }
+  //     }
+  //   } catch (err) {
+  //     res.status(400).json({
+  //       status: 400,
+  //       message: 'Error: credentials not in database',
+  //     });
+  //   }
+  // }
 }
 export default Accounts;
