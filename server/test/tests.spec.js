@@ -564,7 +564,7 @@ describe('Handle staff/admin ability to view all active accounts accounts ', () 
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.status).to.equal(200);
-        expect(res.boy.message).to.be.a('string');
+        expect(res.body.message).to.be.a('string');
         done();
       });
   });
@@ -575,7 +575,7 @@ describe('Handle staff/admin ability to view all active accounts accounts ', () 
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.status).to.equal(400);
-        expect(res.boy.message).to.be.a('string');
+        expect(res.body.message).to.be.a('string');
         done();
       });
   });
