@@ -59,6 +59,10 @@ const routes = (app) => {
     Authorize.authenticateBothAdminAndStaff,
     Accounts.getAllAccount);
 
+  // Admin/Staff get specific account
+  router.get('/api/v1/accounts/:accountNumber',
+    Authorize.authenticateBothAdminAndStaff,
+    Accounts.getSpecificAccount);
   // Admin / Staff can activate or deactivate account
   router.patch('/api/v1/accounts/:accountNumber',
     Authorize.authenticateBothAdminAndStaff,
@@ -89,16 +93,16 @@ const routes = (app) => {
     Signup.addAdmin);
 
   // Api to handle user password reset
-  router.put('/api/v1/client/password_reset',
-    Validate.validatePasswordResetForm,
-    Authorize.authenticateUser,
-    Accounts.resetPassword);
+  // router.put('/api/v1/client/password_reset',
+  //   Validate.validatePasswordResetForm,
+  //   Authorize.authenticateUser,
+  //   Accounts.resetPassword);
 
   // Api to handle staff password reset
-  router.put('/api/v1/staff/password_reset',
-    Validate.validatePasswordResetForm,
-    Authorize.authenticateStaff,
-    Accounts.resetPassword);
+  // router.put('/api/v1/staff/password_reset',
+  //   Validate.validatePasswordResetForm,
+  //   Authorize.authenticateStaff,
+  //   Accounts.resetPassword);
 
 
   router.use((req, res) => {

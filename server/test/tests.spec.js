@@ -501,6 +501,41 @@ describe('Handle staff and admin ability to view all user account', () => {
       });
   });
 });
+describe('Handle staff/admin ability to get a specific user account', () => {
+  it('should pass and return status 200 if account was gotten successfully', (done) => {
+    chai.request(app)
+      .get(`/api/v1/accounts/${accNumber}`)
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.equal(200);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should fail and return status 400 if account number doesn\'t exists', (done) => {
+    chai.request(app)
+      .get('/api/v1/accounts/484454')
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.status).to.equal(400);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should fail and return status 401 if staff token is invalid', (done) => {
+    chai.request(app)
+      .get(`/api/v1/accounts/${accNumber}`)
+      .set('authorization', 'Bearer 3939339339309')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.status).to.equal(401);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+});
 describe('Handle staff ability to debit a user account', () => {
   before('drop any transaction tables, add money to account', async () => {
     await transactions.dropTable();
@@ -698,6 +733,15 @@ describe('Handle user ability to view transaction by id', () => {
       .set('authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         expect(res).to.have.status(200);
+        done();
+      });
+  });
+  it('should fail and return status 400 if transactionID is not found in the database', (done) => {
+    chai.request(app)
+      .get('/api/v1/transactions/90')
+      .set('authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
         done();
       });
   });

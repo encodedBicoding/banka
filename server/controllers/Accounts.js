@@ -49,6 +49,7 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
+
   static async changeStatus(req, res) {
     const { accountNumber } = req.params;
     let updated;
@@ -230,18 +231,24 @@ class Accounts {
     const { accountNumber } = req.params;
     try {
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
-      try {
-        const transaction = await transactions.findByAccountNumber('*', [account.accountnumber]);
-        res.status(200).json({
-          status: 200,
-          message: 'success',
-          data: [transaction],
-        });
-      } catch (err) {
-        res.status(200).json({
-          status: 200,
-          message: 'success',
-          data: [],
+      if (account !== undefined) {
+        try {
+          const transaction = await transactions.findByAccountNumber('*', [account.accountnumber]);
+          res.status(200).json({
+            status: 200,
+            message: 'success',
+            data: [transaction],
+          });
+        } catch (err) {
+          res.status(400).json({
+            status: 400,
+            message: `Error: ${err.message}`,
+          });
+        }
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'Account number not found',
         });
       }
     } catch (err) {
@@ -256,60 +263,90 @@ class Accounts {
     const { transactionId } = req.params;
     try {
       const transaction = await transactions.findById('*', [transactionId]);
-      res.status(200).json({
-        status: 200,
-        message: 'success',
-        data: [transaction],
-      });
+      if (transaction !== undefined) {
+        res.status(200).json({
+          status: 200,
+          message: 'success',
+          data: [transaction],
+        });
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'no transaction found for this ID',
+        });
+      }
     } catch (err) {
       res.status(404).json({
         status: err.statusCode,
         message: `Error: ${err.message}`,
-        data: [],
       });
     }
   }
 
-
-  static resetPassword(req, res) {
-    const { newPassword, oldPassword } = req.body;
-    const { email } = req.user;
+  static async getSpecificAccount(req, res) {
+    const { accountNumber } = req.params;
     try {
-      const user = users.filter(u => u.email === email);
-      if (user.length <= 0) {
-        const staff = staffs.filter(s => s.email === email);
-        if (Util.validatePassword(oldPassword, staff[0].password)) {
-          staff[0].password = Util.hashPassword(newPassword);
-          res.status(200).json({
-            status: 200,
-            message: 'password changed successfully',
-          });
-        } else {
-          res.status(404).json({
-            status: 404,
-            message: 'passwords do not match',
-          });
-        }
-      } else if (user.length > 0) {
-        if (Util.validatePassword(oldPassword, user[0].password)) {
-          user[0].password = Util.hashPassword(newPassword);
-          res.status(200).json({
-            status: 200,
-            message: 'password changed successfully',
-          });
-        } else {
-          res.status(404).json({
-            status: 404,
-            message: 'passwords do not match',
-          });
-        }
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
+      if (account !== undefined) {
+        res.status(200).json({
+          status: 200,
+          message: 'Successful',
+          data: [account],
+        });
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'Account number doesn\'t exist',
+        });
       }
     } catch (err) {
       res.status(400).json({
         status: 400,
-        message: 'Error: credentials not in database',
+        error: `Error: ${err.message}`,
       });
     }
   }
+
+
+  // static resetPassword(req, res) {
+  //   const { newPassword, oldPassword } = req.body;
+  //   const { email } = req.user;
+  //   try {
+  //     const user = users.filter(u => u.email === email);
+  //     if (user.length <= 0) {
+  //       const staff = staffs.filter(s => s.email === email);
+  //       if (Util.validatePassword(oldPassword, staff[0].password)) {
+  //         staff[0].password = Util.hashPassword(newPassword);
+  //         res.status(200).json({
+  //           status: 200,
+  //           message: 'password changed successfully',
+  //         });
+  //       } else {
+  //         res.status(404).json({
+  //           status: 404,
+  //           message: 'passwords do not match',
+  //         });
+  //       }
+  //     } else if (user.length > 0) {
+  //       if (Util.validatePassword(oldPassword, user[0].password)) {
+  //         user[0].password = Util.hashPassword(newPassword);
+  //         res.status(200).json({
+  //           status: 200,
+  //           message: 'password changed successfully',
+  //         });
+  //       } else {
+  //         res.status(404).json({
+  //           status: 404,
+  //           message: 'passwords do not match',
+  //         });
+  //       }
+  //     }
+  //   } catch (err) {
+  //     res.status(400).json({
+  //       status: 400,
+  //       message: 'Error: credentials not in database',
+  //     });
+  //   }
+  // }
 }
 export default Accounts;
