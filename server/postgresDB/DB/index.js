@@ -49,7 +49,7 @@ class Model {
   }
 
   async findMany() {
-    const query = `SELECT * FROM ${this.table} returning *`;
+    const query = `SELECT * FROM ${this.table}`;
     const { rows } = await this.pool.query(query);
     return rows[0];
   }

@@ -536,6 +536,27 @@ describe('Handle staff/admin ability to get a specific user account', () => {
       });
   });
 });
+describe('Handle staff/admin ability to view all accounts ', () => {
+  it('should pass and return status 200 if it was successful and there is a data to return', (done) => {
+    chai.request(app)
+      .get('/api/v1/accounts')
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        console.log(res.body);
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
+  it('should fail and return status 401 if the staff token is wrong', (done) => {
+    chai.request(app)
+      .get('/api/v1/accounts')
+      .set('authorization', 'Bearer mnjnuokokooko')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
+});
 describe('Handle staff ability to debit a user account', () => {
   before('drop any transaction tables, add money to account', async () => {
     await transactions.dropTable();
