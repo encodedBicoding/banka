@@ -59,6 +59,10 @@ const routes = (app) => {
     Authorize.authenticateBothAdminAndStaff,
     Accounts.getAllAccount);
 
+  // Admin/Staff get specific account
+  router.get('/api/v1/accounts/:accountNumber',
+    Authorize.authenticateBothAdminAndStaff,
+    Accounts.getSpecificAccount);
   // Admin / Staff can activate or deactivate account
   router.patch('/api/v1/accounts/:accountNumber',
     Authorize.authenticateBothAdminAndStaff,

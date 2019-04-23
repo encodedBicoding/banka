@@ -230,18 +230,24 @@ class Accounts {
     const { accountNumber } = req.params;
     try {
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
-      try {
-        const transaction = await transactions.findByAccountNumber('*', [account.accountnumber]);
-        res.status(200).json({
-          status: 200,
-          message: 'success',
-          data: [transaction],
-        });
-      } catch (err) {
-        res.status(200).json({
-          status: 200,
-          message: 'success',
-          data: [],
+      if (account !== undefined) {
+        try {
+          const transaction = await transactions.findByAccountNumber('*', [account.accountnumber]);
+          res.status(200).json({
+            status: 200,
+            message: 'success',
+            data: [transaction],
+          });
+        } catch (err) {
+          res.status(400).json({
+            status: 400,
+            message: `Error: ${err.message}`,
+          });
+        }
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'Account number not found',
         });
       }
     } catch (err) {
@@ -256,16 +262,46 @@ class Accounts {
     const { transactionId } = req.params;
     try {
       const transaction = await transactions.findById('*', [transactionId]);
-      res.status(200).json({
-        status: 200,
-        message: 'success',
-        data: [transaction],
-      });
+      if (transaction !== undefined) {
+        res.status(200).json({
+          status: 200,
+          message: 'success',
+          data: [transaction],
+        });
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'no transaction found for this ID',
+        });
+      }
     } catch (err) {
       res.status(404).json({
         status: err.statusCode,
         message: `Error: ${err.message}`,
-        data: [],
+      });
+    }
+  }
+
+  static async getSpecificAccount(req, res) {
+    const { accountNumber } = req.params;
+    try {
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
+      if (account !== undefined) {
+        res.status(200).json({
+          status: 200,
+          message: 'Successful',
+          data: [account],
+        });
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'Account number doesn\'t exist',
+        });
+      }
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        error: `Error: ${err.message}`,
       });
     }
   }
