@@ -253,29 +253,6 @@ describe('Handle user bank account creation', () => {
       });
   });
 });
-describe('Handle user ability to get all their accounts details', () => {
-  it('should pass and return status 200 if user successfully gets the accounts', (done) => {
-    chai.request(app)
-      .get('/api/v1/user/joe@gmail.com/accounts')
-      .set('authorization', `Bearer ${userToken}`)
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body.message).to.be.a('string');
-        expect(res.body.status).to.equal(200);
-        done();
-      });
-  });
-  it('should fail and return status 400 req.params email is wrong or different from user in session email', (done) => {
-    chai.request(app)
-      .get('/api/v1/user/joeh@gmail.com/accounts')
-      .set('authorization', `Bearer ${userToken}`)
-      .end((err, res) => {
-        expect(res).to.have.status(400);
-        expect(res.body.message).to.be.a('string');
-        done();
-      });
-  });
-});
 describe('Handle Admin Login', () => {
   before('add admin to database', async () => {
     try {
@@ -501,6 +478,29 @@ describe('Handle Staff Login', () => {
   });
 });
 
+describe('Handle staff and admin ability to view all user account', () => {
+  it('should pass and return status 200 if account is gotten successfully', (done) => {
+    chai.request(app)
+      .get('/api/v1/user/joe@gmail.com/accounts')
+      .set('authorization', `Bearer ${staffToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.equal(200);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should pass and return status 401 if admin token is wrong', (done) => {
+    chai.request(app)
+      .get('/api/v1/user/joe@gmail.com/accounts')
+      .set('authorization', 'Bearer 9490485484055')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.status).to.equal(401);
+        done();
+      });
+  });
+});
 describe('Handle staff ability to debit a user account', () => {
   before('drop any transaction tables, add money to account', async () => {
     await transactions.dropTable();

@@ -44,12 +44,7 @@ const routes = (app) => {
     Validate.validateAccountForm,
     Authorize.authenticateUser,
     Accounts.createAccount);
-
-  // Client get all account transaction
-  router.get('/api/v1/user/:emailAddress/accounts',
-    Authorize.authenticateUser,
-    Accounts.getAllAccount);
-
+  
   // Client get single account transactions
   router.get('/api/v1/accounts/:accountNumber/transactions',
     Authorize.authenticateUser,
@@ -58,13 +53,18 @@ const routes = (app) => {
   router.get('/api/v1/transactions/:transactionId',
     Authorize.authenticateUser,
     Accounts.getTransactionById);
+  
+  // Admin/Staff get all account transaction
+  router.get('/api/v1/user/:emailAddress/accounts',
+    Authorize.authenticateBothAdminAndStaff,
+    Accounts.getAllAccount);
 
-  // Only Admin / Staff can activate or deactivate account
+  // Admin / Staff can activate or deactivate account
   router.patch('/api/v1/accounts/:accountNumber',
     Authorize.authenticateBothAdminAndStaff,
     Accounts.changeStatus);
 
-  // Only Admin / staff can delete user account
+  // Admin / staff can delete user account
   router.delete('/api/v1/accounts/:accountNumber',
     Authorize.authenticateBothAdminAndStaff,
     Accounts.deleteAccount);
