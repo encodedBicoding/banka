@@ -307,6 +307,28 @@ class Accounts {
     }
   }
 
+  static async getAccounts(req, res) {
+    try {
+      const account = await accounts.findMany();
+      if (account !== undefined) {
+        res.status(200).json({
+          status: 200,
+          message: 'success',
+          data: [account],
+        });
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'no registered accounts',
+        });
+      }
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        message: `Error: ${err.message}`,
+      });
+    }
+  }
 
   // static resetPassword(req, res) {
   //   const { newPassword, oldPassword } = req.body;

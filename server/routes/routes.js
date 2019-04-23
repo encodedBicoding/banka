@@ -44,7 +44,7 @@ const routes = (app) => {
     Validate.validateAccountForm,
     Authorize.authenticateUser,
     Accounts.createAccount);
-  
+
   // Client get single account transactions
   router.get('/api/v1/accounts/:accountNumber/transactions',
     Authorize.authenticateUser,
@@ -53,7 +53,7 @@ const routes = (app) => {
   router.get('/api/v1/transactions/:transactionId',
     Authorize.authenticateUser,
     Accounts.getTransactionById);
-  
+
   // Admin/Staff get all account transaction
   router.get('/api/v1/user/:emailAddress/accounts',
     Authorize.authenticateBothAdminAndStaff,
@@ -63,6 +63,11 @@ const routes = (app) => {
   router.get('/api/v1/accounts/:accountNumber',
     Authorize.authenticateBothAdminAndStaff,
     Accounts.getSpecificAccount);
+
+  // Admin/Staff get all accounts in the platform
+  router.get('/api/v1/accounts',
+    Authorize.authenticateBothAdminAndStaff,
+    Accounts.getAccounts);
   // Admin / Staff can activate or deactivate account
   router.patch('/api/v1/accounts/:accountNumber',
     Authorize.authenticateBothAdminAndStaff,
