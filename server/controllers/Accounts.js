@@ -231,7 +231,7 @@ class Accounts {
     const { accountNumber } = req.params;
     try {
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
-      if (account !== undefined) {
+      if (account) {
         try {
           const transaction = await transactions.findByAccountNumber('*', [account.accountnumber]);
           res.status(200).json({
@@ -263,7 +263,7 @@ class Accounts {
     const { transactionId } = req.params;
     try {
       const transaction = await transactions.findById('*', [transactionId]);
-      if (transaction !== undefined) {
+      if (transaction) {
         res.status(200).json({
           status: 200,
           message: 'success',
@@ -287,7 +287,7 @@ class Accounts {
     const { accountNumber } = req.params;
     try {
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
-      if (account !== undefined) {
+      if (account) {
         res.status(200).json({
           status: 200,
           message: 'Successful',
@@ -312,7 +312,7 @@ class Accounts {
     if (status === undefined) {
       try {
         const account = await accounts.findMany();
-        if (account !== undefined) {
+        if (account) {
           res.status(200).json({
             status: 200,
             message: 'success',
@@ -333,7 +333,7 @@ class Accounts {
     } else {
       try {
         const account = await accounts.findByStatus('*', [status]);
-        if (account !== undefined) {
+        if (account) {
           res.status(200).json({
             status: 200,
             message: `Fetched all ${status} accounts`,
