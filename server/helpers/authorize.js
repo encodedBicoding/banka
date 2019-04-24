@@ -12,8 +12,9 @@ class Authorize {
   static authenticateUser(req, res, next) {
     let token = req.body.tokenAuth
       || req.headers.authorization
-      || req.headers['x-access-token'];
-    if (token !== undefined) {
+      || req.headers['x-access-token']
+      || req.query.token;
+    if (token) {
       if (token.startsWith('Bearer ')) {
         token = token.slice(7, token.length);
       }
@@ -52,15 +53,16 @@ class Authorize {
   static authenticateStaff(req, res, next) {
     let token = req.body.tokenAuth
       || req.headers.authorization
-      || req.headers['x-access-token'];
-    if (token !== undefined) {
+      || req.headers['x-access-token']
+      || req.query.token;
+    if (token) {
       if (token.startsWith('Bearer ')) {
         token = token.slice(7, token.length);
       }
       const payload = Auth.verifyToken(token);
-      if (payload !== undefined && payload !== false) {
-        const { type, isAdmin } = payload;
-        if (type !== 'staff' && isAdmin !== true) {
+      if (payload) {
+        const { type } = payload;
+        if (type !== 'staff') {
           res.status(401).json({
             status: 401,
             message: 'Not authorized',
@@ -93,8 +95,9 @@ class Authorize {
   static authenticateAdmin(req, res, next) {
     let token = req.body.tokenAuth
       || req.headers.authorization
-      || req.headers['x-access-token'];
-    if (token !== undefined) {
+      || req.headers['x-access-token']
+      || req.query.token;
+    if (token) {
       if (token.startsWith('Bearer ')) {
         token = token.slice(7, token.length);
       }
@@ -127,21 +130,29 @@ class Authorize {
   static authenticateBothAdminAndStaff(req, res, next) {
     let token = req.body.tokenAuth
       || req.headers.authorization
-      || req.headers['x-access-token'];
-    if (token.startsWith('Bearer ')) {
-      token = token.slice(7, token.length);
-    }
-    const payload = Auth.verifyToken(token);
-    if (payload !== undefined && payload !== false) {
-      const { isAdmin } = payload;
-      if (isAdmin !== true) {
-        res.status(401).json({
-          status: 401,
-          message: 'Not authorized',
-        });
+      || req.headers['x-access-token']
+      || req.query.token;
+    if (token) {
+      if (token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length);
+      }
+      const payload = Auth.verifyToken(token);
+      if (payload !== undefined && payload !== false) {
+        const { isAdmin } = payload;
+        if (isAdmin !== true) {
+          res.status(401).json({
+            status: 401,
+            message: 'Not authorized',
+          });
+        } else {
+          req.user = payload;
+          next();
+        }
       } else {
-        req.user = payload;
-        next();
+        res.status(400).json({
+          status: 400,
+          message: 'Not token supplied',
+        });
       }
     } else {
       res.status(400).json({
