@@ -216,7 +216,7 @@ class Accounts {
       res.status(200).json({
         status: 200,
         message: 'Success',
-        data: [userAccounts],
+        data: userAccounts,
       });
     } catch (err) {
       res.status(400).json({

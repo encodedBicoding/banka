@@ -38,7 +38,6 @@ describe('Handle user signup to database', () => {
           expect(res.body.message).to.be.a('string');
           expect(res.body.message).to.equal('Account created successfully');
           expect(res.body.data).to.be.an('object');
-          expect(res.body.data).to.have.property('user');
           expect(res.body.data).to.have.property('token');
         });
     } catch (err) {
@@ -60,8 +59,6 @@ describe('Handle user signup to database', () => {
         expect(res.body.status).to.equal(400);
         expect(res.body.message).to.be.a('string');
         expect(res.body).to.be.an('object');
-        expect(res.body).to.have.property('status');
-        expect(res.body).to.have.property('message');
         done();
       });
   });
