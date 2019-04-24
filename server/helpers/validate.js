@@ -300,6 +300,63 @@ class Validate {
       next();
     }
   }
+
+  static validateAccountNumber(req, res, next) {
+    const { accountNumber } = req.params;
+    const regEx = /^([0-9]+)$/;
+    if (!regEx.test(accountNumber)) {
+      res.status(400).json({
+        status: 400,
+        error: 'Invalid account number',
+      });
+    } else {
+      next();
+    }
+  }
+
+  static validateTransactionID(req, res, next) {
+    const { transactionId } = req.params;
+    const regEx = /^([0-9]+)$/;
+    if (!regEx.test(transactionId)) {
+      res.status(400).json({
+        status: 400,
+        error: 'Invalid Transaction ID',
+      });
+    } else {
+      next();
+    }
+  }
+
+  static validateEmailAddress(req, res, next) {
+    const { emailAddress } = req.params;
+    const regEx = /^([A-z0-9.-_]+)@([A-z]+)\.([A-z]){2,5}$/;
+    if (!regEx.test(emailAddress)) {
+      res.status(400).json({
+        status: 400,
+        error: 'Invalid Email Address',
+      });
+    } else {
+      next();
+    }
+  }
+
+  static validateStatus(req, res, next) {
+    const { status } = req.query;
+    const validStatus = ['active', 'dormant'];
+    if (status) {
+      const isDormantOrActive = validStatus.includes(status);
+      if (!isDormantOrActive) {
+        res.status(400).json({
+          status: 400,
+          error: 'status value must be active or dormant',
+        });
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  }
 }
 
 export default Validate;

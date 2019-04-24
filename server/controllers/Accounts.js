@@ -233,11 +233,11 @@ class Accounts {
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
       if (account) {
         try {
-          const transaction = await transactions.findByAccountNumber('*', [account.accountnumber]);
+          const transaction = await transactions.findByAccountNumberRA('*', [account.accountnumber]);
           res.status(200).json({
             status: 200,
             message: 'success',
-            data: [transaction],
+            data: transaction,
           });
         } catch (err) {
           res.status(400).json({
@@ -262,17 +262,17 @@ class Accounts {
   static async getTransactionById(req, res) {
     const { transactionId } = req.params;
     try {
-      const transaction = await transactions.findById('*', [transactionId]);
-      if (transaction) {
+      const transaction = await transactions.findByIdRA('*', [transactionId]);
+      if (transaction.length > 0) {
         res.status(200).json({
           status: 200,
           message: 'success',
-          data: [transaction],
+          data: transaction,
         });
       } else {
         res.status(400).json({
           status: 400,
-          message: 'no transaction found for this ID',
+          message: 'no transactions found for this ID',
         });
       }
     } catch (err) {
@@ -312,11 +312,11 @@ class Accounts {
     if (status === undefined) {
       try {
         const account = await accounts.findMany();
-        if (account) {
+        if (account.length > 0) {
           res.status(200).json({
             status: 200,
             message: 'success',
-            data: [account],
+            data: account,
           });
         } else {
           res.status(400).json({
@@ -333,11 +333,11 @@ class Accounts {
     } else {
       try {
         const account = await accounts.findByStatus('*', [status]);
-        if (account) {
+        if (account.length > 0) {
           res.status(200).json({
             status: 200,
             message: `Fetched all ${status} accounts`,
-            data: [account],
+            data: account,
           });
         } else {
           res.status(400).json({

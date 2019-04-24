@@ -48,46 +48,55 @@ const routes = (app) => {
   // Client get single account transactions
   router.get('/api/v1/accounts/:accountNumber/transactions',
     Authorize.authenticateUser,
+    Validate.validateAccountNumber,
     Accounts.getSingleAccountTransactions);
   // Client get all transactions by id
   router.get('/api/v1/transactions/:transactionId',
     Authorize.authenticateUser,
+    Validate.validateTransactionID,
     Accounts.getTransactionById);
 
   // Admin/Staff get all account transaction
   router.get('/api/v1/user/:emailAddress/accounts',
     Authorize.authenticateBothAdminAndStaff,
+    Validate.validateEmailAddress,
     Accounts.getAllAccount);
 
   // Admin/Staff get specific account
   router.get('/api/v1/accounts/:accountNumber',
     Authorize.authenticateBothAdminAndStaff,
+    Validate.validateAccountNumber,
     Accounts.getSpecificAccount);
 
   // Admin/Staff get all accounts in the platform
   router.get('/api/v1/accounts',
     Authorize.authenticateBothAdminAndStaff,
+    Validate.validateStatus,
     Accounts.getAccounts);
   // Admin / Staff can activate or deactivate account
   router.patch('/api/v1/accounts/:accountNumber',
     Authorize.authenticateBothAdminAndStaff,
+    Validate.validateAccountNumber,
     Accounts.changeStatus);
 
   // Admin / staff can delete user account
   router.delete('/api/v1/accounts/:accountNumber',
     Authorize.authenticateBothAdminAndStaff,
+    Validate.validateAccountNumber,
     Accounts.deleteAccount);
 
   // Only Staff can debit an account
   router.post('/api/v1/transactions/:accountNumber/debit',
     Validate.validateAccountTransForm,
     Authorize.authenticateStaff,
+    Validate.validateAccountNumber,
     Accounts.debitAccount);
 
   // Only Staff can credit an account
   router.post('/api/v1/transactions/:accountNumber/credit',
     Validate.validateAccountTransForm,
     Authorize.authenticateStaff,
+    Validate.validateAccountNumber,
     Accounts.creditAccount);
 
   // Only Admin can create staff account
