@@ -29,11 +29,23 @@ class Model {
     const { rows } = await this.pool.query(query, id);
     return rows[0];
   }
+  
+  async findByIdRA(params, id) {
+    const query = `SELECT ${params} FROM ${this.table} WHERE id = $1`;
+    const { rows } = await this.pool.query(query, id);
+    return rows;
+  }
 
   async findByAccountNumber(params, accountnumber) {
     const query = `SELECT ${params} FROM ${this.table} WHERE accountnumber = $1`;
     const { rows } = await this.pool.query(query, accountnumber);
     return rows[0];
+  }
+  
+  async findByAccountNumberRA(params, accountnumber) {
+    const query = `SELECT ${params} FROM ${this.table} WHERE accountnumber = $1`;
+    const { rows } = await this.pool.query(query, accountnumber);
+    return rows;
   }
 
   async findByEmail(params, email) {
@@ -51,13 +63,13 @@ class Model {
   async findByStatus(params, status) {
     const query = `SELECT ${params} FROM ${this.table} WHERE status = $1`;
     const { rows } = await this.pool.query(query, status);
-    return rows[0];
+    return rows;
   }
 
   async findMany() {
     const query = `SELECT * FROM ${this.table}`;
     const { rows } = await this.pool.query(query);
-    return rows[0];
+    return rows;
   }
 
   async updateById(params, id) {
