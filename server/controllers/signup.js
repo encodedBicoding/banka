@@ -29,7 +29,8 @@ class Signup {
         status: 201,
         message: 'Account created successfully',
         data: {
-          user,
+          ...user,
+          password: '',
           token,
         },
       });
@@ -71,7 +72,8 @@ class Signup {
           status: 201,
           message: 'Staff created successfully',
           data: {
-            newStaff,
+            ...newStaff,
+            password: '',
             token,
           },
         });
@@ -101,7 +103,8 @@ class Signup {
           status: 201,
           message: 'Admin created successfully',
           data: {
-            newAdmin,
+            ...newAdmin,
+            password: '',
             token,
           },
         });

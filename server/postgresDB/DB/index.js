@@ -45,7 +45,7 @@ class Model {
   async findByOwnerID(params, email) {
     const query = `SELECT ${params} FROM ${this.table} WHERE owner = $1`;
     const { rows } = await this.pool.query(query, email);
-    return rows[0];
+    return rows;
   }
   
   async findByStatus(params, status) {

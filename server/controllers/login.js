@@ -17,11 +17,12 @@ class Login {
       const user = await users.findByEmail('*', [email]);
       req.body.token = token;
       req.user = Auth.verifyToken(token);
+      const userObj = { ...user, password: '' };
       res.status(200).json({
         status: 200,
         message: 'Log in successful',
         data: {
-          user,
+          userObj,
           token,
         },
       });
@@ -42,11 +43,12 @@ class Login {
       const user = await staffs.findByEmail('*', [email]);
       req.body.token = token;
       req.user = Auth.verifyToken(token);
+      const userObj = { ...user, password: ''};
       res.status(200).json({
         status: 200,
         message: 'Log in successful',
         data: {
-          user,
+          userObj,
           token,
         },
       });
@@ -67,11 +69,12 @@ class Login {
       const user = await staffs.findByEmail('*', [email]);
       req.body.token = token;
       req.user = Auth.verifyToken(token);
+      const userObj = { ...user, password: '' };
       res.status(200).json({
         status: 200,
         message: 'Log in successful',
         data: {
-          user,
+          userObj,
           token,
         },
       });
