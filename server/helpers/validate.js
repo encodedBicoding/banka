@@ -1,5 +1,7 @@
 import Util from './util';
-import {users, staffs, accounts, transactions} from '../postgresDB/DB/index';
+import {
+  users, staffs, accounts, transactions,
+} from '../postgresDB/DB/index';
 
 
 /**
@@ -396,7 +398,7 @@ class Validate {
     const { transactionId } = req.params;
     try {
       const user = await users.findByEmail('*', [email]);
-      const account = await accounts.findByOwnerID('*', [user.id]);;
+      const account = await accounts.findByOwnerID('*', [user.id]);
       const transaction = await transactions.findByIdRA('*', [transactionId]);
       if (transaction[0].accountnumber !== account[0].accountnumber) {
         res.status(401).json({
@@ -409,10 +411,9 @@ class Validate {
     } catch (err) {
       res.status(400).json({
         status: 400,
-        error: `Error: ${err.message}`
+        error: `Error: ${err.message}`,
       });
     }
-    
   }
 }
 

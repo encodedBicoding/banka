@@ -806,6 +806,12 @@ describe('Handle user ability to view transaction by id', () => {
   });
 });
 describe('Handle user account deleting by staff or admin', () => {
+  after('drop all tables', async () => {
+    await transactions.dropTable();
+    await accounts.dropTable();
+    await users.dropTable();
+    await staffs.dropTable();
+  });
   it('should pass and return 200 if staff token is valid', (done) => {
     chai.request(app)
       .delete(`/api/v1/accounts/${accNumber}`)
