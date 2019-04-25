@@ -10,7 +10,8 @@
     "start-dev": "nodemon --exec babel-node server/app.js",
     "test": "nyc mocha -r @babel/polyfill -r @babel/core -r @babel/register ./server/test/*.spec.js --timeout 10000 --exit",
     "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test && nyc report --reporter=text-lcov | coveralls",
-    "heroku-postbuild": "npm run build && babel-node server/postgresDB/heroku-migrate.js"
+    "heroku-postbuild": "npm run build",
+    "migrate-db": "babel-node server/postgresDB/heroku-migrate.js"
   },
   "repository": {
     "type": "git",

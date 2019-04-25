@@ -177,11 +177,17 @@ class Validate {
   static validateAccountForm(req, res, next) {
     const { userType, accType } = req.body;
     const errArr = [];
+    const userTypeTest = ['personal', 'org', 'sme'];
+    const accTypeTest = ['current', 'savings'];
     let errMsg;
     const valueTest = /^([A-z]+)$/;
-    if (!valueTest.test(userType) || userType === undefined) {
+    if (!valueTest.test(userType)
+        || userType === undefined
+        || !userTypeTest.includes(userType)) {
       errArr.push('User Type');
-    } if (!valueTest.test(accType) || accType === undefined) {
+    } if (!valueTest.test(accType)
+        || accType === undefined
+        || !accTypeTest.includes(accType)) {
       errArr.push('Account Type');
     }
     if (errArr.length > 1) {
