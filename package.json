@@ -11,7 +11,7 @@
     "test": "nyc mocha -r @babel/polyfill -r @babel/core -r @babel/register ./server/test/*.spec.js --timeout 10000 --exit",
     "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test && nyc report --reporter=text-lcov | coveralls",
     "heroku-postbuild": "npm run build && npm run migrate-db",
-    "migrate-db": "babel-node server/postgresDB/heroku-migrate.js"
+    "migrate-db": "babel-node server/postgresDB/heroku-migrate.js && babel-node server/postgresDB/createAdmin.js"
   },
   "repository": {
     "type": "git",
