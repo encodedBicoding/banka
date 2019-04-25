@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users(
    email VARCHAR(255) UNIQUE NOT NULL,
    password TEXT NOT NULL,
    type VARCHAR(10) NOT NULL DEFAULT 'client',
-   isadmin VARCHAR(10) NOT NULL DEFAULT 'false',
+   isadmin BOOLEAN DEFAULT false,
    noofaccounts INTEGER NOT NULL DEFAULT 0,
    joined TIMESTAMP WITH TIME ZONE DEFAULT now()
 )`;
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS staffs(
    email VARCHAR(255) UNIQUE NOT NULL,
    password TEXT NOT NULL,
    type VARCHAR(10) NOT NULL,
-   isadmin VARCHAR(10) NOT NULL DEFAULT 'true',
+   isadmin BOOLEAN DEFAULT true,
    joined TIMESTAMP WITH TIME ZONE DEFAULT now()
 )`;
 
