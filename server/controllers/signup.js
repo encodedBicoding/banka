@@ -16,7 +16,7 @@ class Signup {
       password,
       lastname,
     } = req.body;
-    const token = Auth.generateToken({ email, firstname });
+    const token = Auth.generateToken({ email, firstname, isAdmin: false });
     try {
       const user = await Acc.setup('client',
         email,

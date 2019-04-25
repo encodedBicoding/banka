@@ -830,4 +830,17 @@ describe('Handle user account deleting by staff or admin', () => {
         done();
       });
   });
+  it(
+    'should fail and return status 404 if no account has been registered in the database',
+    (done) => {
+      chai.request(app).get('/api/v1/accounts')
+        .set('authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.equal(404);
+          expect(res.body.message).to.be.a('string');
+          done();
+        });
+    },
+  );
 });

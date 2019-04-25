@@ -161,7 +161,7 @@ class Model {
    lastdeposit TEXT DEFAULT 'no transactions yet',
    createdon TIMESTAMP WITH TIME ZONE DEFAULT now()
 )`;
-    return this.pool.qury(query);
+    return this.pool.query(query);
   }
 }
 const users = new Model('users');

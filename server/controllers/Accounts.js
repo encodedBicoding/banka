@@ -1,5 +1,4 @@
 import generateAccountNumber from '../helpers/generateAccountNumber';
-import Util from '../helpers/util';
 import pool from '../postgresDB/DB/dbConnection';
 import { accountTableQuery } from '../postgresDB/models/createTables';
 
@@ -309,7 +308,7 @@ class Accounts {
 
   static async getAccounts(req, res) {
     const { status } = req.query;
-    if (status === undefined) {
+    if (!status) {
       try {
         const account = await accounts.findMany();
         if (account.length > 0) {
@@ -319,8 +318,8 @@ class Accounts {
             data: account,
           });
         } else {
-          res.status(400).json({
-            status: 400,
+          res.status(404).json({
+            status: 404,
             message: 'no registered accounts',
           });
         }
