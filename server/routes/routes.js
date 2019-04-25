@@ -49,11 +49,13 @@ const routes = (app) => {
   router.get('/api/v1/accounts/:accountNumber/transactions',
     Authorize.authenticateUser,
     Validate.validateAccountNumber,
+    Validate.userViewAccountNumber,
     Accounts.getSingleAccountTransactions);
   // Client get all transactions by id
   router.get('/api/v1/transactions/:transactionId',
     Authorize.authenticateUser,
     Validate.validateTransactionID,
+    Validate.userViewTransactionID,
     Accounts.getTransactionById);
 
   // Admin/Staff get all account transaction

@@ -1,5 +1,5 @@
 import Util from './util';
-import { users, staffs } from '../postgresDB/DB/index';
+import {users, staffs, accounts, transactions} from '../postgresDB/DB/index';
 
 
 /**
@@ -177,16 +177,21 @@ class Validate {
   static validateAccountForm(req, res, next) {
     const { userType, accType } = req.body;
     const errArr = [];
+    // Arrays to test for userType and accType values
     const userTypeTest = ['personal', 'org', 'sme'];
     const accTypeTest = ['current', 'savings'];
+    // Variable to house error messages going to the response object
     let errMsg;
+    // Regular expression to validate the form values for string type
     const valueTest = /^([A-z]+)$/;
+
+    // Conditional statements checking if values passed is valid or not
     if (!valueTest.test(userType)
-        || userType === undefined
+        || !userType
         || !userTypeTest.includes(userType)) {
       errArr.push('User Type');
     } if (!valueTest.test(accType)
-        || accType === undefined
+        || !accType
         || !accTypeTest.includes(accType)) {
       errArr.push('Account Type');
     }
@@ -362,6 +367,52 @@ class Validate {
     } else {
       next();
     }
+  }
+
+  static async userViewAccountNumber(req, res, next) {
+    const { email } = req.user;
+    const { accountNumber } = req.params;
+    try {
+      const user = await users.findByEmail('*', [email]);
+      const account = await accounts.findByAccountNumberRA('*', [accountNumber]);
+      if (account[0].owner !== Number(user.id)) {
+        res.status(401).json({
+          status: 401,
+          error: 'Not Authorized',
+        });
+      } else {
+        next();
+      }
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        error: `Error: ${err.message}`,
+      });
+    }
+  }
+
+  static async userViewTransactionID(req, res, next) {
+    const { email } = req.user;
+    const { transactionId } = req.params;
+    try {
+      const user = await users.findByEmail('*', [email]);
+      const account = await accounts.findByOwnerID('*', [user.id]);;
+      const transaction = await transactions.findByIdRA('*', [transactionId]);
+      if (transaction[0].accountnumber !== account[0].accountnumber) {
+        res.status(401).json({
+          status: 401,
+          error: 'Not Authorized',
+        });
+      } else {
+        next();
+      }
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        error: `Error: ${err.message}`
+      });
+    }
+    
   }
 }
 
