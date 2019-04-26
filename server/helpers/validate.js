@@ -226,20 +226,21 @@ class Validate {
     const {
       firstname, lastname, email, password, type,
     } = req.body;
+    const typeArr = ['admin', 'staff'];
     const nameTest = /^[A-z]{3,20}$/;
     const emailTest = /([A-z0-9.-_]+)@([A-z]+)\.([A-z]){2,5}$/;
     const passText = /[a-zA-Z0-9\w!@#$%^&*()_+|]{8,20}$/;
     const errArr = [];
     let errMsg;
-    if (!nameTest.test(firstname) || firstname === undefined) {
+    if (!nameTest.test(firstname) || !firstname) {
       errArr.push('First name');
-    } if (!nameTest.test(lastname) || lastname === undefined) {
+    } if (!nameTest.test(lastname) || !lastname) {
       errArr.push('Last name');
-    } if (!emailTest.test(email) || email === undefined) {
+    } if (!emailTest.test(email) || !email) {
       errArr.push('Email');
-    } if (!passText.test(password) || password === undefined) {
+    } if (!passText.test(password) || !password) {
       errArr.push('Password');
-    } if (!nameTest.test(type) || type === undefined) {
+    } if (!nameTest.test(type) || !type || !typeArr.includes(type)) {
       errArr.push('Type');
     }
     if (errArr.length > 1) {
