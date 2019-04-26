@@ -16,5 +16,3 @@ pool.query(query, (err, res) => {
   if (err) throw err;
   console.log('Tables Created');
 });
-
-

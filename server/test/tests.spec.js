@@ -26,7 +26,7 @@ describe('Handle user signup to database', () => {
         .request(app)
         .post('/api/v1/auth/signup')
         .send({
-          firstname: 'johnathan',
+          firstname: 'J o                          hnathan',
           lastname: 'Emmanuel',
           email: 'joe@gmail.com',
           password: '1234567890',
@@ -410,7 +410,7 @@ describe('Handle admin ability to create a staff', () => {
 describe('Handle Staff Login', () => {
   it('should pass and return a status of 200 if staff details are in database', (done) => {
     chai.request(app)
-      .post('/api/v1/auth/staff/login')
+      .post('/api/v1/auth/admin/login')
       .send({
         email: 'dominicstaff@gmail.com',
         password: '1234567890',
@@ -423,7 +423,7 @@ describe('Handle Staff Login', () => {
   });
   it('should pass and return a status of 200 if admin details are in database', (done) => {
     chai.request(app)
-      .post('/api/v1/auth/staff/login')
+      .post('/api/v1/auth/admin/login')
       .send({
         email: 'dominicadmin@gmail.com',
         password: '1234567890',
@@ -436,7 +436,7 @@ describe('Handle Staff Login', () => {
   });
   it('it should fail and return error 400 if admin details are not found in database',
     (done) => {
-      chai.request(app).post('/api/v1/auth/staff/login').send({
+      chai.request(app).post('/api/v1/auth/admin/login').send({
         email: 'taichi@gmail.com',
         password: '23ewdfdfdjhu',
       }).end((err, res) => {
@@ -447,7 +447,7 @@ describe('Handle Staff Login', () => {
     });
   it('it should fail and return error 403 if all fields are not filled or fields are missing',
     (done) => {
-      chai.request(app).post('/api/v1/auth/staff/login').send({
+      chai.request(app).post('/api/v1/auth/admin/login').send({
         password: '23ewdfdfdjhu',
       }).end((err, res) => {
         expect(res).to.have.status(403);
@@ -598,7 +598,6 @@ describe('Handle staff ability to debit a user account', () => {
       .set('authorization', `Bearer ${staffToken}`)
       .send({
         amount: 2000,
-        accountnumber: accNumber,
       })
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -614,7 +613,7 @@ describe('Handle staff ability to debit a user account', () => {
       .post(`/api/v1/transactions/${accNumber}/debit`)
       .set('authorization', `Bearer ${staffToken}`)
       .send({
-        amount: 2000,
+      
       })
       .end((err, res) => {
         expect(res).to.have.status(403);
@@ -626,11 +625,10 @@ describe('Handle staff ability to debit a user account', () => {
   });
   it('should fail and return status 400 if account number doesn\'t exists', (done) => {
     chai.request(app)
-      .post(`/api/v1/transactions/${accNumber}/debit`)
+      .post('/api/v1/transactions/99484895/debit')
       .set('authorization', `Bearer ${staffToken}`)
       .send({
         amount: 2000,
-        accountnumber: '27383238932',
       })
       .end((err, res) => {
         expect(res).to.have.status(400);
@@ -646,7 +644,6 @@ describe('Handle staff ability to debit a user account', () => {
       .set('authorization', `Bearer ${staffToken}`)
       .send({
         amount: 34324323534534000,
-        accountnumber: `${accNumber}`,
       })
       .end((err, res) => {
         expect(res).to.have.status(400);
@@ -682,7 +679,6 @@ describe('Handle staff ability to credit user account', () => {
       .set('authorization', `Bearer ${staffToken}`)
       .send({
         amount: 2000.89,
-        accountnumber: accNumber,
       })
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -698,7 +694,7 @@ describe('Handle staff ability to credit user account', () => {
       .post(`/api/v1/transactions/${accNumber}/credit`)
       .set('authorization', `Bearer ${staffToken}`)
       .send({
-        amount: 2000,
+      
       })
       .end((err, res) => {
         expect(res).to.have.status(403);
@@ -710,11 +706,10 @@ describe('Handle staff ability to credit user account', () => {
   });
   it('should fail and return status 400 if account number doesn\'t exists', (done) => {
     chai.request(app)
-      .post(`/api/v1/transactions/${accNumber}/credit`)
+      .post('/api/v1/transactions/27383238932/credit')
       .set('authorization', `Bearer ${staffToken}`)
       .send({
         amount: 2000,
-        accountnumber: '27383238932',
       })
       .end((err, res) => {
         expect(res).to.have.status(400);

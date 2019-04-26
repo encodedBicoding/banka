@@ -20,6 +20,7 @@ class Accounts {
     const { accType, userType } = req.body;
     const { email } = req.user;
     try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
       const user = await users.findByEmail('*', [email]);
       const accountNumber = generateAccountNumber();
       await pool.query(accountTableQuery);
@@ -53,6 +54,7 @@ class Accounts {
     const { accountNumber } = req.params;
     let updated;
     try {
+      // findByAccountNumber takes 2 parameters the query and value, * is to select all key-value pairs
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
       if (account.status === 'active') {
         updated = await accounts.updateStatusById('dormant', `${account.id}`);
@@ -115,12 +117,13 @@ class Accounts {
    */
   static async debitAccount(req, res) {
     const { accountNumber } = req.params;
-    const { amount, accountnumber } = req.body;
+    const { amount } = req.body;
     const { email } = req.user;
     try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
       const staff = await staffs.findByEmail('*', [email]);
       const s = `${staff.firstname} ${staff.lastname}`;
-      const account = await accounts.findByAccountNumber('*', [accountnumber]);
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
       if (account.balance >= amount) {
         const debit = {
           balance: account.balance - amount,
@@ -136,11 +139,6 @@ class Accounts {
           status: 200,
           message: 'Account debited successfully',
           data: transaction,
-        });
-      } else if (Number(accountNumber) !== account.accountnumber) {
-        res.status(400).json({
-          status: 400,
-          message: 'Specified account via URL doesn\'t exists',
         });
       } else {
         res.status(400).json({
@@ -164,32 +162,34 @@ class Accounts {
    */
   static async creditAccount(req, res) {
     const { accountNumber } = req.params;
-    const { amount, accountnumber } = req.body;
+    const { amount } = req.body;
     const { email } = req.user;
     try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
       const staff = await staffs.findByEmail('*', [email]);
       const s = `${staff.firstname} ${staff.lastname}`;
-      const account = await accounts.findByAccountNumber('*', [accountnumber]);
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
       const bal = parseFloat(account.balance).toFixed(0);
-      const credit = {
-        balance: Number(bal) + Number(amount),
-        date: new Date().toUTCString(),
-      };
-      const updated = await accounts.updateById(`balance = '${credit.balance}', lastdeposit = '${credit.date}'`, [account.id]);
-      await transactions.createTransactionTable();
-      const transaction = await transactions.insert(
-        'accountnumber, type, cashier, amount, oldbalance, newbalance',
-        [account.accountnumber, 'credit', s, amount, account.balance, updated.balance],
-      );
-      res.status(200).json({
-        status: 200,
-        message: 'Account credited successfully',
-        data: transaction,
-      });
-      if (Number(accountNumber) !== account.accountnumber) {
+      if (amount > 0) {
+        const credit = {
+          balance: Number(bal) + Number(amount),
+          date: new Date().toUTCString(),
+        };
+        const updated = await accounts.updateById(`balance = '${credit.balance}', lastdeposit = '${credit.date}'`, [account.id]);
+        await transactions.createTransactionTable();
+        const transaction = await transactions.insert(
+          'accountnumber, type, cashier, amount, oldbalance, newbalance',
+          [account.accountnumber, 'credit', s, amount, account.balance, updated.balance],
+        );
+        res.status(200).json({
+          status: 200,
+          message: 'Account credited successfully',
+          data: transaction,
+        });
+      } else {
         res.status(400).json({
           status: 400,
-          message: 'Specified account via URL doesn\'t exists',
+          error: 'Cannot credit value equal or less than zero'
         });
       }
     } catch (err) {
@@ -210,6 +210,7 @@ class Accounts {
     const { email } = req.user;
     const { emailAddress } = req.params;
     try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
       const user = await users.findByEmail('*', [email && emailAddress]);
       const userAccounts = await accounts.findByOwnerID('*', [user.id]);
       res.status(200).json({
@@ -229,6 +230,7 @@ class Accounts {
   static async getSingleAccountTransactions(req, res) {
     const { accountNumber } = req.params;
     try {
+      // findByAccountNumber takes 2 parameters the query and value, * is to select all key-value pairs
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
       if (account) {
         try {
@@ -261,6 +263,7 @@ class Accounts {
   static async getTransactionById(req, res) {
     const { transactionId } = req.params;
     try {
+      // findByIdRE takes 2 parameters the query and value, * is to select all key-value pairs and return an array
       const transaction = await transactions.findByIdRA('*', [transactionId]);
       if (transaction.length > 0) {
         res.status(200).json({
@@ -285,6 +288,7 @@ class Accounts {
   static async getSpecificAccount(req, res) {
     const { accountNumber } = req.params;
     try {
+      // findByAccountNumber takes 2 parameters the query and value, * is to select all key-value pairs
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
       if (account) {
         res.status(200).json({
@@ -331,6 +335,7 @@ class Accounts {
       }
     } else {
       try {
+        // findByStatus takes 2 parameters the query and value, * is to select all key-value pairs
         const account = await accounts.findByStatus('*', [status]);
         if (account.length > 0) {
           res.status(200).json({
