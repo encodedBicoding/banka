@@ -17,7 +17,7 @@ class Validate {
    * @returns {object} JSON
    */
   static validateSignupField(req, res, next) {
-    const {
+    let {
       firstname, lastname, email, password,
     } = req.body;
     const nameTest = /^[A-z]{3,20}$/;
@@ -25,13 +25,28 @@ class Validate {
     const passText = /[a-zA-Z0-9\w!@#$%^&*()_+|]{8,20}$/;
     const errArr = [];
     let errMsg;
-    if (!nameTest.test(firstname) || firstname === undefined) {
+    if (firstname) {
+      firstname = firstname.replace(/\s/g, '');
+    } if (email) {
+      email = email.replace(/\s/g, '');
+    } if (lastname) {
+      lastname = lastname.replace(/\s/g, '');
+    }
+    if (!nameTest.test(firstname)
+        || !firstname
+        || typeof firstname !== 'string') {
       errArr.push('First name');
-    } if (!nameTest.test(lastname) || lastname === undefined) {
+    } if (!nameTest.test(lastname)
+        || !lastname
+        || typeof lastname !== 'string') {
       errArr.push('Last name');
-    } if (!emailTest.test(email) || email === undefined) {
+    } if (!emailTest.test(email)
+        || !email
+        || typeof email !== 'string') {
       errArr.push('Email');
-    } if (!passText.test(password) || password === undefined) {
+    } if (!passText.test(password)
+        || !password
+        || typeof password !== 'string') {
       errArr.push('Password');
     }
     if (errArr.length > 1) {
@@ -98,9 +113,9 @@ class Validate {
     const { email, password } = req.body;
     const errArr = [];
     let errMsg;
-    if (!emailTest.test(email) || email === undefined) {
+    if (!emailTest.test(email) || !email) {
       errArr.push('Email');
-    } if (!passText.test(password) || password === undefined) {
+    } if (!passText.test(password) || !password) {
       errArr.push('Password');
     }
     if (errArr.length > 1) {
@@ -261,23 +276,16 @@ class Validate {
   }
 
   static validateAccountTransForm(req, res, next) {
-    const { amount, accountnumber } = req.body;
+    const { amount } = req.body;
     const amountTest = /^([0-9.]+)$/;
-    const accTest = /^([0-9]+)$/;
     const errArr = [];
     let errMsg;
-    if (!amountTest.test(amount) || amount === undefined) {
+    if (!amountTest.test(amount)
+        || !amount
+        || typeof amount !== 'number') {
       errArr.push('Amount');
-    } if (!accTest.test(accountnumber) || accountnumber === undefined) {
-      errArr.push('Account');
     }
-    if (errArr.length > 1) {
-      errMsg = errArr.join(' and ');
-      res.status(403).json({
-        status: 403,
-        message: `${errMsg} fields are empty, missing or values not valid`,
-      });
-    } else if (errArr.length === 1) {
+    if (errArr.length !== 0) {
       errMsg = errArr.join('');
       res.status(403).json({
         status: 403,

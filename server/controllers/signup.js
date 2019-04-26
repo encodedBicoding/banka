@@ -19,10 +19,10 @@ class Signup {
     const token = Auth.generateToken({ email, firstname, isAdmin: false });
     try {
       const user = await Acc.setup('client',
-        email,
+        email.replace(/\s/g, '').toLowerCase(),
         password,
-        firstname,
-        lastname);
+        firstname.replace(/\s/g, '').toLowerCase(),
+        lastname.replace(/\s/g, '').toLowerCase());
       req.body.tokenAuth = token;
       req.user = Auth.verifyToken(token);
       res.status(201).json({
@@ -62,10 +62,10 @@ class Signup {
       });
       try {
         const newStaff = await Acc.setup('staff',
-          email,
+          email.replace(/\s/g, '').toLowerCase(),
           password,
-          firstname,
-          lastname);
+          firstname.replace(/\s/g, '').toLowerCase(),
+          lastname.replace(/\s/g, '').toLowerCase());
         req.body.tokenAuth = token;
         req.user = Auth.verifyToken(token);
         res.status(201).json({
@@ -93,10 +93,10 @@ class Signup {
       });
       try {
         const newAdmin = await Acc.setup('admin',
-          email,
+          email.replace(/\s/g, '').toLowerCase(),
           password,
-          firstname,
-          lastname);
+          firstname.replace(/\s/g, '').toLowerCase(),
+          lastname.replace(/\s/g, '').toLowerCase());
         req.body.tokenAuth = token;
         req.user = Auth.verifyToken(token);
         res.status(201).json({

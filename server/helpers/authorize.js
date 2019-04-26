@@ -122,7 +122,7 @@ class Authorize {
     } else {
       res.status(400).json({
         status: 400,
-        message: 'Not token supplied',
+        message: 'No token supplied',
       });
     }
   }
@@ -157,7 +157,7 @@ class Authorize {
     } else {
       res.status(400).json({
         status: 400,
-        message: 'Not token supplied',
+        message: 'No token supplied',
       });
     }
   }

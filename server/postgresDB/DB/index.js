@@ -29,7 +29,7 @@ class Model {
     const { rows } = await this.pool.query(query, id);
     return rows[0];
   }
-  
+
   async findByIdRA(params, id) {
     const query = `SELECT ${params} FROM ${this.table} WHERE id = $1`;
     const { rows } = await this.pool.query(query, id);
@@ -41,7 +41,7 @@ class Model {
     const { rows } = await this.pool.query(query, accountnumber);
     return rows[0];
   }
-  
+
   async findByAccountNumberRA(params, accountnumber) {
     const query = `SELECT ${params} FROM ${this.table} WHERE accountnumber = $1`;
     const { rows } = await this.pool.query(query, accountnumber);
@@ -59,7 +59,7 @@ class Model {
     const { rows } = await this.pool.query(query, email);
     return rows;
   }
-  
+
   async findByStatus(params, status) {
     const query = `SELECT ${params} FROM ${this.table} WHERE status = $1`;
     const { rows } = await this.pool.query(query, status);

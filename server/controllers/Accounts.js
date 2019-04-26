@@ -115,12 +115,12 @@ class Accounts {
    */
   static async debitAccount(req, res) {
     const { accountNumber } = req.params;
-    const { amount, accountnumber } = req.body;
+    const { amount } = req.body;
     const { email } = req.user;
     try {
       const staff = await staffs.findByEmail('*', [email]);
       const s = `${staff.firstname} ${staff.lastname}`;
-      const account = await accounts.findByAccountNumber('*', [accountnumber]);
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
       if (account.balance >= amount) {
         const debit = {
           balance: account.balance - amount,
@@ -136,11 +136,6 @@ class Accounts {
           status: 200,
           message: 'Account debited successfully',
           data: transaction,
-        });
-      } else if (Number(accountNumber) !== account.accountnumber) {
-        res.status(400).json({
-          status: 400,
-          message: 'Specified account via URL doesn\'t exists',
         });
       } else {
         res.status(400).json({
@@ -164,32 +159,33 @@ class Accounts {
    */
   static async creditAccount(req, res) {
     const { accountNumber } = req.params;
-    const { amount, accountnumber } = req.body;
+    const { amount } = req.body;
     const { email } = req.user;
     try {
       const staff = await staffs.findByEmail('*', [email]);
       const s = `${staff.firstname} ${staff.lastname}`;
-      const account = await accounts.findByAccountNumber('*', [accountnumber]);
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
       const bal = parseFloat(account.balance).toFixed(0);
-      const credit = {
-        balance: Number(bal) + Number(amount),
-        date: new Date().toUTCString(),
-      };
-      const updated = await accounts.updateById(`balance = '${credit.balance}', lastdeposit = '${credit.date}'`, [account.id]);
-      await transactions.createTransactionTable();
-      const transaction = await transactions.insert(
-        'accountnumber, type, cashier, amount, oldbalance, newbalance',
-        [account.accountnumber, 'credit', s, amount, account.balance, updated.balance],
-      );
-      res.status(200).json({
-        status: 200,
-        message: 'Account credited successfully',
-        data: transaction,
-      });
-      if (Number(accountNumber) !== account.accountnumber) {
+      if (amount > 0) {
+        const credit = {
+          balance: Number(bal) + Number(amount),
+          date: new Date().toUTCString(),
+        };
+        const updated = await accounts.updateById(`balance = '${credit.balance}', lastdeposit = '${credit.date}'`, [account.id]);
+        await transactions.createTransactionTable();
+        const transaction = await transactions.insert(
+          'accountnumber, type, cashier, amount, oldbalance, newbalance',
+          [account.accountnumber, 'credit', s, amount, account.balance, updated.balance],
+        );
+        res.status(200).json({
+          status: 200,
+          message: 'Account credited successfully',
+          data: transaction,
+        });
+      } else {
         res.status(400).json({
           status: 400,
-          message: 'Specified account via URL doesn\'t exists',
+          error: 'Cannot credit value equal or less than zero'
         });
       }
     } catch (err) {
