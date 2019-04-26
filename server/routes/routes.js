@@ -103,6 +103,8 @@ const routes = (app) => {
     Validate.checkAdminExistence,
     Signup.addAdmin);
 
+  // Docs
+  router.get('/docs', Index.docs);
   // Api to handle user password reset
   // router.put('/api/v1/client/password_reset',
   //   Validate.validatePasswordResetForm,

@@ -25,6 +25,37 @@ don't want to visit any of our Banka offices? Banka App helps you do all of that
 * Admin/staff can delete a specific user account.
 * Admin can create staff and admin user accounts
 
+# Technologies
+
+* Node js
+* Express
+* Mocha & CHai
+* ESLint
+* Travis CI
+* Code Climate & Coveralls
+* Babel
+* Node pg
+* Heroku
+
+## Installation Requirements
+
+* Node js
+* Git
+
+### Installation code
+run: 
+```Bash
+    $ git clone https://github.com/encodedBicoding/banka.git
+    $ cd banka
+    $ npm install
+    $ npm start
+```
+
+### Tests
+```Bash
+    $npm test
+```
+
 # Pivotal tracker
 Track the building process of Banka on Pivotal tracker via -  [link](https://www.pivotaltracker.com/n/projects/2319930)
 
@@ -33,6 +64,9 @@ Banka is hosted free on Github [link](https://encodedbicoding.github.io/banka/UI
 
 # Heroku Hosted API
 Banka API is currently on version 1 and is hosted on heroku [link](https://dominic-banka.herokuapp.com)
+
+# API Documentation
+Built with Apiaru [link](https://dominic-banka.herokuapp.com/docs)
 
 #### Api Endpoints
 <table>
@@ -100,3 +134,9 @@ Banka API is currently on version 1 and is hosted on heroku [link](https://domin
         <td>/api/v1/staff/:staff_id/uploads</td>
     </tr>
 </table>
+
+#Author
+Dominic isioma
+
+#License
+Licensed for public use [MITLicence](https://opensource.org/licenses/MIT)
