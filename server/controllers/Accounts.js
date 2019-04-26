@@ -20,6 +20,7 @@ class Accounts {
     const { accType, userType } = req.body;
     const { email } = req.user;
     try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
       const user = await users.findByEmail('*', [email]);
       const accountNumber = generateAccountNumber();
       await pool.query(accountTableQuery);
@@ -53,6 +54,7 @@ class Accounts {
     const { accountNumber } = req.params;
     let updated;
     try {
+      // findByAccountNumber takes 2 parameters the query and value, * is to select all key-value pairs
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
       if (account.status === 'active') {
         updated = await accounts.updateStatusById('dormant', `${account.id}`);
@@ -118,6 +120,7 @@ class Accounts {
     const { amount } = req.body;
     const { email } = req.user;
     try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
       const staff = await staffs.findByEmail('*', [email]);
       const s = `${staff.firstname} ${staff.lastname}`;
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
@@ -162,6 +165,7 @@ class Accounts {
     const { amount } = req.body;
     const { email } = req.user;
     try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
       const staff = await staffs.findByEmail('*', [email]);
       const s = `${staff.firstname} ${staff.lastname}`;
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
@@ -206,6 +210,7 @@ class Accounts {
     const { email } = req.user;
     const { emailAddress } = req.params;
     try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
       const user = await users.findByEmail('*', [email && emailAddress]);
       const userAccounts = await accounts.findByOwnerID('*', [user.id]);
       res.status(200).json({
@@ -225,6 +230,7 @@ class Accounts {
   static async getSingleAccountTransactions(req, res) {
     const { accountNumber } = req.params;
     try {
+      // findByAccountNumber takes 2 parameters the query and value, * is to select all key-value pairs
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
       if (account) {
         try {
@@ -257,6 +263,7 @@ class Accounts {
   static async getTransactionById(req, res) {
     const { transactionId } = req.params;
     try {
+      // findByIdRE takes 2 parameters the query and value, * is to select all key-value pairs and return an array
       const transaction = await transactions.findByIdRA('*', [transactionId]);
       if (transaction.length > 0) {
         res.status(200).json({
@@ -281,6 +288,7 @@ class Accounts {
   static async getSpecificAccount(req, res) {
     const { accountNumber } = req.params;
     try {
+      // findByAccountNumber takes 2 parameters the query and value, * is to select all key-value pairs
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
       if (account) {
         res.status(200).json({
@@ -327,6 +335,7 @@ class Accounts {
       }
     } else {
       try {
+        // findByStatus takes 2 parameters the query and value, * is to select all key-value pairs
         const account = await accounts.findByStatus('*', [status]);
         if (account.length > 0) {
           res.status(200).json({
