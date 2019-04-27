@@ -53,20 +53,20 @@ run:
 
 ### Tests
 ```Bash
-    $npm test
+    $ npm test
 ```
 
-# Pivotal tracker
+## Pivotal tracker
 Track the building process of Banka on Pivotal tracker via -  [link](https://www.pivotaltracker.com/n/projects/2319930)
 
-# Github Hosted UI
+## Github Hosted UI
 Banka is hosted free on Github [link](https://encodedbicoding.github.io/banka/UI)
 
-# Heroku Hosted API
+## Heroku Hosted API
 Banka API is currently on version 1 and is hosted on heroku [link](https://dominic-banka.herokuapp.com)
 
-# API Documentation
-Built with Apiaru [link](https://dominic-banka.herokuapp.com/docs)
+## API Documentation
+Built with Apiary [link](https://dominic-banka.herokuapp.com/docs)
 
 #### Api Endpoints
 <table>
@@ -82,7 +82,35 @@ Built with Apiaru [link](https://dominic-banka.herokuapp.com/docs)
         <td>/</td>
         <td>/api/v1/login </td>
         <td> - </td>
-        <td>/api/v1/:user_id/accounts</td>
+        <td>/api/v1/user/:emailAddress/accounts</td>
+    </tr>
+     <tr>
+         <td></td>
+         <td>-</td>
+         <td>-</td>
+         <td>-</td>
+         <td>/api/v1/accounts/:accountNumber/transactions</td>
+        </tr>
+     <tr>
+        <td></td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>/api/v1/accounts/:accountNumber/transactions</td>
+      </tr>
+    <tr>
+         <td></td>
+         <td>-</td>
+         <td>-</td>
+         <td>-</td>
+         <td>/api/v1/accounts/:accountNumber</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>/api/v1/accounts</td>
     </tr>
     <tr>
         <td>POST</td>
@@ -136,7 +164,9 @@ Built with Apiaru [link](https://dominic-banka.herokuapp.com/docs)
 </table>
 
 #Author
+
 Dominic isioma
 
 #License
+
 Licensed for public use [MITLicence](https://opensource.org/licenses/MIT)

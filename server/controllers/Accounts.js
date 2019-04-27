@@ -170,28 +170,21 @@ class Accounts {
       const s = `${staff.firstname} ${staff.lastname}`;
       const account = await accounts.findByAccountNumber('*', [accountNumber]);
       const bal = parseFloat(account.balance).toFixed(0);
-      if (amount > 0) {
-        const credit = {
-          balance: Number(bal) + Number(amount),
-          date: new Date().toUTCString(),
-        };
-        const updated = await accounts.updateById(`balance = '${credit.balance}', lastdeposit = '${credit.date}'`, [account.id]);
-        await transactions.createTransactionTable();
-        const transaction = await transactions.insert(
-          'accountnumber, type, cashier, amount, oldbalance, newbalance',
-          [account.accountnumber, 'credit', s, amount, account.balance, updated.balance],
-        );
-        res.status(200).json({
-          status: 200,
-          message: 'Account credited successfully',
-          data: transaction,
-        });
-      } else {
-        res.status(400).json({
-          status: 400,
-          error: 'Cannot credit value equal or less than zero'
-        });
-      }
+      const credit = {
+        balance: Number(bal) + Number(amount),
+        date: new Date().toUTCString(),
+      };
+      const updated = await accounts.updateById(`balance = '${credit.balance}', lastdeposit = '${credit.date}'`, [account.id]);
+      await transactions.createTransactionTable();
+      const transaction = await transactions.insert(
+        'accountnumber, type, cashier, amount, oldbalance, newbalance',
+        [account.accountnumber, 'credit', s, amount, account.balance, updated.balance],
+      );
+      res.status(200).json({
+        status: 200,
+        message: 'Account credited successfully',
+        data: transaction,
+      });
     } catch (err) {
       res.status(400).json({
         status: 400,
@@ -207,11 +200,10 @@ class Accounts {
    * @returns {object} JSON
    */
   static async getAllAccount(req, res) {
-    const { email } = req.user;
     const { emailAddress } = req.params;
     try {
       // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
-      const user = await users.findByEmail('*', [email && emailAddress]);
+      const user = await users.findByEmail('*', [emailAddress]);
       const userAccounts = await accounts.findByOwnerID('*', [user.id]);
       res.status(200).json({
         status: 200,

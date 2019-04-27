@@ -7,9 +7,8 @@ class Index {
   }
 
   static docs(req, res) {
-    res.redirect('https://bankaapi.docs.apiary.io')
+    res.redirect('https://bankaapi.docs.apiary.io');
   }
 }
 
 export default Index;
-
