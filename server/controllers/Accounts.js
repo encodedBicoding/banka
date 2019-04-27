@@ -1,11 +1,10 @@
-import Database from '../models/Database';
 import generateAccountNumber from '../helpers/generateAccountNumber';
-import Transaction from '../models/Transaction';
-import Account from '../models/Account';
-import Util from '../helpers/util';
+import pool from '../postgresDB/DB/dbConnection';
+import { accountTableQuery } from '../postgresDB/models/createTables';
 
-
-const { users, accounts, staffs } = Database;
+import {
+  users, accounts, staffs, transactions,
+} from '../postgresDB/DB/index';
 
 /**
  * @class Accounts
@@ -17,23 +16,31 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static createAccount(req, res) {
+  static async createAccount(req, res) {
     const { accType, userType } = req.body;
     const { email } = req.user;
-    const user = users.filter(u => u.email === email);
-    const accountNumber = generateAccountNumber();
-    const id = accounts.length + 1;
-    const account = new Account(id,
-      accountNumber, accType, userType,
-      user[0].firstName, user[0].lastName, user[0].email);
-    account.owner = user[0].id;
-    user[0].accounts.push(account);
-    user[0].noOfAccounts += 1;
-    accounts.push(account);
-    res.status(201).json({
-      status: 201,
-      data: account,
-    });
+    try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
+      const user = await users.findByEmail('*', [email]);
+      const accountNumber = generateAccountNumber();
+      await pool.query(accountTableQuery);
+      const account = await accounts.insert(
+        'accountnumber, owner, ownercategory, type',
+        [accountNumber, user.id, userType, accType],
+      );
+      const noOfAccount = user.noofaccounts + 1;
+      await users.updateById(`noofaccounts = ${noOfAccount}`, [user.id]);
+      res.status(201).json({
+        status: 201,
+        message: 'Bank account created successfully',
+        data: account,
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        message: `Error: ${err.message}`,
+      });
+    }
   }
 
   /**
@@ -42,23 +49,32 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static changeStatus(req, res) {
-    const { accountId } = req.params;
-    const account = accounts.filter(acc => acc.id === Number(accountId));
-    if (account.length <= 0) {
-      res.status(404).json({
-        status: 404,
-        message: 'No account found',
-      });
-    } else {
-      if (account[0].status === 'active') {
-        account[0].status = 'dormant';
+
+  static async changeStatus(req, res) {
+    const { accountNumber } = req.params;
+    let updated;
+    try {
+      // findByAccountNumber takes 2 parameters the query and value, * is to select all key-value pairs
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
+      if (account.status === 'active') {
+        updated = await accounts.updateStatusById('dormant', `${account.id}`);
+        res.status(200).json({
+          status: 200,
+          message: `Account status changed to ${updated.status}`,
+          data: updated,
+        });
       } else {
-        account[0].status = 'active';
+        updated = await accounts.updateStatusById('active', `${account.id}`);
+        res.status(200).json({
+          status: 200,
+          message: `Account status changed to ${updated.status}`,
+          data: updated,
+        });
       }
-      res.status(200).json({
-        status: 200,
-        data: account,
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        message: `Error: ${err.message}`,
       });
     }
   }
@@ -69,21 +85,26 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static deleteAccount(req, res) {
-    const { accountId } = req.params;
+  static async deleteAccount(req, res) {
+    const { accountNumber } = req.params;
     const { email } = req.user;
-    const staff = staffs.filter(s => s.email === email && s.isAdmin === true);
-    if (accounts.length <= 0) {
-      res.status(404).json({
-        status: 404,
-        message: 'No account to delete',
-      });
-    } else {
-      accounts.splice(accounts.findIndex(account => account.id === Number(accountId)));
+    try {
+      const staff = await staffs.findByEmail('firstname, lastname', [email]);
+      const accountToDelete = await accounts.findByAccountNumber('*', [accountNumber]);
+      await transactions.deleteByAccountNumber([accountToDelete.accountnumber]);
+      await accounts.deleteById([accountToDelete.id]);
+      const user = await users.findById('*', [accountToDelete.owner]);
+      const subtractNoOfAccount = Number(user.noofaccounts) - 1;
+      await users.updateById(`noofaccounts = '${subtractNoOfAccount}'`, [user.id]);
       res.status(200).json({
         status: 200,
         message: 'Account Successfully Deleted',
-        deletedBy: `${staff[0].firstName} ${staff[0].lastName}`,
+        deletedBy: `${staff.firstname} ${staff.lastname}`,
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        message: `Error: ${err.message}`,
       });
     }
   }
@@ -94,31 +115,41 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static debitAccount(req, res) {
-    const { accountId } = req.params;
-    const { amount, accId } = req.body;
+  static async debitAccount(req, res) {
+    const { accountNumber } = req.params;
+    const { amount } = req.body;
     const { email } = req.user;
-    const staff = staffs.filter(s => s.email === email && s.type === 'staff');
-    const s = `${staff[0].firstName} ${staff[0].lastName}`;
-    const account = accounts.filter(acc => acc.id === Number(accountId));
-    if (account.length <= 0) {
-      res.status(404).json({
-        status: 404,
-        message: 'Account ID not found',
-      });
-    } else if (account[0].id === Number(accountId)
-            && account[0].accountNumber === Number(accId)
-            && account[0].balance >= amount) {
-      const transaction = new Transaction(s, account[0].accountNumber, amount);
-      transaction.debitAccount(account[0].accountNumber);
-      res.status(200).json({
-        status: 200,
-        message: transaction.printTransaction(),
-      });
-    } else {
-      res.status(401).json({
-        status: 401,
-        message: 'Insufficient Funds',
+    try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
+      const staff = await staffs.findByEmail('*', [email]);
+      const s = `${staff.firstname} ${staff.lastname}`;
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
+      if (account.balance >= amount) {
+        const debit = {
+          balance: account.balance - amount,
+          date: new Date().toUTCString(),
+        };
+        const updated = await accounts.updateById(`balance = '${debit.balance}', lastwithdrawal = '${debit.date}'`, [account.id]);
+        await transactions.createTransactionTable();
+        const transaction = await transactions.insert(
+          'accountnumber, type, cashier, amount, oldbalance, newbalance',
+          [account.accountnumber, 'debit', s, amount, account.balance, updated.balance],
+        );
+        res.status(200).json({
+          status: 200,
+          message: 'Account debited successfully',
+          data: transaction,
+        });
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'Insufficient Funds',
+        });
+      }
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        message: 'Specified account number doesn\'t exists',
       });
     }
   }
@@ -129,30 +160,35 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static creditAccount(req, res) {
-    const { accountId } = req.params;
-    const { amount, accId } = req.body;
+  static async creditAccount(req, res) {
+    const { accountNumber } = req.params;
+    const { amount } = req.body;
     const { email } = req.user;
-    const staff = staffs.filter(s => s.email === email && s.type === 'staff');
-    const s = `${staff[0].firstName} ${staff[0].lastName}`;
-    const account = accounts.filter(acc => acc.id === Number(accountId));
-    if (account.length <= 0) {
-      res.status(404).json({
-        status: 404,
-        message: 'Account ID not found',
-      });
-    } else if (account[0].id === Number(accountId)
-          && account[0].accountNumber === Number(accId)) {
-      const transaction = new Transaction(s, account[0].accountNumber, Number(amount));
-      transaction.creditAccount(account[0].accountNumber);
+    try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
+      const staff = await staffs.findByEmail('*', [email]);
+      const s = `${staff.firstname} ${staff.lastname}`;
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
+      const bal = parseFloat(account.balance).toFixed(0);
+      const credit = {
+        balance: Number(bal) + Number(amount),
+        date: new Date().toUTCString(),
+      };
+      const updated = await accounts.updateById(`balance = '${credit.balance}', lastdeposit = '${credit.date}'`, [account.id]);
+      await transactions.createTransactionTable();
+      const transaction = await transactions.insert(
+        'accountnumber, type, cashier, amount, oldbalance, newbalance',
+        [account.accountnumber, 'credit', s, amount, account.balance, updated.balance],
+      );
       res.status(200).json({
         status: 200,
-        message: transaction.printTransaction(),
+        message: 'Account credited successfully',
+        data: transaction,
       });
-    } else {
-      res.status(404).json({
-        status: 404,
-        message: 'Invalid account number',
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        message: `${err.message}`,
       });
     }
   }
@@ -163,65 +199,196 @@ class Accounts {
    * @param res express response object
    * @returns {object} JSON
    */
-  static getAllAccount(req, res) {
-    const { email } = req.user;
-    const user = users.filter(client => client.email === email && client.type === 'client');
-    const acc = user[0].accounts;
-    res.status(200).json({
-      status: 200,
-      data: acc,
-    });
-  }
-
-  static getSingleAccountTransactions(req, res) {
-    const { accountId } = req.params;
-    const account = accounts.filter(acc => acc.accountNumber === Number(accountId));
-    if (account.length <= 0) {
-      res.status(404).json({
-        status: 404,
-        message: 'Account number not found',
-      });
-    } else {
-      const { transactions } = account[0];
+  static async getAllAccount(req, res) {
+    const { emailAddress } = req.params;
+    try {
+      // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
+      const user = await users.findByEmail('*', [emailAddress]);
+      const userAccounts = await accounts.findByOwnerID('*', [user.id]);
       res.status(200).json({
         status: 200,
-        data: transactions,
+        message: 'Success',
+        data: userAccounts,
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        serverMessage: `Error: ${err.message}`,
+        message: 'Ensure the email on request.params matches that of user in token',
       });
     }
   }
 
-  static resetPassword(req, res) {
-    const { newPassword, oldPassword } = req.body;
-    const { email } = req.user;
-    const user = users.filter(u => u.email === email);
-    if (user.length <= 0) {
-      const staff = staffs.filter(s => s.email === email);
-      if (Util.validatePassword(oldPassword, staff[0].password)) {
-        staff[0].password = Util.hashPassword(newPassword);
-        res.status(200).json({
-          status: 200,
-          message: 'password changed successfully',
-        });
+  static async getSingleAccountTransactions(req, res) {
+    const { accountNumber } = req.params;
+    try {
+      // findByAccountNumber takes 2 parameters the query and value, * is to select all key-value pairs
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
+      if (account) {
+        try {
+          const transaction = await transactions.findByAccountNumberRA('*', [account.accountnumber]);
+          res.status(200).json({
+            status: 200,
+            message: 'success',
+            data: transaction,
+          });
+        } catch (err) {
+          res.status(400).json({
+            status: 400,
+            message: `Error: ${err.message}`,
+          });
+        }
       } else {
-        res.status(404).json({
-          status: 404,
-          message: 'passwords do not match',
+        res.status(400).json({
+          status: 400,
+          message: 'Account number not found',
         });
       }
-    } else if (user.length > 0) {
-      if (Util.validatePassword(oldPassword, user[0].password)) {
-        user[0].password = Util.hashPassword(newPassword);
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        message: `Error: ${err.message}`,
+      });
+    }
+  }
+
+  static async getTransactionById(req, res) {
+    const { transactionId } = req.params;
+    try {
+      // findByIdRE takes 2 parameters the query and value, * is to select all key-value pairs and return an array
+      const transaction = await transactions.findByIdRA('*', [transactionId]);
+      if (transaction.length > 0) {
         res.status(200).json({
           status: 200,
-          message: 'password changed successfully',
+          message: 'success',
+          data: transaction,
         });
       } else {
-        res.status(404).json({
-          status: 404,
-          message: 'passwords do not match',
+        res.status(400).json({
+          status: 400,
+          message: 'no transactions found for this ID',
+        });
+      }
+    } catch (err) {
+      res.status(404).json({
+        status: err.statusCode,
+        message: `Error: ${err.message}`,
+      });
+    }
+  }
+
+  static async getSpecificAccount(req, res) {
+    const { accountNumber } = req.params;
+    try {
+      // findByAccountNumber takes 2 parameters the query and value, * is to select all key-value pairs
+      const account = await accounts.findByAccountNumber('*', [accountNumber]);
+      if (account) {
+        res.status(200).json({
+          status: 200,
+          message: 'Successful',
+          data: [account],
+        });
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'Account number doesn\'t exist',
+        });
+      }
+    } catch (err) {
+      res.status(400).json({
+        status: 400,
+        error: `Error: ${err.message}`,
+      });
+    }
+  }
+
+  static async getAccounts(req, res) {
+    const { status } = req.query;
+    if (!status) {
+      try {
+        const account = await accounts.findMany();
+        if (account.length > 0) {
+          res.status(200).json({
+            status: 200,
+            message: 'success',
+            data: account,
+          });
+        } else {
+          res.status(404).json({
+            status: 404,
+            message: 'no registered accounts',
+          });
+        }
+      } catch (err) {
+        res.status(400).json({
+          status: 400,
+          message: `Error: ${err.message}`,
+        });
+      }
+    } else {
+      try {
+        // findByStatus takes 2 parameters the query and value, * is to select all key-value pairs
+        const account = await accounts.findByStatus('*', [status]);
+        if (account.length > 0) {
+          res.status(200).json({
+            status: 200,
+            message: `Fetched all ${status} accounts`,
+            data: account,
+          });
+        } else {
+          res.status(400).json({
+            status: 400,
+            message: `No ${status} accounts found`,
+          });
+        }
+      } catch (err) {
+        res.status(400).json({
+          status: 400,
+          error: `Error:  ${err.message}`,
         });
       }
     }
   }
+
+  // static resetPassword(req, res) {
+  //   const { newPassword, oldPassword } = req.body;
+  //   const { email } = req.user;
+  //   try {
+  //     const user = users.filter(u => u.email === email);
+  //     if (user.length <= 0) {
+  //       const staff = staffs.filter(s => s.email === email);
+  //       if (Util.validatePassword(oldPassword, staff[0].password)) {
+  //         staff[0].password = Util.hashPassword(newPassword);
+  //         res.status(200).json({
+  //           status: 200,
+  //           message: 'password changed successfully',
+  //         });
+  //       } else {
+  //         res.status(404).json({
+  //           status: 404,
+  //           message: 'passwords do not match',
+  //         });
+  //       }
+  //     } else if (user.length > 0) {
+  //       if (Util.validatePassword(oldPassword, user[0].password)) {
+  //         user[0].password = Util.hashPassword(newPassword);
+  //         res.status(200).json({
+  //           status: 200,
+  //           message: 'password changed successfully',
+  //         });
+  //       } else {
+  //         res.status(404).json({
+  //           status: 404,
+  //           message: 'passwords do not match',
+  //         });
+  //       }
+  //     }
+  //   } catch (err) {
+  //     res.status(400).json({
+  //       status: 400,
+  //       message: 'Error: credentials not in database',
+  //     });
+  //   }
+  // }
 }
 export default Accounts;

@@ -33,25 +33,3 @@ describe('Handle incoming requests', function () {
     });
   });
 });
-describe('Handle user login details', function () {
-  it('it should fail and return error 404 if user details are not found in database', function (done) {
-    _chai["default"].request(_app["default"]).post('/api/v1/auth/login').send({
-      email: 'taichi@gmail.com',
-      password: '23ewdfdfd'
-    }).end(function (err, res) {
-      expect(res).to.have.status(404);
-      expect(res.body.message).to.equal('email or password not found');
-      done();
-    });
-  });
-  it('it should fail and return error 404 if staff details are not found in database', function (done) {
-    _chai["default"].request(_app["default"]).post('/api/v1/auth/admin/login').send({
-      email: 'taichi@gmail.com',
-      password: '23ewdfdfd'
-    }).end(function (err, res) {
-      expect(res).to.have.status(404);
-      expect(res.body.message).to.equal('email or password not found');
-      done();
-    });
-  });
-});

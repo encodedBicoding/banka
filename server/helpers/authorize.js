@@ -12,20 +12,30 @@ class Authorize {
   static authenticateUser(req, res, next) {
     let token = req.body.tokenAuth
       || req.headers.authorization
-      || req.headers['x-access-token'];
-    if (token.startsWith('Bearer ')) {
-      token = token.slice(7, token.length);
-    }
+      || req.headers['x-access-token']
+      || req.query.token;
     if (token) {
+      if (token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length);
+      }
       const payload = Auth.verifyToken(token);
-      if (!payload.email && payload.isAdmin !== false) {
+      if (payload) {
+        if (!payload.email
+            && payload.isAdmin !== false
+            && payload.isAdmin !== 'false') {
+          res.status(401).json({
+            status: 401,
+            message: 'Not Authorized',
+          });
+        } else {
+          req.user = payload;
+          next();
+        }
+      } else {
         res.status(401).json({
           status: 401,
           message: 'Not Authorized',
         });
-      } else {
-        req.user = payload;
-        next();
       }
     } else {
       res.status(400).json({
@@ -45,21 +55,29 @@ class Authorize {
   static authenticateStaff(req, res, next) {
     let token = req.body.tokenAuth
       || req.headers.authorization
-      || req.headers['x-access-token'];
-    if (token.startsWith('Bearer ')) {
-      token = token.slice(7, token.length);
-    }
+      || req.headers['x-access-token']
+      || req.query.token;
     if (token) {
+      if (token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length);
+      }
       const payload = Auth.verifyToken(token);
-      const { isAdmin } = payload;
-      if (isAdmin !== true) {
+      if (payload) {
+        const { type } = payload;
+        if (type !== 'staff') {
+          res.status(401).json({
+            status: 401,
+            message: 'Not authorized',
+          });
+        } else {
+          req.user = payload;
+          next();
+        }
+      } else {
         res.status(401).json({
           status: 401,
           message: 'Not authorized',
         });
-      } else {
-        req.user = payload;
-        next();
       }
     } else {
       res.status(400).json({
@@ -79,26 +97,72 @@ class Authorize {
   static authenticateAdmin(req, res, next) {
     let token = req.body.tokenAuth
       || req.headers.authorization
-      || req.headers['x-access-token'];
-    if (token.startsWith('Bearer ')) {
-      token = token.slice(7, token.length);
-    }
+      || req.headers['x-access-token']
+      || req.query.token;
     if (token) {
+      if (token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length);
+      }
       const payload = Auth.verifyToken(token);
-      const { isAdmin, type } = payload;
-      if (isAdmin !== true && type !== 'admin') {
+      if (payload) {
+        const { isAdmin, type } = payload;
+        if (isAdmin !== true
+            && type !== 'admin'
+            && isAdmin !== 'true') {
+          res.status(401).json({
+            status: 401,
+            message: 'Not authorized',
+          });
+        } else {
+          req.user = payload;
+          next();
+        }
+      } else {
         res.status(401).json({
           status: 401,
           message: 'Not authorized',
         });
-      } else {
-        req.user = payload;
-        next();
       }
     } else {
       res.status(400).json({
         status: 400,
-        message: 'Not token supplied',
+        message: 'No token supplied',
+      });
+    }
+  }
+
+  static authenticateBothAdminAndStaff(req, res, next) {
+    let token = req.body.tokenAuth
+      || req.headers.authorization
+      || req.headers['x-access-token']
+      || req.query.token;
+    if (token) {
+      if (token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length);
+      }
+      const payload = Auth.verifyToken(token);
+      if (payload) {
+        const { isAdmin } = payload;
+        if (isAdmin !== true
+          && isAdmin !== 'true') {
+          res.status(401).json({
+            status: 401,
+            message: 'Not authorized',
+          });
+        } else {
+          req.user = payload;
+          next();
+        }
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'Not token supplied',
+        });
+      }
+    } else {
+      res.status(400).json({
+        status: 400,
+        message: 'No token supplied',
       });
     }
   }
