@@ -1,11 +1,14 @@
 import jwt from 'jsonwebtoken';
+import { config } from 'dotenv';
+
+config();
 
 
-const secretKey = 'catsanddogs';
+const secretKey = process.env.SECRET_KEY;
 
 class Auth {
   static generateToken(payload) {
-    return jwt.sign(payload, secretKey, { expiresIn: '1week' });
+    return jwt.sign(payload, secretKey, { expiresIn: '24h' });
   }
 
   static verifyToken(token) {

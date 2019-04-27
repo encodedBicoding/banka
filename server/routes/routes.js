@@ -1,10 +1,10 @@
 import express from 'express';
-import ValidateUser from '../config/validateUser';
+import Signup from '../controllers/signup';
 import Login from '../controllers/login';
 import Index from '../controllers/index';
 import Accounts from '../controllers/Accounts';
 import Validate from '../helpers/validate';
-import Profile from '../helpers/profile';
+import Authorize from '../helpers/authorize';
 
 
 const router = express.Router();
@@ -12,70 +12,110 @@ const router = express.Router();
 
 const routes = (app) => {
   router.get('/', Index.home);
+
   // User Login Routes
   router.get('/api/v1/login', Login.index);
   router.post('/api/v1/auth/login',
-    ValidateUser.validateLogin,
-    Login.login);
-  // Admin Login routes
+    Validate.validateLoginForm,
+    Validate.validateLogin,
+    Login.clientLogin);
+
+  // Admin/Cashier Login routes
   router.post('/api/v1/auth/admin/login',
-    ValidateUser.validateAdminLogin,
-    Login.adminLogin);
+    Validate.validateLoginForm,
+    Validate.validateAdminLogin,
+    Login.staffLogin);
+
+
   // Signup routes
   router.post('/api/v1/auth/signup',
-    ValidateUser.signupInputField,
-    ValidateUser.checkUserExists,
-    ValidateUser.addToDatabase);
+    Validate.validateSignupField,
+    Validate.checkUserExistence,
+    Signup.addToDatabase);
 
   // Accounts routes
   // Client create account
   router.post('/api/v1/accounts',
-    Validate.authenticateUser,
+    Validate.validateAccountForm,
+    Authorize.authenticateUser,
     Accounts.createAccount);
-  // Client get single account transaction
+
+  // Client get single account transactions
+  router.get('/api/v1/accounts/:accountNumber/transactions',
+    Authorize.authenticateUser,
+    Validate.validateAccountNumber,
+    Validate.userViewAccountNumber,
+    Accounts.getSingleAccountTransactions);
+  // Client get all transactions by id
+  router.get('/api/v1/transactions/:transactionId',
+    Authorize.authenticateUser,
+    Validate.validateTransactionID,
+    Validate.userViewTransactionID,
+    Accounts.getTransactionById);
+
+  // Admin/Staff get all account transaction
+  router.get('/api/v1/user/:emailAddress/accounts',
+    Authorize.authenticateBothAdminAndStaff,
+    Validate.validateEmailAddress,
+    Accounts.getAllAccount);
+
+  // Admin/Staff get specific account
+  router.get('/api/v1/accounts/:accountNumber',
+    Authorize.authenticateBothAdminAndStaff,
+    Validate.validateAccountNumber,
+    Accounts.getSpecificAccount);
+
+  // Admin/Staff get all accounts in the platform
   router.get('/api/v1/accounts',
-    Validate.authenticateUser,
-    Accounts.getSingleAccount);
-  // Only Admin / Staff can activate or deactivate account
-  router.patch('/api/v1/account/:accountId',
-    Validate.authenticateStaff,
+    Authorize.authenticateBothAdminAndStaff,
+    Validate.validateStatus,
+    Accounts.getAccounts);
+  // Admin / Staff can activate or deactivate account
+  router.patch('/api/v1/accounts/:accountNumber',
+    Authorize.authenticateBothAdminAndStaff,
+    Validate.validateAccountNumber,
     Accounts.changeStatus);
-  // Only Admin / staff can delete user account
-  router.delete('/api/v1/account/:accountId',
-    Validate.authenticateStaff,
+
+  // Admin / staff can delete user account
+  router.delete('/api/v1/accounts/:accountNumber',
+    Authorize.authenticateBothAdminAndStaff,
+    Validate.validateAccountNumber,
     Accounts.deleteAccount);
+
   // Only Staff can debit an account
-  router.post('/api/v1/transactions/:accountId/debit',
-    Validate.authenticateStaff,
+  router.post('/api/v1/transactions/:accountNumber/debit',
+    Validate.validateAccountTransForm,
+    Authorize.authenticateStaff,
+    Validate.validateAccountNumber,
     Accounts.debitAccount);
+
   // Only Staff can credit an account
-  router.post('/api/v1/transactions/:accountId/credit',
-    Validate.authenticateStaff,
+  router.post('/api/v1/transactions/:accountNumber/credit',
+    Validate.validateAccountTransForm,
+    Authorize.authenticateStaff,
+    Validate.validateAccountNumber,
     Accounts.creditAccount);
+
   // Only Admin can create staff account
-  router.post('/api/v1/:staffId/create',
-    Validate.validateAdmin,
-    Validate.authenticateAdmin,
-    ValidateUser.addAdmin);
-  // Api to allow client upload image
-  router.post('/api/v1/client/uploads',
-    Validate.authenticateUser,
-    Profile.imageUpload);
-  // Api to allow staff upload image
-  router.post('/api/v1/staff/:staffId/uploads',
-    Validate.validateStaff,
-    Validate.authenticateStaff,
-    Profile.imageUpload);
+  router.post('/api/v1/admin/create',
+    Validate.validateAdminSignupField,
+    Authorize.authenticateAdmin,
+    Validate.checkAdminExistence,
+    Signup.addAdmin);
 
+  // Docs
+  router.get('/docs', Index.docs);
   // Api to handle user password reset
-  router.put('/api/v1/client/password_reset',
-    Validate.authenticateUser,
-    Accounts.resetPassword);
-  // Api to handle staff password reset
+  // router.put('/api/v1/client/password_reset',
+  //   Validate.validatePasswordResetForm,
+  //   Authorize.authenticateUser,
+  //   Accounts.resetPassword);
 
-  router.put('/api/v1/staff/password_reset',
-    Validate.authenticateStaff,
-    Accounts.resetPassword);
+  // Api to handle staff password reset
+  // router.put('/api/v1/staff/password_reset',
+  //   Validate.validatePasswordResetForm,
+  //   Authorize.authenticateStaff,
+  //   Accounts.resetPassword);
 
 
   router.use((req, res) => {

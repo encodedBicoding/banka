@@ -5,11 +5,13 @@
   "main": "./server/app.js",
   "scripts": {
     "lint": "eslint ./server --fix",
-    "start": "babel-node ./server/app.js",
-    "build": "babel server -d server/",
+    "start": "node  server/build/app.js",
+    "build": "babel server -d server/build",
     "start-dev": "nodemon --exec babel-node server/app.js",
     "test": "nyc mocha -r @babel/polyfill -r @babel/core -r @babel/register ./server/test/*.spec.js --timeout 10000 --exit",
-    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test && nyc report --reporter=text-lcov | coveralls",
+    "heroku-postbuild": "npm run build && npm run migrate-db",
+    "migrate-db": "babel-node server/postgresDB/heroku-migrate.js"
   },
   "repository": {
     "type": "git",
@@ -46,12 +48,14 @@
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
+    "debug": "^4.1.1",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
-    "multer": "^1.4.1"
+    "multer": "^1.4.1",
+    "pg": "^7.10.0"
   },
   "engines": {
     "node": "10.3.0"

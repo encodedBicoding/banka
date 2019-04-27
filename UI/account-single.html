@@ -6,7 +6,6 @@
         <meta name="description" content="banka app for online banking"/>
         <meta name="keywords" content="pay bills, create bank account, view bank transactions"/>
         <meta name="author" content="Dominic Isioma"/>
-        <meta http-equiv="X-UA-compactible" content="IE=edge"/>
         <!--Font-Awesome styles-->
         <link type="text/css" rel="stylesheet" href="./public/font-awesome/css/font-awesome.min.css"/>
         <!--Main stylesheet-->
@@ -29,8 +28,8 @@
              <div id="profile_img">
                  <img src="./public/images/user.jpg" alt="user_profile" id="user_dp"/>
                  <form method="POST" enctype="multipart/form-data">
-                     <img src="./public/images/tiny_camera.png" onclick="document.getElementById('user_img').click()" id="t_c" title="upload image"/>
-                     <input type='file' id="user_img" style="display:none" name="user_img">
+                     <img src="./public/images/tiny_camera.png" alt="user image upload" id="t_c" title="upload image"/>
+                     <input type='file' id="user_img" name="user_img">
                  </form>
                  <button id="toggle_nav">
                     <span class="fa fa-bars" id="xx"></span>
@@ -39,11 +38,11 @@
              <div id="user_nav">
                  <nav>
                      <ul>
-                         <li onclick="document.getElementById('n_a').click()"><a href="./accounts.html" id="n_a">All User Accounts</a></li>
-                         <li onclick="document.getElementById('v_a').click()"><a href="./create.html" id="v_a">Create Admin/Staff</a></li>
-                         <li onclick="document.getElementById('a_s').click()"><a href="./myadmins.html" id="a_s">Admin/Staff Accounts</a></li>
-                         <li onclick="document.getElementById('settings').click()"><a href="./admin-settings.html" id="settings">Settings</a></li>
-                         <li onclick="document.getElementById('logout').click()"><a href="#" id="logout">Log out</a></li>
+                         <li id="list_click1" class="active"><a href="./accounts.html" id="one">All User Accounts</a></li>
+                         <li id="list_click2"><a href="./create.html" id="two">Create Admin/Staff</a></li>
+                         <li id="list_click3"><a href="./myadmins.html" id="three">Admin/Staff Accounts</a></li>
+                         <li id="list_click4"><a href="./admin-settings.html" id="four">Settings</a></li>
+                         <li id="list_click5"><a href="#" id="five">Log out</a></li>
                      </ul>
                  </nav>
             </div>

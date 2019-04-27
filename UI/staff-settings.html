@@ -6,7 +6,6 @@
         <meta name="description" content="banka app for online banking"/>
         <meta name="keywords" content="pay bills, create bank account, view bank transactions"/>
         <meta name="author" content="Dominic Isioma"/>
-        <meta http-equiv="X-UA-compactible" content="IE=edge"/>
         <!--Font-Awesome styles-->
         <link type="text/css" rel="stylesheet" href="./public/font-awesome/css/font-awesome.min.css"/>
         <!--Main stylesheet-->
@@ -17,7 +16,9 @@
         <header id="admin_dashboard_h">
             <div class="container">
                  <div id="admin_brand">
-                    <h2>Staf<span>f</span></h2>
+                     <h2>Bank<span>a</span>
+                         <span id="slogan">Staff</span>
+                     </h2>
                 </div>
             </div>
         </header>
@@ -26,21 +27,21 @@
              <div id="profile_img">
                  <img src="./public/images/user.jpg" alt="user_profile" id="user_dp"/>
                  <form method="POST" enctype="multipart/form-data">
-                     <img src="./public/images/tiny_camera.png" onclick="document.getElementById('user_img').click()" id="t_c" title="upload image"/>
-                     <input type='file' id="user_img" style="display:none" name="user_img">
+                     <img src="./public/images/tiny_camera.png" alt="user image upload" id="t_c" title="upload image"/>
+                     <input type='file' id="user_img" name="user_img">
                  </form>
                  <button id="toggle_nav">
                     <span class="fa fa-bars" id="xx"></span>
                  </button>
              </div> 
              <div id="user_nav">
-                <nav>
+                 <nav>
                      <ul>
-                         <li onclick="document.getElementById('n_a').click()"><a href="./staff_accounts.html" id="n_a">All User Accounts</a></li>
-                         <li onclick="document.getElementById('v_a').click()"><a href="./credit.html" id="v_a">Credit User</a></li>
-                         <li onclick="document.getElementById('d_a').click()"><a href="./debit.html" id="d_a">Debit User</a></li>
-                         <li onclick="document.getElementById('settings').click()"><a href="staff-settings.html" id="settings">Settings</a></li>
-                         <li onclick="document.getElementById('logout').click()"><a href="#" id="logout">Log out</a></li>
+                         <li id="list_click1"><a href="./staff_accounts.html" id="one">All User Accounts</a></li>
+                         <li id="list_click2"><a href="./credit.html" id="two">Credit User</a></li>
+                         <li id="list_click3"><a href="./debit.html" id="three">Debit User</a></li>
+                         <li id="list_click4" class="active"><a href="./staff-settings.html" id="four">Settings</a></li>
+                         <li id="list_click5"><a href="#" id="five">Log out</a></li>
                      </ul>
                  </nav>
             </div>
@@ -48,18 +49,11 @@
         </section>
         <section id="profile_body">
             <div class="container">
-                <div id="search">
-                    <form method="GET" action="search.html">
-                        <label for="s">Search Account ID</label>
-                        <input type="text" id="s" name="s" placeholder="Account ID" required/>
-                        <button>Search</button>
-                    </form>
-                </div>
                 <div id="pages">
                     <div id="a_body">
                         <h2><span>Staff </span>Change Password</h2>
                          <div id="settings">
-                        <form method="#" action="#" id="reset_p">
+                        <form method="POST" action="#" id="reset_p">
                             <label for="old_password">Old Password: </label>
                             <input type="password" name="old_password" id="old_password" required/>
                             <label for="new_password">New Password: </label>
