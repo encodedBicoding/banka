@@ -19,8 +19,10 @@ class Authorize {
         token = token.slice(7, token.length);
       }
       const payload = Auth.verifyToken(token);
-      if (payload !== undefined && payload !== false) {
-        if (!payload.email && payload.isAdmin !== false) {
+      if (payload) {
+        if (!payload.email
+            && payload.isAdmin !== false
+            && payload.isAdmin !== 'false') {
           res.status(401).json({
             status: 401,
             message: 'Not Authorized',
@@ -102,9 +104,11 @@ class Authorize {
         token = token.slice(7, token.length);
       }
       const payload = Auth.verifyToken(token);
-      if (payload !== undefined && payload !== false) {
+      if (payload) {
         const { isAdmin, type } = payload;
-        if (isAdmin !== true && type !== 'admin') {
+        if (isAdmin !== true
+            && type !== 'admin'
+            && isAdmin !== 'true') {
           res.status(401).json({
             status: 401,
             message: 'Not authorized',
@@ -137,9 +141,10 @@ class Authorize {
         token = token.slice(7, token.length);
       }
       const payload = Auth.verifyToken(token);
-      if (payload !== undefined && payload !== false) {
+      if (payload) {
         const { isAdmin } = payload;
-        if (isAdmin !== true) {
+        if (isAdmin !== true
+          && isAdmin !== 'true') {
           res.status(401).json({
             status: 401,
             message: 'Not authorized',

@@ -285,11 +285,17 @@ class Validate {
         || typeof amount !== 'number') {
       errArr.push('Amount');
     }
+
     if (errArr.length !== 0) {
       errMsg = errArr.join('');
       res.status(403).json({
         status: 403,
         message: `${errMsg} field is empty, missing or values not valid`,
+      });
+    } else if (amount < 500) {
+      res.status(400).json({
+        status: 400,
+        message: 'credit amount must be greater than 500',
       });
     } else {
       next();
@@ -301,9 +307,9 @@ class Validate {
     const errArr = [];
     let errMsg;
     const valueTest = /[a-zA-Z0-9\w!@#$%^&*()_+|]{8,20}$/;
-    if (!valueTest.test(oldPassword) || oldPassword === undefined) {
+    if (!valueTest.test(oldPassword) || !oldPassword) {
       errArr.push('Old Password');
-    } if (!valueTest.test(newPassword) || newPassword === undefined) {
+    } if (!valueTest.test(newPassword) || !newPassword) {
       errArr.push('New Password');
     }
     if (errArr.length > 1) {
