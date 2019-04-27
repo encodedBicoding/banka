@@ -15,7 +15,7 @@ const start = () => {
   };
   // Function to set location
   const setLocation = (location) => {
-    window.location.href = `http://localhost:63342/banka/UI/${location}.html`;
+    window.location.href = `http://encodedBicoding.github.io/banka/UI/${location}.html`;
   };
 
 
