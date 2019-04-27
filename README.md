@@ -163,10 +163,10 @@ Built with Apiary [link](https://dominic-banka.herokuapp.com/docs)
     </tr>
 </table>
 
-#Author
+# Author
 
 Dominic isioma
 
-#License
+# License
 
 Licensed for public use [MITLicence](https://opensource.org/licenses/MIT)
