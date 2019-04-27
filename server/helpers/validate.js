@@ -282,20 +282,21 @@ class Validate {
     let errMsg;
     if (!amountTest.test(amount)
         || !amount
-        || typeof amount !== 'number') {
+        || typeof amount !== 'number'
+        || amount <= 0) {
       errArr.push('Amount');
     }
-
-    if (errArr.length !== 0) {
+    if (amount <= 0) {
+      errMsg = errArr.join('');
+      res.status(400).json({
+        status: 400,
+        message: `${errMsg} must be greater than zero`,
+      });
+    } else if (errArr.length === 1) {
       errMsg = errArr.join('');
       res.status(403).json({
         status: 403,
-        message: `${errMsg} field is empty, missing or values not valid`,
-      });
-    } else if (amount < 500) {
-      res.status(400).json({
-        status: 400,
-        message: 'credit amount must be greater than 500',
+        message: `${errMsg} field is missing, empty or values not valid`,
       });
     } else {
       next();

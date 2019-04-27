@@ -613,7 +613,7 @@ describe('Handle staff ability to debit a user account', () => {
       .post(`/api/v1/transactions/${accNumber}/debit`)
       .set('authorization', `Bearer ${staffToken}`)
       .send({
-      
+
       })
       .end((err, res) => {
         expect(res).to.have.status(403);
@@ -689,12 +689,28 @@ describe('Handle staff ability to credit user account', () => {
         done();
       });
   });
+  it('should fail and return status 400 if amount is less than or equal to zero', (done) => {
+    chai.request(app)
+      .post(`/api/v1/transactions/${accNumber}/credit`)
+      .set('authorization', `Bearer ${staffToken}`)
+      .send({
+        amount: -2000.89,
+      })
+      .end((err, res) => {
+        console.log(res.body);
+        expect(res).to.have.status(400);
+        expect(res.body.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
   it('should fail and return status 403 if all fields are not filled', (done) => {
     chai.request(app)
       .post(`/api/v1/transactions/${accNumber}/credit`)
       .set('authorization', `Bearer ${staffToken}`)
       .send({
-      
+
       })
       .end((err, res) => {
         expect(res).to.have.status(403);
