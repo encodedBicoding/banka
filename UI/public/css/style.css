@@ -52,6 +52,18 @@ a{
     position: relative;
 }
 
+#formError {
+    width: initial;
+    background-color: darkred;
+    text-align: center;
+    font-size: 50%;
+    padding: 3%;
+    border-radius: 2px;
+    color: #f4f4f4;
+    display: none;
+
+}
+
 /*Header*/
 header{
     background-color: #f4f4f4;
