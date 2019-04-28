@@ -15,7 +15,7 @@ const start = () => {
   };
   // Function to set location
   const setLocation = (location) => {
-    window.location.href = `https://encodedbicoding.github.io/banka/UI/${location}.html`;
+    window.location.href = `https://encodedBicoding.github.io/banka/UI/${location}.html`;
   };
   const Welcome = (obj) => {
     const welcome = document.querySelector('#welcome');
