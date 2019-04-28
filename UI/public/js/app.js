@@ -15,7 +15,7 @@ const start = () => {
   };
   // Function to set location
   const setLocation = (location) => {
-    window.location.href = `http://encodedBicoding.github.io/banka/UI/${location}.html`;
+    window.location.href = `https://encodedBicoding.github.io/banka/UI/${location}.html`;
   };
 
 
@@ -119,7 +119,7 @@ const start = () => {
         accType: document.querySelector('#acc_type').value,
         userType,
       };
-      const api = 'http://dominic-banka.herokuapp.com/api/v1/accounts';
+      const api = 'https://dominic-banka.herokuapp.com/api/v1/accounts';
       fetch(api, {
         method: 'POST',
         headers: {
