@@ -1,4 +1,9 @@
 const start = () => {
+  let userLocation = window.location.href.split('/');
+  // eslint-disable-next-line prefer-destructuring
+  userLocation = userLocation[userLocation.length - 1].split('.')[0];
+
+
   // Function to show error message on signup and login
   const showError = (msg) => {
     const formError = document.querySelector('#formError');
@@ -25,25 +30,53 @@ const start = () => {
   function Logout() {
     const logout = document.querySelector('.logout');
     logout.addEventListener('click', () => {
-      window.sessionStorage.clear();
-      setLocation('login');
+      const type = window.sessionStorage.user_type;
+      switch (type) {
+        case 'admin':
+          setLocation('admin_login');
+          window.sessionStorage.clear();
+          break;
+        case 'staff':
+          setLocation('staff_login');
+          window.sessionStorage.clear();
+          break;
+        case '':
+          setLocation('login');
+          window.sessionStorage.clear();
+          break;
+        default:
+          setLocation('login');
+          window.sessionStorage.clear();
+          break;
+      }
     });
   }
-  let userLocation = window.location.href.split('/');
-  // eslint-disable-next-line prefer-destructuring
-  userLocation = userLocation[userLocation.length - 1].split('.')[0];
-
-  if (userLocation !== 'signup'
-    && userLocation !== 'login'
-    && userLocation !== 'index'
-    && userLocation !== 'admin_login'
-    && userLocation !== 'staff_login') {
-    const token = window.sessionStorage.access_banka_token;
-    if (!token) {
-      setLocation('login');
+  // Function to show modal
+  const showModal = (msg) => {
+    const modal = document.querySelector('#modal');
+    const modalOverLay = document.querySelector('#modal_overlay');
+    modal.innerHTML = `${msg} <br /> <button id="okBtn">OK</button>`;
+    modalOverLay.style.display = 'block';
+    const okBtn = document.querySelector('#okBtn');
+    okBtn.addEventListener('click', () => {
+      modalOverLay.style.display = 'none';
+    });
+  };
+  // Function to protect route
+  const checkRoutes = () => {
+    if (userLocation !== 'signup'
+      && userLocation !== 'login'
+      && userLocation !== 'index'
+      && userLocation !== 'admin_login'
+      && userLocation !== 'staff_login') {
+      const token = window.sessionStorage.access_banka_token;
+      if (!token) {
+        setLocation('login');
+      }
     }
-  }
+  };
 
+  checkRoutes();
   if (userLocation === 'signup') {
     // signup form
     const signupForm = document.querySelector('#signup_form');
@@ -145,25 +178,16 @@ const start = () => {
             showError(res.message);
             changeContent(createBankBtn, 'Create Bank Account');
           } else {
-            const modal = document.querySelector('#modal');
-            const modalOverLay = document.querySelector('#modal_overlay');
-            modal.innerHTML = `
-            <h3>New Bank Account Created</h3>
+            showModal(`
+            <h3 id="centerHeader">New Bank Account Created</h3>
             <p>Account Details: </p>
             Account Number: ${res.data.accountnumber} <br/>
             Account Balance: ${res.data.balance} <br />
             Status: ${res.data.status} <br />
             Type: ${res.data.type} <br />
-            Date Created: ${res.data.createdon}
-            
-            <button id="okBtn">OK</button>
-            `;
+            Date Created: ${res.data.createdon}<br/>
+            `);
             changeContent(createBankBtn, 'Create Bank Account');
-            modalOverLay.style.display = 'block';
-            const okBtn = document.querySelector('#okBtn');
-            okBtn.addEventListener('click', () => {
-              modalOverLay.style.display = 'none';
-            });
           }
         }).catch(err => console.log(err));
     });
@@ -211,16 +235,14 @@ const start = () => {
             });
             changeContent(searchBtn, 'Search');
           } else if (res.status === 200 && res.data.length <= 0) {
-            table.style.opacity = '1';
-            table.innerHTML = `
+            showModal(`
             <h1>No Transactions Yet</h1>
-            `;
+            `);
             changeContent(searchBtn, 'Search');
           } else {
-            table.style.opacity = '1';
-            table.innerHTML = `
+            showModal(`
           <h1>Not Allowed</h1>
-          `;
+          `);
             changeContent(searchBtn, 'Search');
           }
         }).catch(err => console.log(err));
@@ -254,6 +276,7 @@ const start = () => {
           } else {
             window.sessionStorage.access_banka_token = res.data.token;
             window.sessionStorage.user_name = res.data.firstname;
+            window.sessionStorage.user_type = res.data.type;
             setLocation('admin');
           }
         }).catch(err => console.log(err));
@@ -286,6 +309,7 @@ const start = () => {
           } else {
             window.sessionStorage.access_banka_token = res.data.token;
             window.sessionStorage.user_name = res.data.firstname;
+            window.sessionStorage.user_type = res.data.type;
             setLocation('staff');
           }
         }).catch(err => console.log(err));
@@ -300,6 +324,93 @@ const start = () => {
     Logout();
     const { user_name } = window.sessionStorage;
     Welcome(user_name);
+  }
+  if (userLocation === 'credit') {
+    Logout();
+    const { user_name } = window.sessionStorage;
+    Welcome(user_name);
+    const creditForm = document.querySelector('#credit_form');
+    const creditBtn = document.querySelector('#creditBtn');
+    creditForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      changeContent(creditBtn, 'Loading...');
+      const token = window.sessionStorage.access_banka_token;
+      const accountNumber = document.querySelector('#acc_id').value;
+      const amount = document.querySelector('#amt').value;
+      const data = {
+        amount: Number(amount),
+      };
+
+      const api = `https://dominic-banka.herokuapp.com/api/v1/transactions/${accountNumber}/credit?token=${token}`;
+      fetch(api, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).then(resp => resp.json())
+        .then((res) => {
+          if (res.status !== 200) {
+            showModal(`<h3>${res.message}</h3>`);
+            changeContent(creditBtn, 'Credit Account');
+          } else {
+            changeContent(creditBtn, 'Credit Account');
+            showModal(`
+              <h2 id="centerHeader">${res.message}</h2>
+              Amount: ${res.data.amount} <br/>
+              Account Number: ${res.data.accountnumber} <br/>
+              Type: ${res.data.type} <br/>
+              Cashier: ${res.data.cashier} <br/>
+              Old Balance: ${res.data.oldbalance} <br/>
+              New Balance: ${res.data.newbalance} <br/>
+              Date Issued: ${res.data.createdon} <br/>
+              `);
+          }
+        }).catch(err => console.log(err));
+    });
+  } if (userLocation === 'debit') {
+    Logout();
+    const { user_name } = window.sessionStorage;
+    Welcome(user_name);
+    const debitForm = document.querySelector('#debit_form');
+    const debitBtn = document.querySelector('#debitBtn');
+    debitForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      changeContent(debitBtn, 'Loading...');
+      const token = window.sessionStorage.access_banka_token;
+      const accountNumber = document.querySelector('#acc_id').value;
+      const amount = document.querySelector('#amt').value;
+      const data = {
+        amount: Number(amount),
+      };
+      
+      const api = `https://dominic-banka.herokuapp.com/api/v1/transactions/${accountNumber}/debit?token=${token}`;
+      fetch(api, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).then(resp => resp.json())
+      .then((res) => {
+        if (res.status !== 200) {
+          showModal(`<h3>${res.message}</h3>`);
+          changeContent(debitBtn, 'Credit Account');
+        } else {
+          changeContent(debitBtn, 'Credit Account');
+          showModal(`
+              <h2 id="centerHeader">${res.message}</h2>
+              Amount: ${res.data.amount} <br/>
+              Account Number: ${res.data.accountnumber} <br/>
+              Type: ${res.data.type} <br/>
+              Cashier: ${res.data.cashier} <br/>
+              Old Balance: ${res.data.oldbalance} <br/>
+              New Balance: ${res.data.newbalance} <br/>
+              Date Issued: ${res.data.createdon} <br/>
+              `);
+        }
+      }).catch(err => console.log(err));
+    });
   }
 };
 start();

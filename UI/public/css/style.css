@@ -73,12 +73,15 @@ a{
 
 }
 #okBtn {
-    padding: 5px;
+    padding: 7px;
     color: #f4f4f4;
     background-color: #00003d;
     border-radius: 4px;
     position: relative;
-    margin: 0 0 0 10px;
+    margin: 0;
+    display: block;
+    width: 100%;
+    cursor: pointer;
 }
 #formError {
     width: initial;
@@ -93,6 +96,9 @@ a{
 }
 #all_trans_table {
     opacity: 0;
+}
+#centerHeader {
+    text-align: center;
 }
 
 /*Header*/
