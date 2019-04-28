@@ -99,9 +99,65 @@ const start = () => {
         });
     });
   } if (userLocation === 'dashboard') {
+    let userType;
+    document.getElementsByName('user_type').forEach((name) => {
+      name.addEventListener('click', () => {
+        userType = name.value;
+      });
+    });
     const { user_name } = window.sessionStorage;
     const welcome = document.querySelector('#welcome');
+
     changeContent(welcome, `Welcome: ${user_name.toUpperCase()}`);
+    const createBankForm = document.querySelector('#create_bank_account');
+    const createBankBtn = document.querySelector('#createBankBtn');
+    createBankForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      changeContent(createBankBtn, 'Creating...');
+      const token = window.sessionStorage.access_banka_token;
+      const data = {
+        accType: document.querySelector('#acc_type').value,
+        userType,
+      };
+      const api = 'http://dominic-banka.herokuapp.com/api/v1/accounts';
+      fetch(api, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      }).then(resp => resp.json())
+        .then((res) => {
+          if (res.status !== 201) {
+            showError(res.message);
+            changeContent(createBankBtn, 'Create Bank Account');
+          } else {
+            const modal = document.querySelector('#modal');
+            const modalOverLay = document.querySelector('#modal_overlay');
+            modal.innerHTML = `
+            <h3>New Bank Account Created</h3>
+            <p>Account Details: </p>
+            Account Number: ${res.data.accountnumber} <br/>
+            Account Balance: ${res.data.balance} <br />
+            Status: ${res.data.status} <br />
+            Type: ${res.data.type} <br />
+            Date Created: ${res.data.createdon}
+            
+            <button id="okBtn">OK</button>
+            `;
+            changeContent(createBankBtn, 'Create Bank Account')
+            modalOverLay.style.display = 'block';
+            const okBtn = document.querySelector('#okBtn');
+            okBtn.addEventListener('click', () => {
+              modalOverLay.style.display = 'none';
+            });
+          }
+        }).catch(err => console.log(err));
+    });
+  }
+  if (userLocation === 'create_acc') {
+    console.log('create_acc');
   }
 };
 start();
