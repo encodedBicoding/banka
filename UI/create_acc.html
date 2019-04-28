@@ -18,6 +18,7 @@
                 <h2>Bank<span>a</span>
                      <span id="slogan">...First mobile banking solution</span>
                 </h2>
+                <h3 id="welcome"></h3>
             </div>
         </header>
         <section id="user_profile">
@@ -38,7 +39,7 @@
                          <li id="list_click1" class="active"><a href="./create_acc.html" id="one">New Bank Account</a></li>
                          <li id="list_click2"><a href="./view_all.html" id="two">View Account History</a></li>
                          <li id="list_click3"><a href="./settings.html" id="three">Settings</a></li>
-                         <li id="list_click4"><a href="#" id="four">Log out</a></li>
+                         <li id="list_click4" class="logout"><a href="#" id="four">Log out</a></li>
                      </ul>
                  </nav>
             </div>
@@ -47,10 +48,10 @@
         <section id="profile_body">
             <div class="container">
                 <div id="pages">
-                        <h3> Welcome ${user}</h3>
                     <div id="p_body">
                         <h2><span>Create </span>New Bank Account</h2>
                         <form method="POST" action="#" id="create_bank_account">
+                            <div id="formError"></div>
                           <label for="acc_type">Select Account Type: </label>
                             <select id="acc_type" required>
                                <option disabled selected>Select any...</option>
@@ -68,14 +69,11 @@
                                 <span>Personal: </span>
                                 <input name="user_type" id="per" value="personal" type="radio"/>
                             </p>
-                            <p id="account_id">${new account id: autogen}</p>
-                            <label for="password">Password: </label>
-                            <input type="password" id="password" name="password" placeholder="Type in your password" required/>
                             <label for="terms"></label>
                             <input type="checkbox" id="terms" name="terms" required>
                             <span id="terms_txt">By creating an account, you agree to our 
                                 <a href="#">Account terms and conditions</a></span>
-                            <button>Create Bank Account</button>
+                            <button id="createBankBtn">Create Bank Account</button>
                         </form>
                     </div>
                 </div>

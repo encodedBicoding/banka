@@ -17,8 +17,18 @@ const start = () => {
   const setLocation = (location) => {
     window.location.href = `https://encodedBicoding.github.io/banka/UI/${location}.html`;
   };
-
-
+  const Welcome = (obj) => {
+    const welcome = document.querySelector('#welcome');
+    changeContent(welcome, `Welcome: ${obj.toUpperCase()}`);
+  };
+  // Function to logout
+  function Logout() {
+    const logout = document.querySelector('.logout');
+    logout.addEventListener('click', () => {
+      window.sessionStorage.clear();
+      setLocation('login');
+    });
+  }
   let userLocation = window.location.href.split('/');
   // eslint-disable-next-line prefer-destructuring
   userLocation = userLocation[userLocation.length - 1].split('.')[0];
@@ -59,6 +69,7 @@ const start = () => {
             showError(res.message);
           } else {
             window.sessionStorage.access_banka_token = res.data.token;
+            window.sessionStorage.user_name = res.data.firstname;
             setLocation('dashboard');
           }
         }).catch((err) => {
@@ -98,7 +109,8 @@ const start = () => {
           changeContent(loginBtn, 'LOG IN');
         });
     });
-  } if (userLocation === 'dashboard') {
+  } if (userLocation === 'dashboard' || userLocation === 'create_acc') {
+    Logout();
     let userType;
     document.getElementsByName('user_type').forEach((name) => {
       name.addEventListener('click', () => {
@@ -106,9 +118,7 @@ const start = () => {
       });
     });
     const { user_name } = window.sessionStorage;
-    const welcome = document.querySelector('#welcome');
-
-    changeContent(welcome, `Welcome: ${user_name.toUpperCase()}`);
+    Welcome(user_name);
     const createBankForm = document.querySelector('#create_bank_account');
     const createBankBtn = document.querySelector('#createBankBtn');
     createBankForm.addEventListener('submit', (e) => {
@@ -146,7 +156,7 @@ const start = () => {
             
             <button id="okBtn">OK</button>
             `;
-            changeContent(createBankBtn, 'Create Bank Account')
+            changeContent(createBankBtn, 'Create Bank Account');
             modalOverLay.style.display = 'block';
             const okBtn = document.querySelector('#okBtn');
             okBtn.addEventListener('click', () => {
@@ -156,8 +166,63 @@ const start = () => {
         }).catch(err => console.log(err));
     });
   }
-  if (userLocation === 'create_acc') {
-    console.log('create_acc');
+  if (userLocation === 'view_all') {
+    Logout();
+    const { user_name } = window.sessionStorage;
+    Welcome(user_name);
+    const searchForm = document.querySelector('#searchForm');
+    const table = document.querySelector('#all_trans_table');
+    const searchBtn = document.querySelector('#searchBtn');
+    searchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      changeContent(searchBtn, 'Searching...');
+      const data = document.querySelector('#s').value;
+      const token = window.sessionStorage.access_banka_token;
+      const api = `https://dominic-banka.herokuapp.com/api/v1/accounts/${data}/transactions?token=${token}`;
+      fetch(api)
+        .then(resp => resp.json())
+        .then((res) => {
+          if (res.status === 200 && res.data.length > 0) {
+            res.data.forEach((d) => {
+              const tableRow2 = document.createElement('tr');
+              // Table Data
+              const tableData = document.createElement('td');
+              const tableData2 = document.createElement('td');
+              const tableData3 = document.createElement('td');
+              const tableData4 = document.createElement('td');
+              const tableData5 = document.createElement('td');
+
+              tableData.innerText = `${d.type}`;
+              tableData2.innerText = `${d.amount}`;
+              tableData3.innerText = `${d.cashier}`;
+              tableData4.innerText = `${d.oldbalance}`;
+              tableData5.innerText = `${d.newbalance}`;
+
+              tableRow2.appendChild(tableData);
+              tableRow2.appendChild(tableData2);
+              tableRow2.appendChild(tableData3);
+              tableRow2.appendChild(tableData4);
+              tableRow2.appendChild(tableData5);
+
+              table.appendChild(tableRow2);
+              table.style.opacity = '1';
+            });
+            changeContent(searchBtn, 'Search');
+          } else if (res.status === 200 && res.data.length <= 0) {
+            table.style.opacity = '1';
+            table.innerHTML = `
+            <h1>No Transactions Yet</h1>
+            `;
+            changeContent(searchBtn, 'Search');
+          } else {
+            table.style.opacity = '1';
+            table.innerHTML = `
+          <h1>Not Allowed</h1>
+          `;
+            changeContent(searchBtn, 'Search');
+          }
+        }).catch(err => console.log(err));
+    });
   }
 };
 start();
