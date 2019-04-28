@@ -248,7 +248,7 @@ const start = () => {
           if (res.status !== 200) {
             changeContent(loginBtn, 'LOG IN');
             showError(res.message);
-          } else if (res.data.type !== 'admin'){
+          } else if (res.data.type !== 'admin') {
             showError('You are not permitted to use this login');
             changeContent(loginBtn, 'LOG IN');
           } else {
@@ -280,7 +280,7 @@ const start = () => {
           if (res.status !== 200) {
             changeContent(loginBtn, 'LOG IN');
             showError(res.message);
-          } else if (res.data.type !== 'staff'){
+          } else if (res.data.type !== 'staff') {
             showError('You are not permitted to use this login');
             changeContent(loginBtn, 'LOG IN');
           } else {
@@ -290,6 +290,16 @@ const start = () => {
           }
         }).catch(err => console.log(err));
     });
+  }
+  if (userLocation === 'admin') {
+    Logout();
+    const { user_name } = window.sessionStorage;
+    Welcome(user_name);
+  }
+  if (userLocation === 'staff') {
+    Logout();
+    const { user_name } = window.sessionStorage;
+    Welcome(user_name);
   }
 };
 start();
