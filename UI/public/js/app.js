@@ -35,7 +35,9 @@ const start = () => {
 
   if (userLocation !== 'signup'
     && userLocation !== 'login'
-    && userLocation !== 'index') {
+    && userLocation !== 'index'
+    && userLocation !== 'admin_login'
+    && userLocation !== 'staff_login') {
     const token = window.sessionStorage.access_banka_token;
     if (!token) {
       setLocation('login');
@@ -220,6 +222,71 @@ const start = () => {
           <h1>Not Allowed</h1>
           `;
             changeContent(searchBtn, 'Search');
+          }
+        }).catch(err => console.log(err));
+    });
+  }
+  if (userLocation === 'admin_login') {
+    const adminLoginForm = document.querySelector('#admin_login_form');
+    adminLoginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const loginBtn = document.querySelector('#a_loginBtn');
+      changeContent(loginBtn, 'Loading...');
+      const api = 'https://dominic-banka.herokuapp.com/api/v1/auth/admin/login';
+      const data = {
+        email: document.querySelector('#email').value,
+        password: document.querySelector('#password').value,
+      };
+      fetch(api, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).then(resp => resp.json())
+        .then((res) => {
+          if (res.status !== 200) {
+            changeContent(loginBtn, 'LOG IN');
+            showError(res.message);
+          } else if (res.data.type !== 'admin'){
+            showError('You are not permitted to use this login');
+            changeContent(loginBtn, 'LOG IN');
+          } else {
+            window.sessionStorage.access_banka_token = res.data.token;
+            window.sessionStorage.user_name = res.data.firstname;
+            setLocation('admin');
+          }
+        }).catch(err => console.log(err));
+    });
+  } if (userLocation === 'staff_login') {
+    const staffLoginForm = document.querySelector('#staff_login_form');
+    staffLoginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const loginBtn = document.querySelector('#s_loginBtn');
+      changeContent(loginBtn, 'Loading...');
+      const api = 'https://dominic-banka.herokuapp.com/api/v1/auth/admin/login';
+      const data = {
+        email: document.querySelector('#email').value,
+        password: document.querySelector('#password').value,
+      };
+      fetch(api, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).then(resp => resp.json())
+        .then((res) => {
+          if (res.status !== 200) {
+            changeContent(loginBtn, 'LOG IN');
+            showError(res.message);
+          } else if (res.data.type !== 'staff'){
+            showError('You are not permitted to use this login');
+            changeContent(loginBtn, 'LOG IN');
+          } else {
+            window.sessionStorage.access_banka_token = res.data.token;
+            window.sessionStorage.user_name = res.data.firstname;
+            setLocation('staff');
           }
         }).catch(err => console.log(err));
     });

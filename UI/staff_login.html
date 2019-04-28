@@ -24,12 +24,13 @@
                 <div id="login_h">
                     <h2>Staff <span>login</span></h2>
                 </div>
-                <form method="POST" action="#">
+                <form method="POST" action="#" id="staff_login_form">
+                    <div id="formError"></div>
                     <label for="email">Email: </label>
                     <input type="email" name="email" id="email" placeholder="Email: " required/>
                     <label for="password">Password: </label>
                     <input type="password" name="password" id="password" placeholder="Password: " required/>
-                    <button>Log in</button>
+                    <button id="s_loginBtn">Log in</button>
                 </form>
             </div>
         </section>
@@ -38,5 +39,6 @@
                 Copyright <span>&copy;</span> Banka || All Rights Reserved 2019.
             </p>
         </footer>
+        <script src="./public/js/app.js"></script>
     </body>
 </html>
