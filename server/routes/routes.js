@@ -53,9 +53,9 @@ const routes = (app) => {
     Validate.userViewTransactionID,
     Accounts.getTransactionById);
 
-  // Admin/Staff get all account transaction
+  // All users get all account transaction
   router.get('/api/v1/user/:emailAddress/accounts',
-    Authorize.authenticateBothAdminAndStaff,
+    Authorize.authenticateUser,
     Validate.validateEmailAddress,
     Accounts.getAllAccount);
 
