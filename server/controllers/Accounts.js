@@ -200,18 +200,18 @@ class Accounts {
    * @returns {object} JSON
    */
   static async getAllAccount(req, res) {
-    const { emailAddress } = req.params;
+    const { params: { emailAddress } } = req;
     try {
       // findByEmail takes 2 parameters the query and value, * is to select all key-value pairs
       const user = await users.findByEmail('*', [emailAddress]);
       const userAccounts = await accounts.findByOwnerID('*', [user.id]);
-      res.status(200).json({
+      return res.status(200).json({
         status: 200,
         message: 'Success',
         data: userAccounts,
       });
     } catch (err) {
-      res.status(400).json({
+      return res.status(400).json({
         status: 400,
         serverMessage: `Error: ${err.message}`,
         message: 'Ensure the email on request.params matches that of user in token',
