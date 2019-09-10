@@ -9,30 +9,33 @@ class Authorize {
    * @param next express next to execute next middleware
    * @returns {object} JSON
    */
+  // eslint-disable-next-line consistent-return
   static authenticateUser(req, res, next) {
     let token = req.body.tokenAuth
       || req.headers.authorization
       || req.headers['x-access-token']
       || req.query.token;
+    console.log(token);
     if (token) {
       if (token.startsWith('Bearer ')) {
         token = token.slice(7, token.length);
       }
       const payload = Auth.verifyToken(token);
+      if (!payload) {
+        return res.status(401).json({
+          status: 401,
+          message: 'Not Allowed/Authorized',
+        });
+      }
       if (payload) {
         req.user = payload;
         next();
       } else {
-        res.status(401).json({
-          status: 401,
-          message: 'Not Authorized',
+        res.status(400).json({
+          status: 400,
+          message: 'No token supplied',
         });
       }
-    } else {
-      res.status(400).json({
-        status: 400,
-        message: 'No token supplied',
-      });
     }
   }
 
@@ -43,6 +46,7 @@ class Authorize {
    * @param next express next to execute next middleware
    * @returns {object} JSON
    */
+
   static authenticateStaff(req, res, next) {
     let token = req.body.tokenAuth
       || req.headers.authorization
@@ -98,8 +102,8 @@ class Authorize {
       if (payload) {
         const { isAdmin, type } = payload;
         if (isAdmin !== true
-            && type !== 'admin'
-            && isAdmin !== 'true') {
+          && type !== 'admin'
+          && isAdmin !== 'true') {
           res.status(401).json({
             status: 401,
             message: 'Not authorized',
